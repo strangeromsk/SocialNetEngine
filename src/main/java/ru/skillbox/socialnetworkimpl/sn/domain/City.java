@@ -12,7 +12,8 @@ public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String city;
+    @Column(name = "city")
+    private String title;
     @Column(name = "country_id")
     @JsonIgnore
     private int countryId;
