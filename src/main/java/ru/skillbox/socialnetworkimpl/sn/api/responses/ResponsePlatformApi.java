@@ -15,9 +15,9 @@ public class ResponsePlatformApi<T> {
     private int total;
     private int offset;
     private int perPage;
-    private List<T> data;
+    private T data;
 
-    public ResponsePlatformApi (String error, int total, int offset, int perPage, List<T> data) {
+    public ResponsePlatformApi (String error, int total, int offset, int perPage, T data) {
         this.error = error;
         this.total = total;
         this.offset = offset;
