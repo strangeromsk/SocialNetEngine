@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class Language {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private int id;
-    private String language;
+    @Column(name = "language")
+    private String title;
 }
