@@ -1,24 +1,21 @@
 package ru.skillbox.socialnetworkimpl.sn.services.interfaces;
 
 import org.springframework.http.ResponseEntity;
-import ru.skillbox.socialnetworkimpl.sn.api.requests.AccountEditEmailBody;
-import ru.skillbox.socialnetworkimpl.sn.api.requests.AccountEditNotificationsBody;
-import ru.skillbox.socialnetworkimpl.sn.api.requests.AccountEditPasswordBody;
-import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponseApi;
+import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 
 import javax.servlet.http.HttpSession;
 
 public interface AccountService {
 
-    ResponseEntity<ResponseApi> signUpAccount(HttpSession session, String email, String password1,
-                                              String password2, String firstName,
+    ResponseEntity<ResponsePlatformApi> signUpAccount(HttpSession session, String email, String passwd1,
+                                              String passwd2, String firstName,
                                              String lastName, int code);
 
-    ResponseEntity<ResponseApi> recoverPassword(HttpSession session, AccountEditPasswordBody accountEditPasswordBody);
+    ResponseEntity<ResponsePlatformApi> recoverPassword(HttpSession session, String email);
 
-    ResponseEntity<ResponseApi> setPassword(HttpSession session, AccountEditPasswordBody accountEditPasswordBody);
+    ResponseEntity<ResponsePlatformApi> setPassword(HttpSession session, String token, String password);
 
-    ResponseEntity<ResponseApi> changeEmail(HttpSession session, AccountEditEmailBody accountEditEmailBody);
+    ResponseEntity<ResponsePlatformApi> changeEmail(HttpSession session, String email);
 
-    ResponseEntity<ResponseApi> editNotifications(HttpSession session, AccountEditNotificationsBody accountEditNotificationsBody);
+    ResponseEntity<ResponsePlatformApi> editNotifications(HttpSession session, String notification_type, boolean enable);
 }
