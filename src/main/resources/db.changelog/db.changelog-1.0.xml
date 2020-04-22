@@ -7,51 +7,10 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
          http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd">
 
-    <changeSet id="1.0.0" author="ssa">
-        <createTable tableName="language">
-            <column name="id" type="BIGINT" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="language" type="VARCHAR(100)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+    <changeSet id="1.0.1" author="palestiner" runOnChange="true">
+        <sqlFile path="db.changelog/create-table-person.sql"/>
     </changeSet>
-
-    <changeSet id="1.0.1" author="ssa">
-        <createTable tableName="countries">
-            <column name="id" type="BIGINT" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="country" type="VARCHAR(100)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+    <changeSet id="1.0.2" author="palestiner" runOnChange="true">
+        <sqlFile path="db.changelog/add-persons.sql"/>
     </changeSet>
-
-    <changeSet id="1.0.2" author="ssa">
-        <createTable tableName="cities">
-            <column name="id" type="BIGINT" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="city" type="VARCHAR(100)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="country_id" type="BIGINT">
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="1.0.3" author="ssa">
-        <addForeignKeyConstraint baseTableName="cities" baseColumnNames="country_id" constraintName="fk_city_country_id"
-                                 referencedTableName="countries"
-                                 referencedColumnNames="id"
-                                 onDelete="CASCADE"
-                                 onUpdate="NO ACTION"/>
-    </changeSet>
-
-    <changeSet id="1.0.4" author="ssa" runOnChange="true">
-        <sqlFile path="db.changelog/static-platform-data.sql"/>
-    </changeSet>
-
 </databaseChangeLog>
