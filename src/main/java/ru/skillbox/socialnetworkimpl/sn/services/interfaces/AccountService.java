@@ -8,8 +8,8 @@ import javax.servlet.http.HttpSession;
 public interface AccountService {
 
     ResponseEntity<ResponsePlatformApi> signUpAccount(HttpSession session, String email, String passwd1,
-                                              String passwd2, String firstName,
-                                             String lastName, int code);
+                                                      String passwd2, String firstName,
+                                                      String lastName, int code);
 
     ResponseEntity<ResponsePlatformApi> recoverPassword(HttpSession session, String email);
 
