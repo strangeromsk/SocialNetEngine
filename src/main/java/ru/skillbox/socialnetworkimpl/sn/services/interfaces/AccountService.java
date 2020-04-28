@@ -32,7 +32,7 @@ public interface AccountService {
         return data;
     }
 
-    default ResponsePlatformApi getErrorResponse() {
-         return ResponsePlatformApi.builder().error("invalid_request").error_description("string").build();
+    default ResponsePlatformApi getErrorResponse(String description) {
+         return ResponsePlatformApi.builder().error("invalid_request").error_description(description).build();
     }
 }

@@ -3,8 +3,9 @@ package ru.skillbox.socialnetworkimpl.sn.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skillbox.socialnetworkimpl.sn.api.requests.RecoverPasswordBody;
-import ru.skillbox.socialnetworkimpl.sn.api.requests.RegisterBody;
+import ru.skillbox.socialnetworkimpl.sn.api.requests.account.AccEmailBody;
+import ru.skillbox.socialnetworkimpl.sn.api.requests.account.NotificationBody;
+import ru.skillbox.socialnetworkimpl.sn.api.requests.account.RegisterBody;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 import ru.skillbox.socialnetworkimpl.sn.services.AccountServiceImpl;
 
@@ -22,8 +23,27 @@ public class AccountController {
     }
 
     @PutMapping("password/recovery")
-    public ResponseEntity<ResponsePlatformApi> recovePassword (@RequestBody RecoverPasswordBody recoverEmail) {
-        return accountService.recoverPassword(recoverEmail.getEmail());
-       // return null;
+    public ResponseEntity<ResponsePlatformApi> recovePassword (@RequestBody AccEmailBody accEmail) {
+        return accountService.recoverPassword(accEmail.getEmail());
     }
+
+
+    //TODO На вход приходит токен и пароль. Где брать токен. Его нигде нет у пользователя???
+    @PutMapping("password/set")
+    public ResponseEntity<ResponsePlatformApi> sePassword(@RequestBody AccEmailBody accEmail) {
+        return null;
+    }
+
+    //TODO тот же вопрос идентификации
+    @PutMapping("email")
+    public ResponseEntity<ResponsePlatformApi> changeEmail(@RequestBody AccEmailBody accEmail) {
+        return null;
+    }
+
+    //TODO Непонятно у какого пользователя менять.
+    @PutMapping("notifications")
+    public ResponseEntity<ResponsePlatformApi> changeNotifications(NotificationBody notificationBody) {
+        return null;
+    }
+
 }
