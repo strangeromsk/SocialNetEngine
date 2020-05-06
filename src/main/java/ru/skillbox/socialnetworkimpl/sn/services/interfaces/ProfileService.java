@@ -16,8 +16,8 @@ public interface ProfileService {
     ResponseEntity<ResponsePlatformApi> getUserById(HttpSession session, long id);
 
     ResponseEntity<ResponsePlatformApi> searchPerson(HttpSession session, String firstName,
-                                             String lastName, int ageFrom, int ageTo,
-                                             int countryId, int cityId, int offset, int itemPerPage);
+                                                     String lastName, int ageFrom, int ageTo,
+                                                     int countryId, int cityId, int offset, int itemPerPage);
 
     ResponseEntity<ResponsePlatformApi> blockUserById(HttpSession session, long id);
 

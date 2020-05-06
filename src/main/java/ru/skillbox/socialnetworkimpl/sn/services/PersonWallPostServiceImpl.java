@@ -14,13 +14,13 @@ import javax.servlet.http.HttpSession;
 public class PersonWallPostServiceImpl implements PersonWallPostService {
     @Override
     public ResponseEntity<ResponsePlatformApi> getPersonsWallPostsByUserId(HttpSession session, long id,
-                                                                   int offset, int itemPerPage) {
+                                                                           int offset, int itemPerPage) {
         return null;
     }
 
     @Override
     public ResponseEntity<ResponsePlatformApi> addPostToUsersWall(HttpSession session, long id, int publishDate,
-                                                          PostRequestBody postRequestBody) {
+                                                                  PostRequestBody postRequestBody) {
         return null;
     }
 }
