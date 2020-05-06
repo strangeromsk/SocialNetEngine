@@ -1,0 +1,238 @@
+databaseChangeLog:
+  - logicalFilePath: db.changelog/db.changelog-master.yaml
+  - changeSet:
+      id: 1
+      author: snet
+      changes:
+        - createTable:
+            tableName: person
+            columns:
+              - column:
+                  name: id
+                  type: int(11)
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: reg_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: birth_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: e_mail
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phone
+                  type: int(11)
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: photo
+                  type: varchar(2048)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: about
+                  type: varchar(2048)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: town
+                  type: varchar(45)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: confirmation_code
+                  type: varchar(45)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_approved
+                  type: bit(1)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: messages_permission
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_online_time
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_blocked
+                  type: bit(1)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 3
+      author: snet
+      comment: "added a few persons"
+      changes:
+        - insert:
+            tableName: person
+            columns:
+              - column:
+                  name: about
+                  value: "testtesttest"
+              - column:
+                  name: birth_date
+                  value: "now()"
+              - column:
+                  name: confirmation_code
+                  value: "4815"
+              - column:
+                  name: e_mail
+                  value: "mail@mail.ru"
+              - column:
+                  name: first_name
+                  value: "Pal"
+              - column:
+                  name: is_approved
+                  value: "1"
+              - column:
+                  name: is_blocked
+                  value: "0"
+              - column:
+                  name: last_name
+                  value: "Estiner"
+              - column:
+                  name: last_online_time
+                  value: "now()"
+              - column:
+                  name: messages_permission
+                  value: "ALL"
+              - column:
+                  name: password
+                  value: "pass"
+              - column:
+                  name: phone
+                  value: "132456"
+              - column:
+                  name: photo
+                  value: "photo"
+              - column:
+                  name: reg_date
+                  value: "now()"
+              - column:
+                  name: town
+                  value: "New-York"
+        - insert:
+            tableName: person
+            columns:
+              - column:
+                  name: about
+                  value: "lalala"
+              - column:
+                  name: birth_date
+                  value: "now()"
+              - column:
+                  name: confirmation_code
+                  value: "1234"
+              - column:
+                  name: e_mail
+                  value: "mail@mail.ru"
+              - column:
+                  name: first_name
+                  value: "Man"
+              - column:
+                  name: is_approved
+                  value: "1"
+              - column:
+                  name: is_blocked
+                  value: "0"
+              - column:
+                  name: last_name
+                  value: "Manovich"
+              - column:
+                  name: last_online_time
+                  value: "now()"
+              - column:
+                  name: messages_permission
+                  value: "FRIENDS"
+              - column:
+                  name: password
+                  value: "mypass"
+              - column:
+                  name: phone
+                  value: "89031234"
+              - column:
+                  name: photo
+                  value: "myphoto"
+              - column:
+                  name: reg_date
+                  value: "now()"
+              - column:
+                  name: town
+                  value: "Moscow"
+        - insert:
+            tableName: person
+            columns:
+              - column:
+                  name: about
+                  value: "blablabla"
+              - column:
+                  name: birth_date
+                  value: "1905-06-11"
+              - column:
+                  name: confirmation_code
+                  value: "1964"
+              - column:
+                  name: e_mail
+                  value: "mail@mail.ru"
+              - column:
+                  name: first_name
+                  value: "Jean-Paul"
+              - column:
+                  name: is_approved
+                  value: "1"
+              - column:
+                  name: is_blocked
+                  value: "1"
+              - column:
+                  name: last_name
+                  value: "Sartre"
+              - column:
+                  name: last_online_time
+                  value: "now()"
+              - column:
+                  name: messages_permission
+                  value: "ALL"
+              - column:
+                  name: password
+                  value: "PassWord"
+              - column:
+                  name: phone
+                  value: "987654"
+              - column:
+                  name: photo
+                  value: "Sartrephoto"
+              - column:
+                  name: reg_date
+                  value: "now()"
+              - column:
+                  name: town
+                  value: "Paris"
