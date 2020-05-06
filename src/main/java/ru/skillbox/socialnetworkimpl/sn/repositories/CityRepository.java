@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.skillbox.socialnetworkimpl.sn.domain.City;
-import ru.skillbox.socialnetworkimpl.sn.domain.Language;
 
 import java.util.List;
 
