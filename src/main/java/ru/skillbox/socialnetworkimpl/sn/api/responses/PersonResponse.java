@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import ru.skillbox.socialnetworkimpl.sn.api.responses.util.CityResponse;
-import ru.skillbox.socialnetworkimpl.sn.api.responses.util.CountryResponse;
 
 @Data
 @NoArgsConstructor
