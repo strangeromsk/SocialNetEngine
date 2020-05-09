@@ -83,7 +83,7 @@ public class AccountServiceImpl implements AccountService {
         if (!isEmailCorrect(email))
             return getIncorrectEmailResponse();
         Query updatePasswordQuery = entityManager.createQuery("update Person p set p.email = :newEmail " +
-                "where id = '1'").setParameter("newEmail", email);
+                "where p.id = '1'").setParameter("newEmail", email);
         int result = updatePasswordQuery.executeUpdate();
         if (result != 1)
             return getInternalErrorResponse();

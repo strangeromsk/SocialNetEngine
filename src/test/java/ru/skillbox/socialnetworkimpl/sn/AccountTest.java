@@ -22,7 +22,7 @@ public class AccountTest {
     @Test
     public void signUpAccountTestRegisteredTest() throws Exception {
 
-        String correctNewUser = "{\"email\": \"newuser@user.my\", \"passwd1\" : \"123\", \"passwd2\" : " +
+        String correctNewUser = "{\"email\": \"newuser@u5ser.my\", \"passwd1\" : \"123\", \"passwd2\" : " +
                 "\"123\", \"firstName\" : \"Vasia\", \"lastName\" : \"Pupkin\",\"code\" : \"123\"}";
         HashMap<String, String> data = new HashMap<>();
         data.put("message", "ok");
@@ -74,6 +74,43 @@ public class AccountTest {
         String email = "{\"email\": \"not@exist.user\"}";
         mvc.perform(MockMvcRequestBuilders.put("/api/v1/account/password/recovery")
                 .content(email).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void setPasswordOkTest() throws Exception {
+        String email = "{\"token\": \"dfsfsd\", \"password\": \"newPassword\"}";
+        HashMap<String, String> data = new HashMap<>();
+        data.put("message", "ok");
+        mvc.perform(MockMvcRequestBuilders.put("/api/v1/account/password/set")
+                .content(email).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.error").value("string"))
+                .andExpect(jsonPath("$.timestamp").isNotEmpty())
+                .andExpect(jsonPath("$.data", is(data)));
+    }
+
+    @Test
+    public void changeEmailOkTest() throws Exception {
+        String email = "{\"email\": \"new@email.mail\"}";
+        HashMap<String, String> data = new HashMap<>();
+        data.put("message", "ok");
+        mvc.perform(MockMvcRequestBuilders.put("/api/v1/account/email")
+                .content(email).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.error").value("string"))
+                .andExpect(jsonPath("$.timestamp").isNotEmpty())
+                .andExpect(jsonPath("$.data", is(data)));
+    }
+
+    @Test
+    public void changeEmailBadEmailTest() throws Exception {
+        String incEmailNewUser = "{\"email\": \"4ewyandex.ru\"}";
+
+        mvc.perform(MockMvcRequestBuilders.put("/api/v1/account/email")
+                .content(incEmailNewUser).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
