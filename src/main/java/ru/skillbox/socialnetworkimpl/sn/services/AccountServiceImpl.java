@@ -1,43 +1,27 @@
 package ru.skillbox.socialnetworkimpl.sn.services;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 import ru.skillbox.socialnetworkimpl.sn.domain.Person;
+import ru.skillbox.socialnetworkimpl.sn.domain.enums.ErrorMessages;
 import ru.skillbox.socialnetworkimpl.sn.domain.enums.MessagesPermission;
 import ru.skillbox.socialnetworkimpl.sn.repositories.PersonRepository;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.AccountService;
-
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-
-//TODO Запилить проверку e-mail регуляркой
-
-
-
 
 @Component
 public class AccountServiceImpl implements AccountService {
-    private final String RECOVERY_MESSAGE = "This is a recovery message";
-    private final String SUBJECT = "This is you password recovery link";
+    private final String SUBJECT = "This is you password recovery code";
 
     @Autowired
     private PersonRepository personRepository;
-
     @Autowired
     private EmailMessageService emailMessageService;
 
@@ -46,12 +30,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public ResponseEntity<ResponsePlatformApi> signUpAccount(String email, String passwd1, String passwd2, String firstName, String lastName, String code) {
-        if (!passwd1.equals(passwd2) || !email.contains("@")) {
-            return new ResponseEntity<>(getErrorResponse("Passwords does not matches or e-mail incorrect!")
+        if (!passwd1.equals(passwd2) || !isEmailCorrect(email)) {
+            return new ResponseEntity<>(getErrorResponse(ErrorMessages.PASS_EMAIL_INC.getTitle())
                     , HttpStatus.BAD_REQUEST);
         }
         if (getPerson(email).size() > 0)
-            return new ResponseEntity<>(getErrorResponse("User already exists!"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(getErrorResponse(ErrorMessages.USER_EXISTS.getTitle()), HttpStatus.BAD_REQUEST);
         personRepository.save(Person.builder().email(email).fistName(firstName).lastName(lastName)
                             .confirmationCode(code).password(passwd1).regDate(LocalDate.now())
                             .messagesPermission(MessagesPermission.ALL).build());
@@ -60,41 +44,80 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public ResponseEntity<ResponsePlatformApi> recoverPassword(String email) {
-        if (!email.contains("@"))
-            return new ResponseEntity<>(getErrorResponse("Incorrect e-mail"), HttpStatus.BAD_REQUEST);
+        if (!isEmailCorrect(email))
+            return getIncorrectEmailResponse();
         List<Person> currentPerson = getPerson(email);
         if (currentPerson.size() < 1)
-            return new ResponseEntity<>(getErrorResponse("User does not exist!"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(getErrorResponse(ErrorMessages.USER_NOTEXIST.getTitle()), HttpStatus.BAD_REQUEST);
         if (currentPerson.size() != 1)
-            return new ResponseEntity<>(getErrorResponse("Internal database error"),HttpStatus.OK);
+            return getInternalErrorResponse();
 
         emailMessageService.sendMessage(email, SUBJECT, currentPerson.get(0).getConfirmationCode());
             return new ResponseEntity<>(getOkResponse(), HttpStatus.OK);
     }
 
+    /** Тут и далее просто проверяем что в токен что-то пришло, а все манипуляции выполняем над пользователем с
+     *  id = 1 **/
+    //TODO Тут и далее: переделать на получение пользователя в зависимости от токена после реализации Security
+
     @Override
+    @Transactional
     public ResponseEntity<ResponsePlatformApi> setPassword(String token, String password) {
-        return null;
+        if (token == null)
+            return getUserInvalidResponse();
+        Query updatePasswordQuery = entityManager.createQuery("update Person p set p.password = :newPassword " +
+                "where id = '1'").setParameter("newPassword", password);
+        int result = updatePasswordQuery.executeUpdate();
+        if (result != 1)
+            return getInternalErrorResponse();
+        return new ResponseEntity<>(getOkResponse(), HttpStatus.OK);
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ResponsePlatformApi> changeEmail(String email) {
-        return null;
+        // Заглушка на проверку пользователя
+        boolean isAuthorized = true;
+        if (!isAuthorized)
+            return getUserInvalidResponse();
+        if (!isEmailCorrect(email))
+            return getIncorrectEmailResponse();
+        Query updatePasswordQuery = entityManager.createQuery("update Person p set p.email = :newEmail " +
+                "where id = '1'").setParameter("newEmail", email);
+        int result = updatePasswordQuery.executeUpdate();
+        if (result != 1)
+            return getInternalErrorResponse();
+        return new ResponseEntity<>(getOkResponse(), HttpStatus.OK);
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ResponsePlatformApi> editNotifications(String notification_type, boolean enable) {
         return null;
     }
 
+    private boolean isEmailCorrect(String email) {
+        return email.matches(".+@.+\\..{2,5}");
+    }
 
     private List<Person> getPerson(String email) {
         Query query = entityManager.createQuery("from Person p where email = :inEmail", Person.class);
         query.setParameter("inEmail", email);
         List<Person> currentPerson = query.getResultList();
-
         return currentPerson;
+    }
 
+    protected ResponseEntity getInternalErrorResponse() {
+        return new ResponseEntity<>(getErrorResponse(ErrorMessages.INTERROR.getTitle()),
+                                                      HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    protected ResponseEntity getUserInvalidResponse() {
+        return new ResponseEntity<>(getErrorResponse(ErrorMessages.USER_INVALID.getTitle()), HttpStatus.UNAUTHORIZED);
+    }
+
+    protected ResponseEntity getIncorrectEmailResponse() {
+        return new ResponseEntity<>(getErrorResponse(ErrorMessages.INCORRECT_EMAIL.getTitle()), HttpStatus.BAD_REQUEST);
     }
 
 

@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.HashMap;
 
