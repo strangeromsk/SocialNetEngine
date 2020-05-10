@@ -21,7 +21,7 @@ public class AccountController {
     }
 
     @PutMapping("password/recovery")
-    public ResponseEntity<ResponsePlatformApi> recovePassword (@RequestBody AccountRequestBody accEmail) {
+    public ResponseEntity<ResponsePlatformApi> recoverPassword (@RequestBody AccountRequestBody accEmail) {
         return accountService.recoverPassword(accEmail.getEmail());
     }
 
