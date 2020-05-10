@@ -18,8 +18,6 @@ public class ProfileController {
 
     @Autowired
     private ProfileService profileService;
-    @Autowired
-    private PersonWallPostService personWallPostService;
 
     public ProfileController() {
     }
@@ -51,7 +49,7 @@ public class ProfileController {
                                                                    @PathVariable("id") long id,
                                                                    @RequestParam(value = "offset") int offset,
                                                                    @RequestParam(value = "itemPerPage") int itemPerPage) {  // TODO Добавить default = 20
-        return personWallPostService.getPersonsWallPostsByUserId(request.getSession(), id, offset, itemPerPage);
+        return profileService.getPersonsWallPostsByUserId(request.getSession(), id, offset, itemPerPage);
     }
 
     @PostMapping(value = "{id}/wall", params = {"publish_date"})
@@ -59,7 +57,7 @@ public class ProfileController {
                                                                   @PathVariable("id") long id,
                                                                   @RequestParam(value = "publish_date") int publishDate,
                                                                   @RequestBody PostRequestBody postRequestBody) {
-        return personWallPostService.addPostToUsersWall(request.getSession(), id, publishDate, postRequestBody);
+        return profileService.addPostToUsersWall(request.getSession(), id, publishDate, postRequestBody);
     }
 
     @GetMapping(value = "search/", params = {"first_name", "last_name", "age_from", "age_to",

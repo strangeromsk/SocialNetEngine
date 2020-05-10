@@ -6,6 +6,8 @@ import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequestBody;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
+import java.util.HashMap;
 
 public interface ProfileService {
     ResponseEntity<ResponsePlatformApi> getCurrentUser(HttpSession session);
