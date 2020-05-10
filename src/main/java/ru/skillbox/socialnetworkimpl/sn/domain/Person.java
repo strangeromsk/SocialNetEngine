@@ -1,6 +1,5 @@
 package ru.skillbox.socialnetworkimpl.sn.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import ru.skillbox.socialnetworkimpl.sn.domain.enums.MessagesPermission;
 
@@ -63,7 +62,4 @@ public class Person {
 
     @Column(name = "is_blocked", nullable = false, columnDefinition = "BIT")
     private byte isBlocked;
-
-    @JsonIgnoreProperties
-    private String token;
 }
