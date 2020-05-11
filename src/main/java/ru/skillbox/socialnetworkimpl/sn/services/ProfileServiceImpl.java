@@ -118,13 +118,8 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     @Transactional
-    public ResponseEntity<ResponsePlatformApi> blockUserById(HttpSession session, long id) {
-        Query updatePasswordQuery = entityManager.createQuery("update Person p set p.isBlocked = 1 " +
-                "where p.id = :id").setParameter("id", id);
-        int result = updatePasswordQuery.executeUpdate();
-        if (result != 1)
-            return accountService.getInternalErrorResponse();
-
+    public ResponseEntity<ResponsePlatformApi> blockUserById(HttpSession session, int id) {
+        personRepository.blockUserById(id);
         //TODO Заглушка на проверку пользователя
         boolean isAuthorized = true;
         if (!isAuthorized)
@@ -134,13 +129,8 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     @Transactional
-    public ResponseEntity<ResponsePlatformApi> unblockUserById(HttpSession session, long id) {
-        Query updatePasswordQuery = entityManager.createQuery("update Person p set p.isBlocked = 0 " +
-                "where p.id = :id").setParameter("id", id);
-        int result = updatePasswordQuery.executeUpdate();
-        if (result != 1)
-            return accountService.getInternalErrorResponse();
-
+    public ResponseEntity<ResponsePlatformApi> unblockUserById(HttpSession session, int id) {
+        personRepository.unBlockUserById(id);
         // Заглушка на проверку пользователя
         boolean isAuthorized = true;
         if (!isAuthorized)

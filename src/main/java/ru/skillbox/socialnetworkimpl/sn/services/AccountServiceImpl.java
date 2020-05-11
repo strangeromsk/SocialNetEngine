@@ -108,7 +108,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     protected ResponseEntity getInternalErrorResponse() {
-        return new ResponseEntity<>(getErrorResponse(ErrorMessages.INTERROR.getTitle()),
+        return new ResponseEntity<>(getErrorResponse(ErrorMessages.INTERNAL.getTitle()),
                                                       HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

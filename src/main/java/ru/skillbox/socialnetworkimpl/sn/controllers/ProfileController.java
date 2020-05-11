@@ -78,13 +78,13 @@ public class ProfileController {
 
     @PutMapping("block/{id}")
     public ResponseEntity<ResponsePlatformApi> blockUserById(HttpServletRequest request,
-                                                             @PathVariable("id") long id) {
+                                                             @PathVariable("id") int id) {
         return profileService.blockUserById(request.getSession(), id);
     }
 
     @DeleteMapping("block/{id}")
     public ResponseEntity<ResponsePlatformApi> unblockUserById(HttpServletRequest request,
-                                                               @PathVariable("id") long id) {
+                                                               @PathVariable("id") int id) {
         return profileService.unblockUserById(request.getSession(), id);
     }
 }

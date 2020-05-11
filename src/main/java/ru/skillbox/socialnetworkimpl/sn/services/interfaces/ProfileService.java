@@ -26,7 +26,7 @@ public interface ProfileService {
                                                      String lastName, int ageFrom, int ageTo,
                                                      int countryId, int cityId, int offset, int itemPerPage);
 
-    ResponseEntity<ResponsePlatformApi> blockUserById(HttpSession session, long id);
+    ResponseEntity<ResponsePlatformApi> blockUserById(HttpSession session, int id);
 
-    ResponseEntity<ResponsePlatformApi> unblockUserById(HttpSession session, long id);
+    ResponseEntity<ResponsePlatformApi> unblockUserById(HttpSession session, int id);
 }
