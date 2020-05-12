@@ -7,23 +7,18 @@ import org.springframework.web.bind.annotation.*;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PersonEditBody;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequestBody;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
-import ru.skillbox.socialnetworkimpl.sn.services.interfaces.PersonWallPostService;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.ProfileService;
 
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = "/api/v1/users/")
-@ComponentScan("services")
 public class ProfileController {
 
     @Autowired
     private ProfileService profileService;
     @Autowired
     private PersonWallPostService personWallPostService;
-
-    public ProfileController() {
-    }
 
     @GetMapping("me")
     public ResponseEntity<ResponsePlatformApi> getCurrentUser(HttpServletRequest request) {
