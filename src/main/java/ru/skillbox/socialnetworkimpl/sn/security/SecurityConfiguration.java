@@ -1,12 +1,9 @@
 package ru.skillbox.socialnetworkimpl.sn.security;
 
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import ru.skillbox.socialnetworkimpl.sn.security.jwt.JwtAuthenticationFilter;
 import ru.skillbox.socialnetworkimpl.sn.security.jwt.JwtAuthorizationFilter;
 import ru.skillbox.socialnetworkimpl.sn.security.jwt.JwtAuthenticationEntryPoint;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -22,7 +19,6 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import javax.servlet.Filter;
 
 @EnableWebSecurity
-
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
