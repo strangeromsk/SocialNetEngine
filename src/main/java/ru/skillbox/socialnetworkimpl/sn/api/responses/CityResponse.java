@@ -1,4 +1,4 @@
-package ru.skillbox.socialnetworkimpl.sn.api.responses.util;
+package ru.skillbox.socialnetworkimpl.sn.api.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

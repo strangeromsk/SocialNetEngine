@@ -3,7 +3,7 @@ package ru.skillbox.socialnetworkimpl.sn.api.requests.account;
 import lombok.Data;
 
 @Data
-public class AccountRequestBody {
+public class RegisterRequestBody {
     private String email;
     private String passwd1;
     private String passwd2;

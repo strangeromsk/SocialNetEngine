@@ -13,14 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = "/api/v1/users/")
-@ComponentScan("services")
 public class ProfileController {
 
     @Autowired
     private ProfileService profileService;
-
-    public ProfileController() {
-    }
 
     @GetMapping("me")
     public ResponseEntity<ResponsePlatformApi> getCurrentUser(HttpServletRequest request) {

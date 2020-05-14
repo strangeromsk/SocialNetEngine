@@ -62,7 +62,6 @@ public class Person {
     @Column(name = "is_approved")
     private byte isApproved;
 
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "messages_permission")
     private MessagesPermission messagesPermission;
@@ -72,7 +71,4 @@ public class Person {
 
     @Column(name = "is_blocked", nullable = false)
     private byte isBlocked;
-
-
-
 }

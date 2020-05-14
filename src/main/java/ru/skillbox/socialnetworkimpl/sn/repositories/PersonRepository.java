@@ -18,7 +18,8 @@ import java.util.List;
 @Repository
 @Transactional
 public interface PersonRepository extends JpaRepository<Person, Integer> {
-    Person findByEmail (String email);
+    Person findByEmail(String email);
+
     @Query(value = "SELECT * FROM person WHERE id = :id", nativeQuery = true)
     Person findPersonById(@Param("id") long id);
 
@@ -28,9 +29,11 @@ public interface PersonRepository extends JpaRepository<Person, Integer> {
     List<Person> findPersons(@Param("firstName") String firstName, @Param("lastName") String lastName,
                              @Param("ageTo") int ageTo, @Param("ageFrom") int ageFrom, @Param("countryId") int countryId,
                              @Param("cityId") int cityId, @Param("offset") int offset, @Param("itemPerPage") int itemPerPage);
+
     @Modifying
     @Query(value = "UPDATE person SET is_blocked = CAST(1 AS BIT) WHERE id = :id", nativeQuery = true)
     void blockUserById(@Param("id") int id);
+
     @Modifying
     @Query(value = "UPDATE person SET is_blocked = CAST(0 AS BIT) WHERE id = :id", nativeQuery = true)
     void unBlockUserById(@Param("id") int id);

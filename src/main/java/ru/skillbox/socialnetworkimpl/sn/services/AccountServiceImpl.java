@@ -48,6 +48,7 @@ public class AccountServiceImpl implements AccountService {
             return new ResponseEntity<>(getErrorResponse(ErrorMessages.USER_NOTEXIST.getTitle()), HttpStatus.BAD_REQUEST);
 
         emailMessageService.sendMessage(email, SUBJECT, currentPerson.getConfirmationCode());
+
         return new ResponseEntity<>(getOkResponse(), HttpStatus.OK);
     }
 

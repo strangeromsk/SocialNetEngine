@@ -97,25 +97,25 @@ databaseChangeLog:
             columns:
               - column:
                   name: about
-                  value: "testtesttest"
+                  value: "Builder"
               - column:
                   name: birth_date
-                  value: "now()"
+                  value: 1983-07-21
               - column:
                   name: confirmation_code
                   value: "4815"
               - column:
                   name: e_mail
-                  value: "mail@mail.ru"
+                  value: "paul@mail.ru"
               - column:
                   name: first_name
-                  value: "Pal"
+                  value: "Paul"
               - column:
                   name: is_approved
-                  value: "1"
+                  value: 1
               - column:
                   name: is_blocked
-                  value: "0"
+                  value: 0
               - column:
                   name: last_name
                   value: "Estiner"
@@ -130,13 +130,13 @@ databaseChangeLog:
                   value: "pass"
               - column:
                   name: phone
-                  value: "132456"
+                  value: "+79673456789"
               - column:
                   name: photo
                   value: "photo"
               - column:
                   name: reg_date
-                  value: "now()"
+                  value: now()
               - column:
                   name: town
                   value: "New-York"
@@ -145,31 +145,31 @@ databaseChangeLog:
             columns:
               - column:
                   name: about
-                  value: "lalala"
+                  value: "Designer"
               - column:
                   name: birth_date
-                  value: "now()"
+                  value: 1995-06-23
               - column:
                   name: confirmation_code
                   value: "1234"
               - column:
                   name: e_mail
-                  value: "mail@mail.ru"
+                  value: "seann@mail.ru"
               - column:
                   name: first_name
-                  value: "Man"
+                  value: "Seann"
               - column:
                   name: is_approved
-                  value: "1"
+                  value: 1
               - column:
                   name: is_blocked
-                  value: "0"
+                  value: 0
               - column:
                   name: last_name
                   value: "Manovich"
               - column:
                   name: last_online_time
-                  value: "now()"
+                  value: 2020-05-14 12:47:53
               - column:
                   name: messages_permission
                   value: "FRIENDS"
@@ -178,13 +178,13 @@ databaseChangeLog:
                   value: "mypass"
               - column:
                   name: phone
-                  value: "89031234"
+                  value: "89078907867"
               - column:
                   name: photo
                   value: "myphoto"
               - column:
                   name: reg_date
-                  value: "now()"
+                  value: 2020-05-14
               - column:
                   name: town
                   value: "Moscow"
@@ -193,31 +193,31 @@ databaseChangeLog:
             columns:
               - column:
                   name: about
-                  value: "blablabla"
+                  value: "Manager"
               - column:
                   name: birth_date
-                  value: "1905-06-11"
+                  value: 2005-06-11
               - column:
                   name: confirmation_code
                   value: "1964"
               - column:
                   name: e_mail
-                  value: "mail@mail.ru"
+                  value: "jean_paul@mail.ru"
               - column:
                   name: first_name
                   value: "Jean-Paul"
               - column:
                   name: is_approved
-                  value: "1"
+                  value: 1
               - column:
                   name: is_blocked
-                  value: "1"
+                  value: 1
               - column:
                   name: last_name
                   value: "Sartre"
               - column:
                   name: last_online_time
-                  value: "now()"
+                  value: 2019-05-14 12:47:53
               - column:
                   name: messages_permission
                   value: "ALL"
@@ -226,13 +226,13 @@ databaseChangeLog:
                   value: "PassWord"
               - column:
                   name: phone
-                  value: "987654"
+                  value: "78907887766"
               - column:
                   name: photo
                   value: "Sartrephoto"
               - column:
                   name: reg_date
-                  value: "now()"
+                  value: 2018-08-30
               - column:
                   name: town
                   value: "Paris"
