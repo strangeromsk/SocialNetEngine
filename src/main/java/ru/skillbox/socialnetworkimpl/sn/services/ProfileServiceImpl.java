@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PersonEditBody;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 import ru.skillbox.socialnetworkimpl.sn.repositories.PersonRepository;
+import ru.skillbox.socialnetworkimpl.sn.services.interfaces.AccountService;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.ProfileService;
 
 import javax.servlet.http.HttpSession;

@@ -1,0 +1,11 @@
+changeSet:
+  id: create-table-test
+  author: cardiff
+  changes:
+  - createTable:
+     catalogName: pg_catalog
+     colums:
+        - column:
+            name: test
+            type: varchar(255)
+     tablename: test
