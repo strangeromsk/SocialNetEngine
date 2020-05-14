@@ -34,8 +34,9 @@ public class AccountServiceImpl implements AccountService {
             return new ResponseEntity<>(getErrorResponse(ErrorMessages.PASS_EMAIL_INC.getTitle())
                     , HttpStatus.BAD_REQUEST);
         }
-        if (getPerson(email).size() > 0)
+        if (getPerson(email) != null)
             return new ResponseEntity<>(getErrorResponse(ErrorMessages.USER_EXISTS.getTitle()), HttpStatus.BAD_REQUEST);
+
         personRepository.save(Person.builder().email(email).fistName(firstName).lastName(lastName)
                             .confirmationCode(code).password(passwd1).regDate(LocalDate.now())
                             .messagesPermission(MessagesPermission.ALL).build());
@@ -43,16 +44,15 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public ResponseEntity<ResponsePlatformApi> recoverPassword(String email) {
+    public ResponseEntity<ResponsePlatformApi> recoverPassword (String email) {
         if (!isEmailCorrect(email))
             return getIncorrectEmailResponse();
-        List<Person> currentPerson = getPerson(email);
-        if (currentPerson.size() < 1)
-            return new ResponseEntity<>(getErrorResponse(ErrorMessages.USER_NOTEXIST.getTitle()), HttpStatus.BAD_REQUEST);
-        if (currentPerson.size() != 1)
-            return getInternalErrorResponse();
 
-        emailMessageService.sendMessage(email, SUBJECT, currentPerson.get(0).getConfirmationCode());
+        Person currentPerson = getPerson(email);
+        if (currentPerson == null)
+            return new ResponseEntity<>(getErrorResponse(ErrorMessages.USER_NOTEXIST.getTitle()), HttpStatus.BAD_REQUEST);
+
+        emailMessageService.sendMessage(email, SUBJECT, currentPerson.getConfirmationCode());
             return new ResponseEntity<>(getOkResponse(), HttpStatus.OK);
     }
 
@@ -100,11 +100,8 @@ public class AccountServiceImpl implements AccountService {
         return email.matches(".+@.+\\..{2,5}");
     }
 
-    private List<Person> getPerson(String email) {
-        Query query = entityManager.createQuery("from Person p where email = :inEmail", Person.class);
-        query.setParameter("inEmail", email);
-        List<Person> currentPerson = query.getResultList();
-        return currentPerson;
+    public Person getPerson(String email) {
+        return personRepository.findByEmail(email);
     }
 
     protected ResponseEntity getInternalErrorResponse() {
@@ -119,6 +116,4 @@ public class AccountServiceImpl implements AccountService {
     protected ResponseEntity getIncorrectEmailResponse() {
         return new ResponseEntity<>(getErrorResponse(ErrorMessages.INCORRECT_EMAIL.getTitle()), HttpStatus.BAD_REQUEST);
     }
-
-
 }

@@ -3,6 +3,7 @@ package ru.skillbox.socialnetworkimpl.sn.services.interfaces;
 import org.springframework.http.ResponseEntity;
 
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
+import ru.skillbox.socialnetworkimpl.sn.domain.Person;
 
 import javax.transaction.Transactional;
 import java.util.Date;
@@ -21,6 +22,8 @@ public interface AccountService {
     ResponseEntity<ResponsePlatformApi> changeEmail(String email);
 
     ResponseEntity<ResponsePlatformApi> editNotifications(String notification_type, boolean enable);
+
+    Person getPerson(String email);
 
     default ResponsePlatformApi getOkResponse() {
         return ResponsePlatformApi.builder().error("string")
