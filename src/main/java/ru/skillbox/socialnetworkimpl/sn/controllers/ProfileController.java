@@ -1,7 +1,6 @@
 package ru.skillbox.socialnetworkimpl.sn.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PersonEditBody;
@@ -17,8 +16,6 @@ public class ProfileController {
 
     @Autowired
     private ProfileService profileService;
-    @Autowired
-    private PersonWallPostService personWallPostService;
 
     @GetMapping("me")
     public ResponseEntity<ResponsePlatformApi> getCurrentUser(HttpServletRequest request) {
@@ -47,7 +44,7 @@ public class ProfileController {
                                                                    @PathVariable("id") long id,
                                                                    @RequestParam(value = "offset") int offset,
                                                                    @RequestParam(value = "itemPerPage") int itemPerPage) {  // TODO Добавить default = 20
-        return personWallPostService.getPersonsWallPostsByUserId(request.getSession(), id, offset, itemPerPage);
+        return null;
     }
 
     @PostMapping(value = "{id}/wall", params = {"publish_date"})
@@ -55,7 +52,7 @@ public class ProfileController {
                                                                   @PathVariable("id") long id,
                                                                   @RequestParam(value = "publish_date") int publishDate,
                                                                   @RequestBody PostRequestBody postRequestBody) {
-        return personWallPostService.addPostToUsersWall(request.getSession(), id, publishDate, postRequestBody);
+        return null;
     }
 
     @GetMapping(value = "search/", params = {"first_name", "last_name", "age_from", "age_to",

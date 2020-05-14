@@ -41,7 +41,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: phone
-                  type: int(11)
+                  type: varchar(30)
               - column:
                   name: password
                   type: varchar(255)
