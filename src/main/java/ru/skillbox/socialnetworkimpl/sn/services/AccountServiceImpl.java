@@ -9,12 +9,10 @@ import ru.skillbox.socialnetworkimpl.sn.domain.enums.ErrorMessages;
 import ru.skillbox.socialnetworkimpl.sn.domain.enums.MessagesPermission;
 import ru.skillbox.socialnetworkimpl.sn.repositories.PersonRepository;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.AccountService;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.List;
 
 @Component
 public class AccountServiceImpl implements AccountService {
@@ -25,16 +23,13 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private EmailMessageService emailMessageService;
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     @Override
     public ResponseEntity<ResponsePlatformApi> signUpAccount(String email, String passwd1, String passwd2, String firstName, String lastName, String code) {
         if (!passwd1.equals(passwd2) || !isEmailCorrect(email)) {
             return new ResponseEntity<>(getErrorResponse(ErrorMessages.PASS_EMAIL_INC.getTitle())
                     , HttpStatus.BAD_REQUEST);
         }
-        if (getPerson(email) != null)
+        if (getCurrentUser(email) != null)
             return new ResponseEntity<>(getErrorResponse(ErrorMessages.USER_EXISTS.getTitle()), HttpStatus.BAD_REQUEST);
 
         personRepository.save(Person.builder().email(email).fistName(firstName).lastName(lastName)
@@ -48,7 +43,7 @@ public class AccountServiceImpl implements AccountService {
         if (!isEmailCorrect(email))
             return getIncorrectEmailResponse();
 
-        Person currentPerson = getPerson(email);
+        Person currentPerson = getCurrentUser(email);
         if (currentPerson == null)
             return new ResponseEntity<>(getErrorResponse(ErrorMessages.USER_NOTEXIST.getTitle()), HttpStatus.BAD_REQUEST);
 
@@ -65,11 +60,11 @@ public class AccountServiceImpl implements AccountService {
     public ResponseEntity<ResponsePlatformApi> setPassword(String token, String password) {
         if (token == null)
             return getUserInvalidResponse();
-        Query updatePasswordQuery = entityManager.createQuery("update Person p set p.password = :newPassword " +
-                "where id = '1'").setParameter("newPassword", password);
-        int result = updatePasswordQuery.executeUpdate();
-        if (result != 1)
-            return getInternalErrorResponse();
+
+        Person currentUser = getCurrentUser("paul@mail.ru");
+        currentUser.setPassword(password);
+        personRepository.save(currentUser);
+
         return new ResponseEntity<>(getOkResponse(), HttpStatus.OK);
     }
 
@@ -80,13 +75,18 @@ public class AccountServiceImpl implements AccountService {
         boolean isAuthorized = true;
         if (!isAuthorized)
             return getUserInvalidResponse();
+
         if (!isEmailCorrect(email))
             return getIncorrectEmailResponse();
-        Query updatePasswordQuery = entityManager.createQuery("update Person p set p.email = :newEmail " +
-                "where p.id = '1'").setParameter("newEmail", email);
-        int result = updatePasswordQuery.executeUpdate();
-        if (result != 1)
-            return getInternalErrorResponse();
+
+        if (personRepository.findByEmail(email) != null)
+            return new ResponseEntity<>(getErrorResponse(ErrorMessages.USER_EXISTS.getTitle()), HttpStatus.BAD_REQUEST);
+        //это ответ - юзер с таким e-mail уже существует. Можно сделать конкретно такой.
+
+        Person currentUser = getCurrentUser("paul@mail.ru");
+        currentUser.setEmail(email);
+        personRepository.save(currentUser);
+
         return new ResponseEntity<>(getOkResponse(), HttpStatus.OK);
     }
 
@@ -100,7 +100,7 @@ public class AccountServiceImpl implements AccountService {
         return email.matches(".+@.+\\..{2,5}");
     }
 
-    public Person getPerson(String email) {
+    public Person getCurrentUser(String email) {
         return personRepository.findByEmail(email);
     }
 

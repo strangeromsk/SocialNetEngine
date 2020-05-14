@@ -23,7 +23,7 @@ public interface AccountService {
 
     ResponseEntity<ResponsePlatformApi> editNotifications(String notification_type, boolean enable);
 
-    Person getPerson(String email);
+    Person getCurrentUser(String email);
 
     default ResponsePlatformApi getOkResponse() {
         return ResponsePlatformApi.builder().error("string")
