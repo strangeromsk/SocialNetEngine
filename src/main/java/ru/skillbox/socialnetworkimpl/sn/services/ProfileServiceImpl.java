@@ -58,7 +58,11 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ResponseEntity<ResponsePlatformApi> getCurrentUser(HttpSession session) {
-        return null;
+        Person person = accountService.getCurrentUser("paul@mail.ru");
+        PersonResponse personResponse = mapPerson(person);
+        return new ResponseEntity<>(ResponsePlatformApi.builder().error("string")
+                .timestamp(new Date().getTime()).data(personResponse)
+                .build(), HttpStatus.OK);
     }
 
     @Override
@@ -73,16 +77,16 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ResponseEntity<ResponsePlatformApi> getUserById(HttpSession session, long id) {
-        // TODO Заглушка на проверку пользователя
-        boolean isAuthorized = true;
-        if (!isAuthorized)
-            return accountService.getUserInvalidResponse();
-
-        Person person = personRepository.findPersonById(id);
-        PersonResponse personResponse = mapPerson(person);
-        return new ResponseEntity<>(ResponsePlatformApi.builder().error("string")
-                .timestamp(new Date().getTime()).data(personResponse)
-                .build(), HttpStatus.OK);
+//        boolean isAuthorized = true;
+//        if (!isAuthorized)
+//            return accountService.getUserInvalidResponse();
+//
+//        Person person = personRepository.findPersonById(id);
+//        PersonResponse personResponse = mapPerson(person);
+//        return new ResponseEntity<>(ResponsePlatformApi.builder().error("string")
+//                .timestamp(new Date().getTime()).data(personResponse)
+//                .build(), HttpStatus.OK);
+        return  null;
     }
 
     @Override

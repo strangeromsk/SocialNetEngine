@@ -3,6 +3,7 @@ package ru.skillbox.socialnetworkimpl.sn.services.interfaces;
 import org.springframework.http.ResponseEntity;
 
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
+import ru.skillbox.socialnetworkimpl.sn.domain.Person;
 
 import javax.transaction.Transactional;
 import java.util.Date;
@@ -11,8 +12,8 @@ import java.util.HashMap;
 public interface AccountService {
 
     ResponseEntity<ResponsePlatformApi> signUpAccount(String email, String passwd1,
-                                  String passwd2, String firstName,
-                                  String lastName, String code);
+                                                      String passwd2, String firstName,
+                                                      String lastName, String code);
 
     ResponseEntity<ResponsePlatformApi> recoverPassword(String email);
 
@@ -21,6 +22,8 @@ public interface AccountService {
     ResponseEntity<ResponsePlatformApi> changeEmail(String email);
 
     ResponseEntity<ResponsePlatformApi> editNotifications(String notification_type, boolean enable);
+
+    Person getCurrentUser(String email);
 
     default ResponsePlatformApi getOkResponse() {
         return ResponsePlatformApi.builder().error("string")
@@ -34,6 +37,6 @@ public interface AccountService {
     }
 
     default ResponsePlatformApi getErrorResponse(String description) {
-         return ResponsePlatformApi.builder().error("invalid_request").error_description(description).build();
+        return ResponsePlatformApi.builder().error("invalid_request").error_description(description).build();
     }
 }

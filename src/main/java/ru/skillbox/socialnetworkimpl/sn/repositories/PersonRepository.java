@@ -1,5 +1,6 @@
 package ru.skillbox.socialnetworkimpl.sn.repositories;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -16,7 +17,8 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface PersonRepository extends CrudRepository<Person, Integer> {
+public interface PersonRepository extends JpaRepository<Person, Integer> {
+    Person findByEmail (String email);
     @Query(value = "SELECT * FROM person WHERE id = :id", nativeQuery = true)
     Person findPersonById(@Param("id") long id);
 
