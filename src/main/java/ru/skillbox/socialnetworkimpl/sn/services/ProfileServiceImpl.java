@@ -39,8 +39,6 @@ public class ProfileServiceImpl implements ProfileService {
     private AccountServiceImpl accountService;
     @Autowired
     private PersonMapper personMapper;
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Bean
     public ModelMapper modelMapper() {

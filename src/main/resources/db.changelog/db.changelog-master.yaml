@@ -41,7 +41,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: phone
-                  type: int(11)
+                  type: varchar(11)
               - column:
                   name: password
                   type: varchar(255)
@@ -130,7 +130,7 @@ databaseChangeLog:
                   value: "pass"
               - column:
                   name: phone
-                  value: "+79673456789"
+                  value: "79673456789"
               - column:
                   name: photo
                   value: "photo"
