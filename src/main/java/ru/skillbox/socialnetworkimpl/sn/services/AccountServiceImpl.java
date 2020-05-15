@@ -32,7 +32,7 @@ public class AccountServiceImpl implements AccountService {
         if (getCurrentUser(email) != null)
             return new ResponseEntity<>(getErrorResponse(ErrorMessages.USER_EXISTS.getTitle()), HttpStatus.BAD_REQUEST);
 
-        personRepository.save(Person.builder().email(email).fistName(firstName).lastName(lastName)
+        personRepository.save(Person.builder().email(email).firstName(firstName).lastName(lastName)
                 .confirmationCode(code).password(passwd1).regDate(LocalDate.now())
                 .messagesPermission(MessagesPermission.ALL).build());
         return new ResponseEntity<>(getOkResponse(), HttpStatus.OK);

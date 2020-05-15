@@ -16,11 +16,11 @@ public interface ProfileService {
 
     ResponseEntity<ResponsePlatformApi> deleteCurrentUser(HttpSession session);
 
-    ResponseEntity<ResponsePlatformApi> getUserById(HttpSession session, long id);
+    ResponseEntity<ResponsePlatformApi> getUserById(HttpSession session, int id);
 
-    ResponseEntity<ResponsePlatformApi> getPersonsWallPostsByUserId(HttpSession session, long id, int offset, int itemPerPage);
+    ResponseEntity<ResponsePlatformApi> getPersonsWallPostsByUserId(HttpSession session, int id, int offset, int itemPerPage);
 
-    ResponseEntity<ResponsePlatformApi> addPostToUsersWall(HttpSession session, long id, int publishDate, PostRequestBody postRequestBody);
+    ResponseEntity<ResponsePlatformApi> addPostToUsersWall(HttpSession session, int id, int publishDate, PostRequestBody postRequestBody);
 
     ResponseEntity<ResponsePlatformApi> searchPerson(HttpSession session, String firstName,
                                                      String lastName, int ageFrom, int ageTo,
