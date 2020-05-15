@@ -36,22 +36,22 @@ public class ProfileController {
 
     @GetMapping("{id}")
     public ResponseEntity<ResponsePlatformApi> getUserById(HttpServletRequest request,
-                                                           @PathVariable("id") long id) {
+                                                           @PathVariable("id") int id) {
         return profileService.getUserById(request.getSession(), id);
     }
 
-    @GetMapping(value = "{id}/wall", params = {"offset", "itemPerPage"})
+    @GetMapping(value = "{id}/wall")
     public ResponseEntity<ResponsePlatformApi> getPersonsWallPosts(HttpServletRequest request,
-                                                                   @PathVariable("id") long id,
-                                                                   @RequestParam(value = "offset") int offset,
-                                                                   @RequestParam(value = "itemPerPage") int itemPerPage) {  // TODO Добавить default = 20
+                                                                   @PathVariable int id,
+                                                                   @RequestParam int offset,
+                                                                   @RequestParam(defaultValue = "20") int itemPerPage) {
         return profileService.getPersonsWallPostsByUserId(request.getSession(), id, offset, itemPerPage);
     }
 
-    @PostMapping(value = "{id}/wall", params = {"publish_date"})
+    @PostMapping(value = "{id}/wall")
     public ResponseEntity<ResponsePlatformApi> addPostToUsersWall(HttpServletRequest request,
-                                                                  @PathVariable("id") long id,
-                                                                  @RequestParam(value = "publish_date") int publishDate,
+                                                                  @PathVariable("id") int id,
+                                                                  @RequestParam int publishDate,
                                                                   @RequestBody PostRequestBody postRequestBody) {
         return profileService.addPostToUsersWall(request.getSession(), id, publishDate, postRequestBody);
     }

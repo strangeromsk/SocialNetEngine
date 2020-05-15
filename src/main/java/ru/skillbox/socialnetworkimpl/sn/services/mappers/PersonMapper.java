@@ -9,7 +9,7 @@ import ru.skillbox.socialnetworkimpl.sn.domain.Person;
 import java.util.Objects;
 
 @Component
-public class PersonMapper {
+public class PersonMapper{
     @Autowired
     private ModelMapper modelMapper;
 

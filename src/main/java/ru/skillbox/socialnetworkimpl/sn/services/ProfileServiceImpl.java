@@ -11,23 +11,27 @@ import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PersonEditBody;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequestBody;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.PersonResponse;
+import ru.skillbox.socialnetworkimpl.sn.api.responses.PostResponse;
+import ru.skillbox.socialnetworkimpl.sn.api.responses.ReportApi;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 import ru.skillbox.socialnetworkimpl.sn.domain.Person;
+import ru.skillbox.socialnetworkimpl.sn.domain.Post;
 import ru.skillbox.socialnetworkimpl.sn.repositories.PersonRepository;
-import ru.skillbox.socialnetworkimpl.sn.services.interfaces.AccountService;
+import ru.skillbox.socialnetworkimpl.sn.repositories.PostRepository;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.ProfileService;
+import ru.skillbox.socialnetworkimpl.sn.services.mappers.DataMapper;
 import ru.skillbox.socialnetworkimpl.sn.services.mappers.PersonMapper;
-
+import ru.skillbox.socialnetworkimpl.sn.services.mappers.PersonsMapper;
+import ru.skillbox.socialnetworkimpl.sn.services.mappers.PostMapper;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 
 @Slf4j
@@ -36,9 +40,18 @@ public class ProfileServiceImpl implements ProfileService {
     @Autowired
     private PersonRepository personRepository;
     @Autowired
+    private PostRepository postRepository;
+    @Autowired
     private AccountServiceImpl accountService;
     @Autowired
     private PersonMapper personMapper;
+    @Autowired
+    private PersonsMapper personsMapper;
+    @Autowired
+    private PostMapper postMapper;
+    @Autowired
+    private DataMapper dataMapper;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -53,13 +66,13 @@ public class ProfileServiceImpl implements ProfileService {
         return mapper;
     }
 
-    public PersonResponse mapPerson(Person person){
+    public PersonResponse mapPerson(Person person) {
         return personMapper.toDto(person);
     }
 
     @Override
     public ResponseEntity<ResponsePlatformApi> getCurrentUser(HttpSession session) {
-        Person person = accountService.getCurrentUser("paul@mail.ru");
+        Person person = getCurrentUser();
         PersonResponse personResponse = mapPerson(person);
         return new ResponseEntity<>(ResponsePlatformApi.builder().error("string")
                 .timestamp(new Date().getTime()).data(personResponse)
@@ -68,38 +81,79 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ResponseEntity<ResponsePlatformApi> editCurrentUser(HttpSession session, PersonEditBody personEditBody) {
-        return null;
+        Person fromPerson = getCurrentUser();
+        Person toPerson = personsMapper.requestPersonToPerson(personEditBody);
+        toPerson.setId(fromPerson.getId());
+        toPerson.setRegDate(fromPerson.getRegDate());
+        toPerson.setEmail(fromPerson.getEmail());
+        toPerson.setLastOnlineTime(dataMapper.asLocalDateTime(new Date().getTime()));
+        toPerson.setPassword(fromPerson.getPassword());
+        personRepository.save(toPerson);
+        ResponsePlatformApi api = ResponsePlatformApi.builder()
+                .error("Ok")
+                .timestamp(new Date().getTime())
+                .data(personsMapper.personToPersonResponse(toPerson)).build();
+        return new ResponseEntity<>(api, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<ResponsePlatformApi> deleteCurrentUser(HttpSession session) {
-        return null;
+        Person person = getCurrentUser();
+        person.setDeleted(true);
+        personRepository.save(person);
+        ReportApi reportApi = new ReportApi();
+        reportApi.setMessage("Ok");
+        ResponsePlatformApi api = ResponsePlatformApi.builder()
+                .error("Ok")
+                .timestamp(new Date().getTime())
+                .data(reportApi).build();
+        return new ResponseEntity<>(api, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<ResponsePlatformApi> getUserById(HttpSession session, long id) {
-//        boolean isAuthorized = true;
-//        if (!isAuthorized)
-//            return accountService.getUserInvalidResponse();
-//
-//        Person person = personRepository.findPersonById(id);
-//        PersonResponse personResponse = mapPerson(person);
-//        return new ResponseEntity<>(ResponsePlatformApi.builder().error("string")
-//                .timestamp(new Date().getTime()).data(personResponse)
-//                .build(), HttpStatus.OK);
-        return  null;
+    public ResponseEntity<ResponsePlatformApi> getUserById(HttpSession session, int id) {
+        Person person = getPersonById(id);
+        ResponsePlatformApi psApi = ResponsePlatformApi.builder()
+                .error("Ok")
+                .timestamp(new Date().getTime())
+                .data(personsMapper.personToPersonResponse(person))
+                .build();
+        return new ResponseEntity<>(psApi, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<ResponsePlatformApi> getPersonsWallPostsByUserId(HttpSession session, long id,
+    public ResponseEntity<ResponsePlatformApi> getPersonsWallPostsByUserId(HttpSession session, int id,
                                                                            int offset, int itemPerPage) {
-        return null;
+        List<Post> posts = postRepository.findAllByAuthorId(id);
+        if (posts.isEmpty()) {
+            throw new EntityNotFoundException("No entries for this id = " + id);
+        }
+        List<Post> postList = posts.stream().skip(offset).limit(itemPerPage).collect(Collectors.toList());
+        List<PostResponse> api = postMapper.postToPostResponse(postList);
+        ResponsePlatformApi platformApi = ResponsePlatformApi.builder()
+                .error("Ok")
+                .timestamp(new Date().getTime())
+                .total(posts.size())
+                .offset(offset)
+                .perPage(itemPerPage)
+                .data(api).build();
+        return new ResponseEntity<>(platformApi, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<ResponsePlatformApi> addPostToUsersWall(HttpSession session, long id, int publishDate,
+    public ResponseEntity<ResponsePlatformApi> addPostToUsersWall(HttpSession session, int id, int publishDate,
                                                                   PostRequestBody postRequestBody) {
-        return null;
+        Person person = getPersonById(id);
+        Post post = postMapper.requestPostToPost(postRequestBody);
+        post.setAuthor(person);
+        post.setTime(dataMapper.asLocalDate(publishDate));
+        postRepository.save(post);
+        PostResponse postResponse = postMapper.postToPostResponse(post);
+        ResponsePlatformApi platformApi = ResponsePlatformApi.builder()
+                .error("Ok")
+                .timestamp(new Date().getTime())
+                .data(postResponse).build();
+        return new ResponseEntity<>(platformApi, HttpStatus.OK);
     }
 
     @Override
@@ -113,8 +167,8 @@ public class ProfileServiceImpl implements ProfileService {
         //TODO BAD REQUEST
         List<Person> list = personRepository.findPersons(firstName, lastName, ageFrom, ageTo, countryId, cityId, offset, itemPerPage);
         List<PersonResponse> personResponseList = list.stream()
-                            .map(this::mapPerson)
-                            .collect(Collectors.toCollection(ArrayList::new));
+                .map(this::mapPerson)
+                .collect(Collectors.toCollection(ArrayList::new));
         return new ResponseEntity<>(ResponsePlatformApi.builder().error("string")
                 .timestamp(new Date().getTime()).total(personResponseList.size()).offset(offset)
                 .perPage(itemPerPage).data(personResponseList)
@@ -142,4 +196,14 @@ public class ProfileServiceImpl implements ProfileService {
             return accountService.getUserInvalidResponse();
         return new ResponseEntity<>(accountService.getOkResponse(), HttpStatus.OK);
     }
+
+    // Заглушка
+    private Person getCurrentUser() {
+        return getPersonById(2);
+    }
+
+    private Person getPersonById(int id) {
+        return personRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User with this ID not found."));
+    }
+
 }

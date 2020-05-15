@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 import org.springframework.stereotype.Component;
 import ru.skillbox.socialnetworkimpl.sn.domain.enums.MessagesPermission;
 
@@ -12,6 +13,7 @@ import java.sql.Blob;
 import java.sql.Clob;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -27,7 +29,7 @@ public class Person {
     private int id;
 
     @Column(name = "first_name", nullable = false)
-    private String fistName;
+    private String firstName;
 
     @Column(name = "last_name", nullable = false)
     private String lastName;
@@ -41,8 +43,8 @@ public class Person {
     @Column(name = "e_mail", nullable = false)
     private String email;
 
-    @Column(length = 11)
-    private int phone;
+    @Column(nullable = false)
+    private String phone;
 
     @Column(nullable = false)
     private String password;
@@ -60,7 +62,7 @@ public class Person {
     private String confirmationCode;
 
     @Column(name = "is_approved")
-    private byte isApproved;
+    private boolean isApproved;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "messages_permission")
@@ -70,5 +72,12 @@ public class Person {
     private LocalDateTime lastOnlineTime;
 
     @Column(name = "is_blocked", nullable = false)
-    private byte isBlocked;
+    private boolean isBlocked;
+
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Post> posts;
+
 }
