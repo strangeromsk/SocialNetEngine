@@ -4,13 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
-import org.springframework.stereotype.Component;
 import ru.skillbox.socialnetworkimpl.sn.domain.enums.MessagesPermission;
 
 import javax.persistence.*;
-import java.sql.Blob;
-import java.sql.Clob;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,7 +22,7 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(length = 11)
-    private int id;
+    private Integer id;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -77,7 +73,21 @@ public class Person {
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
 
+    @Column(name = "city_id")
+    private int cityId;
+
+    @Column(name = "country_id")
+    private int countryId;
+
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Post> posts;
+
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "city_id", insertable = false, updatable = false)
+    private City city;
+
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_id", insertable = false, updatable = false)
+    private Country country;
 
 }

@@ -52,9 +52,6 @@ public class ProfileServiceImpl implements ProfileService {
     @Autowired
     private DataMapper dataMapper;
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper mapper = new ModelMapper();

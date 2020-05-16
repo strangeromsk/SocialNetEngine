@@ -56,6 +56,12 @@ databaseChangeLog:
               - column:
                   name: is_deleted
                   value: "0"
+              - column:
+                  name: country_id
+                  value: "1"
+              - column:
+                  name: city_id
+                  value: "1"
         - insert:
             tableName: person
             columns:
@@ -107,6 +113,12 @@ databaseChangeLog:
               - column:
                   name: is_deleted
                   value: "0"
+              - column:
+                  name: country_id
+                  value: "1"
+              - column:
+                  name: city_id
+                  value: "1"
         - insert:
             tableName: person
             columns:
@@ -158,3 +170,9 @@ databaseChangeLog:
               - column:
                   name: is_deleted
                   value: "0"
+              - column:
+                  name: country_id
+                  value: "1"
+              - column:
+                  name: city_id
+                  value: "1"
