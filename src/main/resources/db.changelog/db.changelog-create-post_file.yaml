@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - logicalFilePath: db.changelog/db.changelog-create-post_file.yaml
+- createTable:
+    tableName: post_file
+    columns:
+      - column:
+          name: id
+          type: int(11)
+          autoIncrement: true
+          constraints:
+            primaryKey: true
+            nullable: false
+      - column:
+          name: post_id
+          type: int(11)
+          constraints:
+            nullable: false
+      - column:
+          name: name
+          type: varchar(255)
+          constraints:
+            nullable: false
+      - column:
+          name: path
+          type: varchar(2048)
+          constraints:
+            nullable: false

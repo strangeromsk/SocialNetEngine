@@ -16,6 +16,18 @@ databaseChangeLog:
       file: db.changelog-create-post.yaml
       relativeToChangelogFile: true
   - include:
+      file: db.changelog-create-post_comment.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-create-post_like.yaml.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-create-post_file.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-create-tag2post.yaml
+      relativeToChangelogFile: true
+  - include:
       file: db.changelog-insert-data-countries.yaml
       relativeToChangelogFile: true
   - include:

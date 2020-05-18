@@ -1,9 +1,9 @@
 databaseChangeLog:
-  - logicalFilePath: db.changelog/db.changelog-insert-data-cities.yaml
+  - logicalFilePath: db.changelog/db.changelog-insert-data-countries.yaml
   - changeSet:
       id: 16/05/7
       author: snet
-      comment: "adding data to counties"
+      comment: "adding data to countries"
       changes:
         - insert:
             tableName: countries
