@@ -1,6 +1,9 @@
 package ru.skillbox.socialnetworkimpl.sn.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
@@ -9,6 +12,9 @@ import java.util.List;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "cities")
 public class City {
     @Id
@@ -20,6 +26,6 @@ public class City {
     @JsonIgnore
     private int countryId;
     @ToString.Exclude
-    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "town", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Person> persons;
 }

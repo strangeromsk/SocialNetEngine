@@ -29,7 +29,7 @@ public class PersonResponse {
     private String phone;
     private String photo;
     private String about;
-    private CityResponse city;
+    private CityResponse town;
     private CountryResponse country;
 
     @JsonProperty("messages_permission")

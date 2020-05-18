@@ -1,11 +1,11 @@
 databaseChangeLog:
-  - logicalFilePath: db.changelog/db.changelog-create-cities.yaml
+  - logicalFilePath: db.changelog/db.changelog-create-countries.yaml
   - changeSet:
-      id: 4
+      id: 16/05/3
       author: snet
       changes:
         - createTable:
-            tableName: cities
+            tableName: countries
             columns:
               - column:
                   name: id
@@ -15,34 +15,29 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: city
+                  name: country
                   type: varchar(100)
                   constraints:
                     nullable: false
-              - column:
-                  name: country_id
-                  type: int(11)
-                  constraints:
-                    nullable: false
   - changeSet:
-      id: 16/05/1
+      id: 16/05/4
       author: snet
       changes:
         - createIndex:
-            indexName: fk_person_town_cities
+            indexName: fk_city_country_id_countries
             columns:
               - column:
-                  name: town
-            tableName: person
+                  name: country_id
+            tableName: cities
   - changeSet:
-      id: 16/05/2
+      id: 16/05/5
       author: snet
       changes:
         - addForeignKeyConstraint:
-            baseColumnNames: town
-            baseTableName: person
-            constraintName: fk_person_town_cities
+            baseColumnNames: country_id
+            baseTableName: cities
+            constraintName: fk_city_country_id_countries
             onDelete: CASCADE
             onUpdate: NO ACTION
-            referencedTableName: cities
+            referencedTableName: countries
             referencedColumnNames: id

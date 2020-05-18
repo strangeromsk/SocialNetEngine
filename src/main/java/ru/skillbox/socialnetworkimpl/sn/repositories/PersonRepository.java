@@ -1,5 +1,6 @@
 package ru.skillbox.socialnetworkimpl.sn.repositories;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,15 +17,15 @@ public interface PersonRepository extends JpaRepository<Person, Integer> {
     Person findByEmail(String email);
 
     @Query(value = "SELECT * FROM person"  +
-            " WHERE first_name = ':firstName' AND last_name = ':lastName'" +
+            " WHERE first_name = :firstName AND last_name = :lastName" +
             " AND (CURRENT_DATE - birth_date) <= :ageTo" +
             " AND (CURRENT_DATE - birth_date) >= :ageFrom" +
             " AND city_id = :cityId" +
-            " AND country_id = :countryId"+
-            " LIMIT :itemPerPage OFFSET :offset", nativeQuery = true)
+            " AND country_id = :countryId", nativeQuery = true)
     List<Person> findPersons(@Param("firstName") String firstName, @Param("lastName") String lastName,
                              @Param("ageTo") int ageTo, @Param("ageFrom") int ageFrom, @Param("countryId") int countryId,
-                             @Param("cityId") int cityId, @Param("offset") int offset, @Param("itemPerPage") int itemPerPage);
+                             @Param("cityId") int cityId, Pageable pageable);
+
     @Modifying
     @Query(value = "UPDATE person SET is_blocked = 'true' WHERE id = :id", nativeQuery = true)
     void blockUserById(@Param("id") int id);

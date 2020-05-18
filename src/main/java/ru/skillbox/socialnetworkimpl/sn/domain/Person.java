@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.skillbox.socialnetworkimpl.sn.domain.enums.MessagesPermission;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -51,8 +50,9 @@ public class Person {
     @Column(length = 2048)
     private String about;
 
-    @Column(length = 45)
-    private String town;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "town", nullable = false)
+    private City town;
 
     @Column(name = "confirmation_code", nullable = false, length = 45)
     private String confirmationCode;
@@ -73,21 +73,21 @@ public class Person {
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
 
-    @Column(name = "city_id")
-    private int cityId;
+//    @Column(name = "city_id")
+//    private int cityId;
+//
+//    @Column(name = "country_id")
+//    private int countryId;
 
-    @Column(name = "country_id")
-    private int countryId;
-
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts;
 
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinColumn(name = "city_id", insertable = false, updatable = false)
+    @JoinColumn(name = "city", insertable = false, updatable = false)
     private City city;
 
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_id", insertable = false, updatable = false)
+    @JoinColumn(name = "country", insertable = false, updatable = false)
     private Country country;
 
 }

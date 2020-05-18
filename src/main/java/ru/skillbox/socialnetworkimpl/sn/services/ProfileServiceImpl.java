@@ -5,17 +5,19 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PersonEditBody;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequestBody;
-import ru.skillbox.socialnetworkimpl.sn.api.responses.PersonResponse;
-import ru.skillbox.socialnetworkimpl.sn.api.responses.PostResponse;
-import ru.skillbox.socialnetworkimpl.sn.api.responses.ReportApi;
-import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
+import ru.skillbox.socialnetworkimpl.sn.api.responses.*;
+import ru.skillbox.socialnetworkimpl.sn.domain.Country;
 import ru.skillbox.socialnetworkimpl.sn.domain.Person;
 import ru.skillbox.socialnetworkimpl.sn.domain.Post;
+import ru.skillbox.socialnetworkimpl.sn.repositories.CityRepository;
+import ru.skillbox.socialnetworkimpl.sn.repositories.CountryRepository;
 import ru.skillbox.socialnetworkimpl.sn.repositories.PersonRepository;
 import ru.skillbox.socialnetworkimpl.sn.repositories.PostRepository;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.ProfileService;
@@ -51,6 +53,10 @@ public class ProfileServiceImpl implements ProfileService {
     private PostMapper postMapper;
     @Autowired
     private DataMapper dataMapper;
+    @Autowired
+    private CityRepository cityRepository;
+    @Autowired
+    private CountryRepository countryRepository;
 
     @Bean
     public ModelMapper modelMapper() {
@@ -79,17 +85,24 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ResponseEntity<ResponsePlatformApi> editCurrentUser(HttpSession session, PersonEditBody personEditBody) {
         Person fromPerson = getCurrentUser();
+        personEditBody.setTown(cityRepository.getOne(personEditBody.getCity()));
         Person toPerson = personsMapper.requestPersonToPerson(personEditBody);
         toPerson.setId(fromPerson.getId());
         toPerson.setRegDate(fromPerson.getRegDate());
         toPerson.setEmail(fromPerson.getEmail());
         toPerson.setLastOnlineTime(dataMapper.asLocalDateTime(new Date().getTime()));
         toPerson.setPassword(fromPerson.getPassword());
+
+        Country country = countryRepository.getOne(personEditBody.getCountryId());
+        CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
+        PersonResponse ps = personsMapper.personToPersonResponse(toPerson);
+        ps.setCountry(countryResponse);
+
         personRepository.save(toPerson);
         ResponsePlatformApi api = ResponsePlatformApi.builder()
                 .error("Ok")
                 .timestamp(new Date().getTime())
-                .data(personsMapper.personToPersonResponse(toPerson)).build();
+                .data(ps).build();
         return new ResponseEntity<>(api, HttpStatus.OK);
     }
 
@@ -110,10 +123,14 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ResponseEntity<ResponsePlatformApi> getUserById(HttpSession session, int id) {
         Person person = getPersonById(id);
+        Country country = countryRepository.getOne(person.getTown().getCountryId());
+        CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
+        PersonResponse ps = personsMapper.personToPersonResponse(person);
+        ps.setCountry(countryResponse);
         ResponsePlatformApi psApi = ResponsePlatformApi.builder()
                 .error("Ok")
                 .timestamp(new Date().getTime())
-                .data(personsMapper.personToPersonResponse(person))
+                .data(ps)
                 .build();
         return new ResponseEntity<>(psApi, HttpStatus.OK);
     }
@@ -126,7 +143,13 @@ public class ProfileServiceImpl implements ProfileService {
             throw new EntityNotFoundException("No entries for this id = " + id);
         }
         List<Post> postList = posts.stream().skip(offset).limit(itemPerPage).collect(Collectors.toList());
+        if (postList.isEmpty()) {
+            throw new EntityNotFoundException("No entries for offset and itemPerPage");
+        }
+        Country country = countryRepository.getOne(postList.get(0).getAuthor().getTown().getCountryId());
+        CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
         List<PostResponse> api = postMapper.postToPostResponse(postList);
+        api.stream().forEach(x -> x.getAuthor().setCountry(countryResponse));
         ResponsePlatformApi platformApi = ResponsePlatformApi.builder()
                 .error("Ok")
                 .timestamp(new Date().getTime())
@@ -138,7 +161,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public ResponseEntity<ResponsePlatformApi> addPostToUsersWall(HttpSession session, int id, int publishDate,
+    public ResponseEntity<ResponsePlatformApi> addPostToUsersWall(HttpSession session, int id, long publishDate,
                                                                   PostRequestBody postRequestBody) {
         Person person = getPersonById(id);
         Post post = postMapper.requestPostToPost(postRequestBody);
@@ -162,7 +185,9 @@ public class ProfileServiceImpl implements ProfileService {
         if (!isAuthorized)
             return accountService.getUserInvalidResponse();
         //TODO BAD REQUEST
-        List<Person> list = personRepository.findPersons(firstName, lastName, ageFrom, ageTo, countryId, cityId, offset, itemPerPage);
+        Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
+
+        List<Person> list = personRepository.findPersons(firstName, lastName, ageFrom, ageTo, countryId, cityId, pageable);
         List<PersonResponse> personResponseList = list.stream()
                 .map(this::mapPerson)
                 .collect(Collectors.toCollection(ArrayList::new));
@@ -176,7 +201,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional
     public ResponseEntity<ResponsePlatformApi> blockUserById(HttpSession session, int id) {
         personRepository.blockUserById(id);
-        //TODO Заглушка на проверку пользователя
+        // Заглушка на проверку пользователя
         boolean isAuthorized = true;
         if (!isAuthorized)
             return accountService.getUserInvalidResponse();

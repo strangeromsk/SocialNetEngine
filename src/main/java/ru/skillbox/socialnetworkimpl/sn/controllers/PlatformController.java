@@ -1,21 +1,27 @@
 package ru.skillbox.socialnetworkimpl.sn.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.skillbox.socialnetworkimpl.sn.api.responses.CityResponse;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 import ru.skillbox.socialnetworkimpl.sn.domain.City;
 import ru.skillbox.socialnetworkimpl.sn.domain.Country;
 import ru.skillbox.socialnetworkimpl.sn.domain.Language;
 import ru.skillbox.socialnetworkimpl.sn.services.PlatformService;
+import ru.skillbox.socialnetworkimpl.sn.services.mappers.CityMapper;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/platform/")
 public class PlatformController {
 
 
     private PlatformService platformService;
+    @Autowired
+    private CityMapper cityMapper;
 
     @Autowired
     public PlatformController(PlatformService platformService) {
@@ -29,7 +35,6 @@ public class PlatformController {
         List<Language> listLanguage = platformService.getLanguages(language, offset, itemPerPage);
         int total = listLanguage.size();
         return new ResponsePlatformApi("done", total, offset, itemPerPage, listLanguage);
-        //return new ResponseEntity(a, HttpStatus.OK);
     }
 
     @GetMapping("countries")
@@ -46,7 +51,7 @@ public class PlatformController {
                                          @RequestParam String city,
                                          @RequestParam(defaultValue = "0") int offset,
                                          @RequestParam(defaultValue = "20") int itemPerPage) {
-        List<City> listCity = platformService.getCities(countryId, city, offset, itemPerPage);
+        List<CityResponse> listCity = cityMapper.cityToCityResponse(platformService.getCities(countryId, city, offset, itemPerPage));
         int total = listCity.size();
         return new ResponsePlatformApi("done", total, offset, itemPerPage, listCity);
     }

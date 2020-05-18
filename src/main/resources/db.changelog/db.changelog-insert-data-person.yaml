@@ -52,7 +52,7 @@ databaseChangeLog:
                   value: "now()"
               - column:
                   name: town
-                  value: "New-York"
+                  value: 1
               - column:
                   name: is_deleted
                   value: "0"
@@ -109,7 +109,7 @@ databaseChangeLog:
                   value: "now()"
               - column:
                   name: town
-                  value: "Moscow"
+                  value: 7
               - column:
                   name: is_deleted
                   value: "0"
@@ -166,7 +166,7 @@ databaseChangeLog:
                   value: "now()"
               - column:
                   name: town
-                  value: "Paris"
+                  value: 10
               - column:
                   name: is_deleted
                   value: "0"

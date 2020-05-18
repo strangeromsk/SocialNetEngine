@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - logicalFilePath: db.changelog/db.changelog-insert-data-cities.yaml
+  - changeSet:
+      id: 16/05/7
+      author: snet
+      comment: "adding data to counties"
+      changes:
+        - insert:
+            tableName: countries
+            columns:
+              - column:
+                  name: country
+                  value: "Russia"
+        - insert:
+            tableName: countries
+            columns:
+              - column:
+                  name: country
+                  value: "Germany"
+        - insert:
+            tableName: countries
+            columns:
+              - column:
+                  name: country
+                  value: "English"
+        - insert:
+            tableName: countries
+            columns:
+              - column:
+                  name: country
+                  value: "France"
