@@ -49,15 +49,22 @@ public class Notification {
 
 
     /**
-     * Если класс сущности PostComment и parentId != null, то создает и устанавливает в поле entity класс-наследник CommentComment
-     * для верного определения notificationType при записи в БД.
+     * Проверяет наличие родительского комментария, когда в сеттер передается объект класса PostComment.
+     * Если класс сущности PostComment и parentId != null, то создает и устанавливает в поле entity класс-наследник
+     * CommentComment для верного определения notificationType при записи сущности Notification в БД.
      */
     public void setEntity(Object entity) {
         if (entity instanceof PostComment) {
-            if (((PostComment) entity).getParentId() != null) {
+            PostComment pComment = (PostComment) entity;
+            if (pComment.getParentId() != null) {
+                //Создание подкласса и копирование значений полей
                 CommentComment cComment = new CommentComment();
-                cComment.setName(((PostComment) entity).getName());
-                cComment.setParentId(((PostComment) entity).getParentId());
+                cComment.setPostId(pComment.getPostId());
+                cComment.setParentId(pComment.getParentId());
+                cComment.setAuthorId(pComment.getAuthorId());
+                cComment.setCommentText(pComment.getCommentText());
+                cComment.setTime(pComment.getTime());
+                cComment.setIsBlocked(pComment.getIsBlocked());
                 this.entity = cComment;
                 return;
             }

@@ -25,8 +25,8 @@ public class PostComment {
     @Column(name = "post_id", nullable = false, length = 11)
     private int postId;
 
-    @Column(name = "parent_id", nullable = false, length = 11)
-    private int parentId;
+    @Column(name = "parent_id", length = 11)
+    private Integer parentId;
 
     @Column(name = "author_id", nullable = false, length = 11)
     private int authorId;
