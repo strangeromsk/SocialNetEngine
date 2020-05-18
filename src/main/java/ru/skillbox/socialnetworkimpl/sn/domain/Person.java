@@ -4,13 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
-import org.springframework.stereotype.Component;
 import ru.skillbox.socialnetworkimpl.sn.domain.enums.MessagesPermission;
-
 import javax.persistence.*;
-import java.sql.Blob;
-import java.sql.Clob;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -55,8 +50,9 @@ public class Person {
     @Column(length = 2048)
     private String about;
 
-    @Column(length = 45)
-    private String town;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "town", nullable = false)
+    private City town;
 
     @Column(name = "confirmation_code", nullable = false, length = 45)
     private String confirmationCode;

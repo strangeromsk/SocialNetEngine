@@ -57,7 +57,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: town
-                  type: varchar(45)
+                  type: int(11)
                   constraints:
                     nullable: false
               - column:

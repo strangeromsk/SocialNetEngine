@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import ru.skillbox.socialnetworkimpl.sn.domain.City;
+import ru.skillbox.socialnetworkimpl.sn.domain.Country;
 import ru.skillbox.socialnetworkimpl.sn.domain.enums.MessagesPermission;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -23,7 +25,11 @@ public class PersonEditBody {
     private String photo;
     private String about;
     @JsonProperty("town_id")
-    private String town;
+    private int city;
+    private City town;
+//    @JsonProperty("country_id")
+//    private int countryId;
+//    private Country country;
     @JsonProperty("messages_permission")
     @Enumerated(EnumType.STRING)
     private MessagesPermission messagesPermission;

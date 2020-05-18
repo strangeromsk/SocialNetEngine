@@ -4,10 +4,7 @@ import org.springframework.http.ResponseEntity;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PersonEditBody;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequestBody;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
-
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.HashMap;
 
 public interface ProfileService {
     ResponseEntity<ResponsePlatformApi> getCurrentUser(HttpSession session);
@@ -20,7 +17,7 @@ public interface ProfileService {
 
     ResponseEntity<ResponsePlatformApi> getPersonsWallPostsByUserId(HttpSession session, int id, int offset, int itemPerPage);
 
-    ResponseEntity<ResponsePlatformApi> addPostToUsersWall(HttpSession session, int id, int publishDate, PostRequestBody postRequestBody);
+    ResponseEntity<ResponsePlatformApi> addPostToUsersWall(HttpSession session, int id, long publishDate, PostRequestBody postRequestBody);
 
     ResponseEntity<ResponsePlatformApi> searchPerson(HttpSession session, String firstName,
                                                      String lastName, int ageFrom, int ageTo,
