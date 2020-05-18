@@ -44,6 +44,7 @@ public class ProfileController {
                                                                    @RequestParam int offset,
                                                                    @RequestParam(defaultValue = "20") int itemPerPage) {
         return profileService.getPersonsWallPostsByUserId(request.getSession(), id, offset, itemPerPage);
+
     }
 
     @PostMapping(value = "{id}/wall")
@@ -52,6 +53,7 @@ public class ProfileController {
                                                                   @RequestParam long publishDate,
                                                                   @RequestBody PostRequestBody postRequestBody) {
         return profileService.addPostToUsersWall(request.getSession(), id, publishDate, postRequestBody);
+
     }
 
     @GetMapping(value = "search/", params = {"first_name", "last_name", "age_from", "age_to",
