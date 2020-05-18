@@ -34,4 +34,3 @@ public class Post {
     private boolean isBlocked;
 }
 
-
