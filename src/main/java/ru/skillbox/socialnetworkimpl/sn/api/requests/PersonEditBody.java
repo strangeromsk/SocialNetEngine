@@ -27,8 +27,8 @@ public class PersonEditBody {
     @JsonProperty("town_id")
     private int city;
     private City town;
-//    @JsonProperty("country_id")
-//    private int countryId;
+    @JsonProperty("country_id")
+    private int countryId;
 //    private Country country;
     @JsonProperty("messages_permission")
     @Enumerated(EnumType.STRING)

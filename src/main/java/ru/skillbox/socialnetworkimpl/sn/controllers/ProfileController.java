@@ -64,7 +64,7 @@ public class ProfileController {
                                                             @RequestParam("country_id") int countryId,
                                                             @RequestParam("city_id") int cityId,
                                                             @RequestParam("offset") int offset,
-                                                            @RequestParam("itemPerPage") int itemPerPage) { // TODO Добавить default = 20
+                                                            @RequestParam(value = "itemPerPage",defaultValue = "20") int itemPerPage) {
         return profileService.searchPerson(request.getSession(), firstName, lastName, ageFrom,
                 ageTo, countryId, cityId, offset, itemPerPage);
 

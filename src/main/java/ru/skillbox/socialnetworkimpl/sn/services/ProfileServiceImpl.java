@@ -93,11 +93,17 @@ public class ProfileServiceImpl implements ProfileService {
         toPerson.setEmail(fromPerson.getEmail());
         toPerson.setLastOnlineTime(dataMapper.asLocalDateTime(new Date().getTime()));
         toPerson.setPassword(fromPerson.getPassword());
+
+        Country country = countryRepository.getOne(personEditBody.getCountryId());
+        CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
+        PersonResponse ps = personsMapper.personToPersonResponse(toPerson);
+        ps.setCountry(countryResponse);
+
         personRepository.save(toPerson);
         ResponsePlatformApi api = ResponsePlatformApi.builder()
                 .error("Ok")
                 .timestamp(new Date().getTime())
-                .data(personsMapper.personToPersonResponse(toPerson)).build();
+                .data(ps).build();
         return new ResponseEntity<>(api, HttpStatus.OK);
     }
 

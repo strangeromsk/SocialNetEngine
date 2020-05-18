@@ -11,4 +11,5 @@ public interface CityRepository extends JpaRepository<City, Integer> {
     @Query(value = "SELECT * FROM cities WHERE country_id = :countryId and city LIKE %:city% OFFSET :offset LIMIT :itemPerPage", nativeQuery = true)
     List<City> findCitiesByNameAndCountyById(@Param("countryId") int countryId, @Param("city") String language, @Param("offset") int offset, @Param("itemPerPage") int itemPerPage);
 
+
 }

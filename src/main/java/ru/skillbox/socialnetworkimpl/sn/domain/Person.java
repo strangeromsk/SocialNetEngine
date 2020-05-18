@@ -73,7 +73,7 @@ public class Person {
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts;
 
 }

@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - logicalFilePath: db.changelog/db.changelog-insert-data-cities.yaml
+  - changeSet:
+      id: 18/05/2
+      author: snet
+      comment: "adding data to language"
+      changes:
+        - insert:
+            tableName: language
+            columns:
+              - column:
+                  name: language
+                  value: "Russian"
+        - insert:
+            tableName: language
+            columns:
+              - column:
+                  name: language
+                  value: "English"
+        - insert:
+            tableName: language
+            columns:
+              - column:
+                  name: language
+                  value: "German"
+        - insert:
+            tableName: language
+            columns:
+              - column:
+                  name: language
+                  value: "French"
+        - insert:
+            tableName: language
+            columns:
+              - column:
+                  name: language
+                  value: "Italian"

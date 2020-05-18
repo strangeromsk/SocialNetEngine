@@ -4,6 +4,9 @@ databaseChangeLog:
       file: db.changelog-create-person.yaml 
       relativeToChangelogFile: true
   - include:
+      file: db.changelog-create-language.yaml
+      relativeToChangelogFile: true
+  - include:
       file: db.changelog-create-cities.yaml 
       relativeToChangelogFile: true
   - include:
@@ -14,6 +17,9 @@ databaseChangeLog:
       relativeToChangelogFile: true
   - include:
       file: db.changelog-insert-data-countries.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-insert-data-language.yaml
       relativeToChangelogFile: true
   - include:
       file: db.changelog-insert-data-cities.yaml
