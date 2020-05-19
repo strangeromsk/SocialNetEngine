@@ -7,13 +7,11 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PersonEditBody;
-import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequestBody;
+import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.*;
 import ru.skillbox.socialnetworkimpl.sn.domain.Country;
 import ru.skillbox.socialnetworkimpl.sn.domain.Person;
@@ -27,14 +25,12 @@ import ru.skillbox.socialnetworkimpl.sn.services.mappers.DataMapper;
 import ru.skillbox.socialnetworkimpl.sn.services.mappers.PersonMapper;
 import ru.skillbox.socialnetworkimpl.sn.services.mappers.PersonsMapper;
 import ru.skillbox.socialnetworkimpl.sn.services.mappers.PostMapper;
-import javax.persistence.EntityManager;
+
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
@@ -98,14 +94,14 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
 
-    public PersonResponse mapPerson(Person person) {
+    public ru.skillbox.socialnetworkimpl.sn.api.responses.PersonResponse mapPerson(Person person) {
         return personMapper.toDto(person);
     }
 
     @Override
     public ResponseEntity<ResponsePlatformApi> getCurrentUser(HttpSession session) {
         Person person = getCurrentUser();
-        PersonResponse personResponse = mapPerson(person);
+        ru.skillbox.socialnetworkimpl.sn.api.responses.PersonResponse personResponse = mapPerson(person);
         Country country = countryRepository.getOne(person.getTown().getCountryId());
         CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
         personResponse.setCountry(countryResponse);
@@ -127,7 +123,7 @@ public class ProfileServiceImpl implements ProfileService {
 
         Country country = countryRepository.getOne(personEditBody.getCountryId());
         CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
-        PersonResponse ps = personsMapper.personToPersonResponse(toPerson);
+        ru.skillbox.socialnetworkimpl.sn.api.responses.PersonResponse ps = personsMapper.personToPersonResponse(toPerson);
         ps.setCountry(countryResponse);
 
         personRepository.save(toPerson);
@@ -157,7 +153,7 @@ public class ProfileServiceImpl implements ProfileService {
         Person person = getPersonById(id);
         Country country = countryRepository.getOne(person.getTown().getCountryId());
         CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
-        PersonResponse ps = personsMapper.personToPersonResponse(person);
+        ru.skillbox.socialnetworkimpl.sn.api.responses.PersonResponse ps = personsMapper.personToPersonResponse(person);
         ps.setCountry(countryResponse);
         ResponsePlatformApi psApi = ResponsePlatformApi.builder()
                 .error("Ok")
@@ -194,9 +190,9 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ResponseEntity<ResponsePlatformApi> addPostToUsersWall(HttpSession session, int id, long publishDate,
-                                                                  PostRequestBody postRequestBody) {
+                                                                  PostRequest postRequest) {
         Person person = getPersonById(id);
-        Post post = postMapper.requestPostToPost(postRequestBody);
+        Post post = postMapper.requestPostToPost(postRequest);
         post.setAuthor(person);
         post.setTime(dataMapper.asLocalDate(publishDate));
         postRepository.save(post);
@@ -218,7 +214,7 @@ public class ProfileServiceImpl implements ProfileService {
             return accountService.getUserInvalidResponse();
         List<Person> list = personRepository.findPersons(firstName, lastName, ageFrom, ageTo, cityId);
 
-        List<PersonResponse> personResponseList = list.stream()
+        List<ru.skillbox.socialnetworkimpl.sn.api.responses.PersonResponse> personResponseList = list.stream()
                 .map(this::mapPerson)
                 .collect(Collectors.toCollection(ArrayList::new));
 

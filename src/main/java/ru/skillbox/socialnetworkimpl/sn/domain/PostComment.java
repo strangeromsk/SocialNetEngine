@@ -1,13 +1,17 @@
 package ru.skillbox.socialnetworkimpl.sn.domain;
 
 import lombok.Data;
+import org.hibernate.annotations.DiscriminatorFormula;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "post")
+@Table(name = "post_comment")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorFormula("case when parent_id is null then 'POST_COMMENT' else 'COMMENT_COMMENT' end")
+@DiscriminatorValue(value = "POST_COMMENT")
 public class PostComment {
 
     @Id
@@ -21,8 +25,8 @@ public class PostComment {
     @Column(name = "post_id", nullable = false, length = 11)
     private int postId;
 
-    @Column(name = "parent_id", nullable = false, length = 11)
-    private int parentId;
+    @Column(name = "parent_id", length = 11)
+    private Integer parentId;
 
     @Column(name = "author_id", nullable = false, length = 11)
     private int authorId;

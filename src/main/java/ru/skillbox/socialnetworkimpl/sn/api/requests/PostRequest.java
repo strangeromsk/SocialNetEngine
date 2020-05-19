@@ -8,7 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 @Builder
-public class PostRequestBody {
+public class PostRequest {
     private String title;
     @JsonProperty("post_text")
     private String postText;

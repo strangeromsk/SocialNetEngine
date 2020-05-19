@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PersonEditBody;
-import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequestBody;
+import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.ProfileService;
 import javax.servlet.http.HttpServletRequest;
@@ -53,8 +53,8 @@ public class ProfileController {
     public ResponseEntity<ResponsePlatformApi> addPostToUsersWall(HttpServletRequest request,
                                                                   @PathVariable("id") int id,
                                                                   @RequestParam long publishDate,
-                                                                  @RequestBody PostRequestBody postRequestBody) {
-        return profileService.addPostToUsersWall(request.getSession(), id, publishDate, postRequestBody);
+                                                                  @RequestBody PostRequest postRequest) {
+        return profileService.addPostToUsersWall(request.getSession(), id, publishDate, postRequest);
 
     }
 
