@@ -283,8 +283,8 @@ databaseChangeLog:
                   type: int(11)
                   autoIncrement: true
                   constraints:
-                      primaryKey: true
-                      nullable: false
+                    primaryKey: true
+                    nullable: false
               - column:
                   name: time
                   type: timestamp
@@ -425,81 +425,79 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
-
-      - changeSet:
-          id: 6
-          author: snet
-          comment: "create notification_type table"
-          changes:
-            - createTable:
-                tableName: notification_type
-                columns:
-                  - column:
-                      name: id
-                      type: int(11)
-                      autoIncrement: true
-                      constraints:
-                        primaryKey: true
-                        nullable: false
-                  - column:
-                      name: code
-                      type: varchar(45)
-                      constraints:
-                        nullable: false
-                        unique: true
-                  - column:
-                      name: name
-                      type: varchar(45)
-                      constraints:
-                        nullable: false
-
-      - changeSet:
-          id: 7
-          author: snet
-          comment: "added notification types"
-          changes:
-            - insert:
-                tableName: notification_type
-                columns:
-                  - column:
-                      name: code
-                      value: "POST"
-                  - column:
-                      name: name
-                      value: "Новый пост"
-            - insert:
-                tableName: notification_type
-                columns:
-                  - column:
-                      name: code
-                      value: "POST_COMMENT"
-                  - column:
-                      name: name
-                      value: "Комментарий к посту"
-            - insert:
-                tableName: notification_type
-                columns:
-                  - column:
-                      name: code
-                      value: "COMMENT_COMMENT"
-                  - column:
-                      name: name
-                      value: "Ответ на комментарий"
-            - insert:
-                tableName: notification_type
-                columns:
-                  - column:
-                      name: code
-                      value: "FRIEND_REQUEST"
-                  - column:
-                      name: name
-                      value: "Запрос дружбы"
-            - insert:
-                tableName: notification_type
-                columns:
-                  - column:
-                      name: code
-                      value: "MESSAGE"
-                  - column:
-                      name: name
-                      value: "Личное сообщение"
+  - changeSet:
+      id: 6
+      author: snet
+      comment: "create notification_type table"
+      changes:
+        - createTable:
+            tableName: notification_type
+            columns:
+              - column:
+                  name: id
+                  type: int(11)
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: code
+                  type: varchar(45)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: name
+                  type: varchar(45)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 7
+      author: snet
+      comment: "added notification types"
+      changes:
+        - insert:
+            tableName: notification_type
+            columns:
+              - column:
+                  name: code
+                  value: "POST"
+              - column:
+                  name: name
+                  value: "Новый пост"
+        - insert:
+            tableName: notification_type
+            columns:
+              - column:
+                  name: code
+                  value: "POST_COMMENT"
+              - column:
+                  name: name
+                  value: "Комментарий к посту"
+        - insert:
+            tableName: notification_type
+            columns:
+              - column:
+                  name: code
+                  value: "COMMENT_COMMENT"
+              - column:
+                  name: name
+                  value: "Ответ на комментарий"
+        - insert:
+            tableName: notification_type
+            columns:
+              - column:
+                  name: code
+                  value: "FRIEND_REQUEST"
+              - column:
+                  name: name
+                  value: "Запрос дружбы"
+        - insert:
+            tableName: notification_type
+            columns:
+              - column:
+                  name: code
+                  value: "MESSAGE"
+              - column:
+                  name: name
+                  value: "Личное сообщение"
