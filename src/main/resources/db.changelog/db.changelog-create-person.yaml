@@ -88,13 +88,3 @@ databaseChangeLog:
                   type: boolean
                   constraints:
                     nullable: false
-              - column:
-                  name: country_id
-                  type: int(11)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: city_id
-                  type: int(11)
-                  constraints:
-                    nullable: false

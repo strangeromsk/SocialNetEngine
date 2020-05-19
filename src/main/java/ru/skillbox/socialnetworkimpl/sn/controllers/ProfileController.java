@@ -1,5 +1,6 @@
 package ru.skillbox.socialnetworkimpl.sn.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.ProfileService;
 import javax.servlet.http.HttpServletRequest;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/api/v1/users/")
 public class ProfileController {
@@ -56,20 +58,18 @@ public class ProfileController {
 
     }
 
-    @GetMapping(value = "search/", params = {"first_name", "last_name", "age_from", "age_to",
-            "country_id", "city_id", "offset", "itemPerPage"})
+    @GetMapping(value = "search")
     public ResponseEntity<ResponsePlatformApi> searchPerson(HttpServletRequest request,
-                                                            @RequestParam("first_name") String firstName,
-                                                            @RequestParam("last_name") String lastName,
-                                                            @RequestParam("age_from") int ageFrom,
-                                                            @RequestParam("age_to") int ageTo,
-                                                            @RequestParam("country_id") int countryId,
-                                                            @RequestParam("city_id") int cityId,
-                                                            @RequestParam("offset") int offset,
-                                                            @RequestParam(value = "itemPerPage",defaultValue = "20") int itemPerPage) {
+                                                            @RequestParam(name = "first_name") String firstName,
+                                                            @RequestParam(name = "last_name") String lastName,
+                                                            @RequestParam(name = "age_from") int ageFrom,
+                                                            @RequestParam(name = "age_to") int ageTo,
+                                                            @RequestParam(name = "country_id") int countryId,
+                                                            @RequestParam(name = "city_id") int cityId,
+                                                            @RequestParam int offset,
+                                                            @RequestParam(defaultValue = "20") int itemPerPage) {
         return profileService.searchPerson(request.getSession(), firstName, lastName, ageFrom,
                 ageTo, countryId, cityId, offset, itemPerPage);
-
     }
 
     @PutMapping("block/{id}")

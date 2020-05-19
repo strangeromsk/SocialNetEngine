@@ -1,6 +1,8 @@
 package ru.skillbox.socialnetworkimpl.sn.services;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.AbstractConverter;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,10 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,8 +72,31 @@ public class ProfileServiceImpl implements ProfileService {
                 .setFieldMatchingEnabled(true)
                 .setSkipNullEnabled(true)
                 .setFieldAccessLevel(PRIVATE);
+
+        Converter<LocalDate, Long> toLongDate = new AbstractConverter<LocalDate, Long>() {
+            protected Long convert(LocalDate source) {
+                return source != null ? source.atStartOfDay(ZoneOffset.UTC).toEpochSecond() * 1000 : 0;
+            }
+        };
+
+        Converter<Long, LocalDate> toLocalDate = new AbstractConverter<Long, LocalDate>() {
+            protected LocalDate convert(Long source) {
+                return LocalDate.ofEpochDay(source/86_400_000);
+            }
+        };
+
+        Converter<LocalDateTime, Long> toLongTime = new AbstractConverter<LocalDateTime, Long>() {
+            protected Long convert(LocalDateTime source) {
+                return source != null ? source.atOffset(ZoneOffset.UTC).toEpochSecond() * 1000 : 0;
+            }
+        };
+
+        mapper.addConverter(toLocalDate);
+        mapper.addConverter(toLongDate);
+        mapper.addConverter(toLongTime);
         return mapper;
     }
+
 
     public PersonResponse mapPerson(Person person) {
         return personMapper.toDto(person);
@@ -77,6 +106,9 @@ public class ProfileServiceImpl implements ProfileService {
     public ResponseEntity<ResponsePlatformApi> getCurrentUser(HttpSession session) {
         Person person = getCurrentUser();
         PersonResponse personResponse = mapPerson(person);
+        Country country = countryRepository.getOne(person.getTown().getCountryId());
+        CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
+        personResponse.setCountry(countryResponse);
         return new ResponseEntity<>(ResponsePlatformApi.builder().error("string")
                 .timestamp(new Date().getTime()).data(personResponse)
                 .build(), HttpStatus.OK);
@@ -186,11 +218,20 @@ public class ProfileServiceImpl implements ProfileService {
             return accountService.getUserInvalidResponse();
         //TODO BAD REQUEST
         Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
+        List<Person> list = personRepository.findPersons(firstName, lastName, ageFrom, ageTo, cityId);
 
-        List<Person> list = personRepository.findPersons(firstName, lastName, ageFrom, ageTo, countryId, cityId, pageable);
+//        String sql = "SELECT p.id FROM person p " +
+//                "JOIN cities c ON c.id = p.town JOIN countries s ON s.id = c.country_id " +
+//                "WHERE extract(YEAR FROM CURRENT_DATE)-extract(YEAR FROM p.birth_date) BETWEEN :ageFrom AND :ageTo AND p.first_name=:firstName " +
+//                "AND p.last_name=:lastName AND c.id = :cityId";
+//        log.info(sql);
         List<PersonResponse> personResponseList = list.stream()
                 .map(this::mapPerson)
                 .collect(Collectors.toCollection(ArrayList::new));
+
+        Country country = countryRepository.getOne(countryId);
+        CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
+        personResponseList.stream().forEach(x -> x.setCountry(countryResponse));
         return new ResponseEntity<>(ResponsePlatformApi.builder().error("Ok")
                 .timestamp(new Date().getTime()).total(personResponseList.size()).offset(offset)
                 .perPage(itemPerPage).data(personResponseList)
@@ -227,5 +268,4 @@ public class ProfileServiceImpl implements ProfileService {
     private Person getPersonById(int id) {
         return personRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User with this ID not found."));
     }
-
 }

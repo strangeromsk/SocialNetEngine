@@ -19,7 +19,7 @@ databaseChangeLog:
       file: db.changelog-create-post_comment.yaml
       relativeToChangelogFile: true
   - include:
-      file: db.changelog-create-post_like.yaml.yaml
+      file: db.changelog-create-post_like.yaml
       relativeToChangelogFile: true
   - include:
       file: db.changelog-create-post_file.yaml

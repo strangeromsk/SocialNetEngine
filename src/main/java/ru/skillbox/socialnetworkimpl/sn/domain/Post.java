@@ -31,6 +31,7 @@ public class Post {
     @Column(length = 4096)
     private String postText;
 
+    @Column(name = "is_blocked", nullable = false)
     private boolean isBlocked;
 }
 
