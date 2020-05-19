@@ -22,17 +22,9 @@ public interface PersonRepository extends JpaRepository<Person, Integer> {
             "JOIN cities c ON c.id = p.town JOIN countries s ON s.id = c.country_id " +
             "WHERE c.id = :cityId AND p.first_name = :firstName AND p.last_name = :lastName " +
             "AND extract(YEAR FROM CURRENT_DATE)-extract(YEAR FROM p.birth_date) BETWEEN :ageTo AND :ageFrom ", nativeQuery = true)
-
-//    @Query(value = "SELECT * FROM person"  +
-//            " WHERE first_name = :firstName AND last_name = :lastName" +
-//            " AND (CURRENT_DATE - birth_date) <= :ageTo" +
-//            " AND (CURRENT_DATE - birth_date) >= :ageFrom" +
-//            " AND city_id = :cityId" +
-//            " AND country_id = :countryId", nativeQuery = true)
     List<Person> findPersons(
             @Param("firstName") String firstName, @Param("lastName") String lastName,
             @Param("ageTo") int ageTo, @Param("ageFrom") int ageFrom,
-            //@Param("countryId") int countryId,
             @Param("cityId") int cityId);
 
     @Modifying

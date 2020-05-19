@@ -212,19 +212,12 @@ public class ProfileServiceImpl implements ProfileService {
     public ResponseEntity<ResponsePlatformApi> searchPerson(HttpSession session, String firstName,
                                                             String lastName, int ageFrom, int ageTo, int countryId,
                                                             int cityId, int offset, int itemPerPage) {
-        // TODO Заглушка на проверку пользователя
+        //Заглушка на проверку пользователя
         boolean isAuthorized = true;
         if (!isAuthorized)
             return accountService.getUserInvalidResponse();
-        //TODO BAD REQUEST
-        Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
         List<Person> list = personRepository.findPersons(firstName, lastName, ageFrom, ageTo, cityId);
 
-//        String sql = "SELECT p.id FROM person p " +
-//                "JOIN cities c ON c.id = p.town JOIN countries s ON s.id = c.country_id " +
-//                "WHERE extract(YEAR FROM CURRENT_DATE)-extract(YEAR FROM p.birth_date) BETWEEN :ageFrom AND :ageTo AND p.first_name=:firstName " +
-//                "AND p.last_name=:lastName AND c.id = :cityId";
-//        log.info(sql);
         List<PersonResponse> personResponseList = list.stream()
                 .map(this::mapPerson)
                 .collect(Collectors.toCollection(ArrayList::new));
