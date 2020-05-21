@@ -1,6 +1,9 @@
 databaseChangeLog:
   - logicalFilePath: db.changelog/db.changelog-master.yaml
   - include:
+      file: db.changelog-create-notification.yaml
+      relativeToChangelogFile: true
+  - include:
       file: db.changelog-create-person.yaml 
       relativeToChangelogFile: true
   - include:
