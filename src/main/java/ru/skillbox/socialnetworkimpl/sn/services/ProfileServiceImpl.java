@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.skillbox.socialnetworkimpl.sn.api.requests.PersonEditBody;
+import ru.skillbox.socialnetworkimpl.sn.api.requests.PersonRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.*;
 import ru.skillbox.socialnetworkimpl.sn.domain.Country;
@@ -114,17 +114,17 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public ResponseEntity<ResponsePlatformApi> editCurrentUser(HttpSession session, PersonEditBody personEditBody) {
+    public ResponseEntity<ResponsePlatformApi> editCurrentUser(HttpSession session, PersonRequest personRequest) {
         Person fromPerson = getCurrentUser();
-        personEditBody.setTown(cityRepository.getOne(personEditBody.getCity()));
-        Person toPerson = personsMapper.requestPersonToPerson(personEditBody);
+        personRequest.setTown(cityRepository.getOne(personRequest.getCity()));
+        Person toPerson = personsMapper.requestPersonToPerson(personRequest);
         toPerson.setId(fromPerson.getId());
         toPerson.setRegDate(fromPerson.getRegDate());
         toPerson.setEmail(fromPerson.getEmail());
         toPerson.setLastOnlineTime(dataMapper.asLocalDateTime(new Date().getTime()));
         toPerson.setPassword(fromPerson.getPassword());
 
-        Country country = countryRepository.getOne(personEditBody.getCountryId());
+        Country country = countryRepository.getOne(personRequest.getCountryId());
         CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
         PersonResponse ps = personsMapper.personToPersonResponse(toPerson);
         ps.setCountry(countryResponse);

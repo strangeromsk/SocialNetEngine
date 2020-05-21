@@ -7,13 +7,14 @@ import lombok.Data;
 import ru.skillbox.socialnetworkimpl.sn.domain.City;
 import ru.skillbox.socialnetworkimpl.sn.domain.Country;
 import ru.skillbox.socialnetworkimpl.sn.domain.enums.MessagesPermission;
+
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 @Data
 @AllArgsConstructor
 @Builder
-public class PersonEditBody {
+public class PersonRequest {
     @JsonProperty("first_name")
     private String firstName;
     @JsonProperty("last_name")
@@ -29,7 +30,6 @@ public class PersonEditBody {
     private City town;
     @JsonProperty("country_id")
     private int countryId;
-//    private Country country;
     @JsonProperty("messages_permission")
     @Enumerated(EnumType.STRING)
     private MessagesPermission messagesPermission;

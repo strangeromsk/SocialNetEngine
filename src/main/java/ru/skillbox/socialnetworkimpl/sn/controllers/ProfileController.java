@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skillbox.socialnetworkimpl.sn.api.requests.PersonEditBody;
+import ru.skillbox.socialnetworkimpl.sn.api.requests.PersonRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.ProfileService;
@@ -25,8 +25,8 @@ public class ProfileController {
 
     @PutMapping("me")
     public ResponseEntity<ResponsePlatformApi> editCurrentUser(HttpServletRequest request,
-                                                               @RequestBody PersonEditBody personEditBody) {
-        return profileService.editCurrentUser(request.getSession(), personEditBody);
+                                                               @RequestBody PersonRequest personRequest) {
+        return profileService.editCurrentUser(request.getSession(), personRequest);
     }
 
     @DeleteMapping("me")
