@@ -42,7 +42,7 @@ public class Person {
     private String email;
 
     @Column(length = 11)
-    private int phone;
+    private String phone;
 
     @Column(nullable = false)
     private String password;
