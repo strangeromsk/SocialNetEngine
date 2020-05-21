@@ -1,0 +1,115 @@
+databaseChangeLog:
+  - logicalFilePath: db.changelog/db.changelog-insert-data-cities.yaml
+  - changeSet:
+      id: 6
+      author: snet
+      comment: "added a cities"
+      changes:
+        - insert:
+            tableName: cities
+            columns:
+              - column:
+                  name: city
+                  value: "Moscow"
+              - column:
+                  name: country_id
+                  value: "1"
+        - insert:
+            tableName: cities
+            columns:
+              - column:
+                  name: city
+                  value: "Vladivostok"
+              - column:
+                  name: country_id
+                  value: "1"
+        - insert:
+            tableName: cities
+            columns:
+              - column:
+                  name: city
+                  value: "Saint-Petersburg"
+              - column:
+                  name: country_id
+                  value: "1"
+        - insert:
+            tableName: cities
+            columns:
+              - column:
+                  name: city
+                  value: "Berlin"
+              - column:
+                  name: country_id
+                  value: "2"
+        - insert:
+            tableName: cities
+            columns:
+              - column:
+                  name: city
+                  value: "Munich"
+              - column:
+                  name: country_id
+                  value: "2"
+        - insert:
+            tableName: cities
+            columns:
+              - column:
+                  name: city
+                  value: "Hamburg"
+              - column:
+                  name: country_id
+                  value: "2"
+        - insert:
+            tableName: cities
+            columns:
+              - column:
+                  name: city
+                  value: "London"
+              - column:
+                  name: country_id
+                  value: "3"
+        - insert:
+            tableName: cities
+            columns:
+              - column:
+                  name: city
+                  value: "Manchester"
+              - column:
+                  name: country_id
+                  value: "3"
+        - insert:
+            tableName: cities
+            columns:
+              - column:
+                  name: city
+                  value: "Liverpool"
+              - column:
+                  name: country_id
+                  value: "3"
+        - insert:
+            tableName: cities
+            columns:
+              - column:
+                  name: city
+                  value: "Paris"
+              - column:
+                  name: country_id
+                  value: "4"
+        - insert:
+            tableName: cities
+            columns:
+              - column:
+                  name: city
+                  value: "Lyon"
+              - column:
+                  name: country_id
+                  value: "4"
+        - insert:
+            tableName: cities
+            columns:
+              - column:
+                  name: city
+                  value: "Marseille"
+              - column:
+                  name: country_id
+                  value: "4"
