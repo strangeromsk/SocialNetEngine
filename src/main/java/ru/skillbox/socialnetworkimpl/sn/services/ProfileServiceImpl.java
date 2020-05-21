@@ -20,6 +20,7 @@ import ru.skillbox.socialnetworkimpl.sn.repositories.CityRepository;
 import ru.skillbox.socialnetworkimpl.sn.repositories.CountryRepository;
 import ru.skillbox.socialnetworkimpl.sn.repositories.PersonRepository;
 import ru.skillbox.socialnetworkimpl.sn.repositories.PostRepository;
+import ru.skillbox.socialnetworkimpl.sn.security.UserDetailsServiceImpl;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.ProfileService;
 import ru.skillbox.socialnetworkimpl.sn.services.mappers.DataMapper;
 import ru.skillbox.socialnetworkimpl.sn.services.mappers.PersonMapper;
@@ -59,6 +60,8 @@ public class ProfileServiceImpl implements ProfileService {
     private CityRepository cityRepository;
     @Autowired
     private CountryRepository countryRepository;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
     @Bean
     public ModelMapper modelMapper() {
@@ -94,14 +97,14 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
 
-    public ru.skillbox.socialnetworkimpl.sn.api.responses.PersonResponse mapPerson(Person person) {
+    public PersonResponse mapPerson(Person person) {
         return personMapper.toDto(person);
     }
 
     @Override
     public ResponseEntity<ResponsePlatformApi> getCurrentUser(HttpSession session) {
         Person person = getCurrentUser();
-        ru.skillbox.socialnetworkimpl.sn.api.responses.PersonResponse personResponse = mapPerson(person);
+        PersonResponse personResponse = mapPerson(person);
         Country country = countryRepository.getOne(person.getTown().getCountryId());
         CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
         personResponse.setCountry(countryResponse);
@@ -123,7 +126,7 @@ public class ProfileServiceImpl implements ProfileService {
 
         Country country = countryRepository.getOne(personEditBody.getCountryId());
         CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
-        ru.skillbox.socialnetworkimpl.sn.api.responses.PersonResponse ps = personsMapper.personToPersonResponse(toPerson);
+        PersonResponse ps = personsMapper.personToPersonResponse(toPerson);
         ps.setCountry(countryResponse);
 
         personRepository.save(toPerson);
@@ -214,7 +217,7 @@ public class ProfileServiceImpl implements ProfileService {
             return accountService.getUserInvalidResponse();
         List<Person> list = personRepository.findPersons(firstName, lastName, ageFrom, ageTo, cityId);
 
-        List<ru.skillbox.socialnetworkimpl.sn.api.responses.PersonResponse> personResponseList = list.stream()
+        List<PersonResponse> personResponseList = list.stream()
                 .map(this::mapPerson)
                 .collect(Collectors.toCollection(ArrayList::new));
 
