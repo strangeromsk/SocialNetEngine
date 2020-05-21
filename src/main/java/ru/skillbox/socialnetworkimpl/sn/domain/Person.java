@@ -73,21 +73,6 @@ public class Person {
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
 
-//    @Column(name = "city_id")
-//    private int cityId;
-//
-//    @Column(name = "country_id")
-//    private int countryId;
-
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts;
-
-//    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-//    @JoinColumn(name = "city", insertable = false, updatable = false)
-//    private City city;
-
-//    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-//    @JoinColumn(name = "country", insertable = false, updatable = false)
-//    private Country country;
-
 }

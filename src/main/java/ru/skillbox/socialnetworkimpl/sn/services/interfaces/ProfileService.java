@@ -1,7 +1,7 @@
 package ru.skillbox.socialnetworkimpl.sn.services.interfaces;
 
 import org.springframework.http.ResponseEntity;
-import ru.skillbox.socialnetworkimpl.sn.api.requests.PersonEditBody;
+import ru.skillbox.socialnetworkimpl.sn.api.requests.PersonRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 import javax.servlet.http.HttpSession;
@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 public interface ProfileService {
     ResponseEntity<ResponsePlatformApi> getCurrentUser(HttpSession session);
 
-    ResponseEntity<ResponsePlatformApi> editCurrentUser(HttpSession session, PersonEditBody personEditBody);
+    ResponseEntity<ResponsePlatformApi> editCurrentUser(HttpSession session, PersonRequest personRequest);
 
     ResponseEntity<ResponsePlatformApi> deleteCurrentUser(HttpSession session);
 
