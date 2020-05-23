@@ -8,10 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostRequestBody {
+public class LikeRequestBody {
 
-    private String title;
-
-    @JsonProperty("post_text")
-    private String postText;
+    @JsonProperty("item_id")
+    private int itemId;
+    private String type;
 }

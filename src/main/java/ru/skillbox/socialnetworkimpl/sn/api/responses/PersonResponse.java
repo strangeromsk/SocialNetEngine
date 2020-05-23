@@ -9,7 +9,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 public class PersonResponse {
 
-    @NonNull private int id;
+    @NonNull private Integer id;
 
     @JsonProperty("first_name")
     private String firstName;
@@ -18,7 +18,7 @@ public class PersonResponse {
     private String lastName;
 
     @JsonProperty("reg_date")
-    @NonNull private long regDate;
+    @NonNull private Long regDate;
 
     @JsonProperty("birth_date")
     private long birthDate;
@@ -37,5 +37,5 @@ public class PersonResponse {
     private long lastOnlineTime;
 
     @JsonProperty("is_blocked")
-    @NonNull private boolean isBlocked;
+    @NonNull private Boolean isBlocked;
 }
