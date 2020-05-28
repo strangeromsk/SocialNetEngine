@@ -9,7 +9,6 @@ import ru.skillbox.socialnetworkimpl.sn.security.SecurityConstants;
 
 import java.util.Date;
 import java.util.List;
-
 public class JwtProvider {
 
     private static final Algorithm algorithm = Algorithm.HMAC512(SecurityConstants.SECRET.getBytes());
