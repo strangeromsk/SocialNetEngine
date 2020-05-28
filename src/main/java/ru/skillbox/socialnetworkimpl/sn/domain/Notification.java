@@ -64,7 +64,7 @@ public class Notification {
                 cComment.setAuthorId(pComment.getAuthorId());
                 cComment.setCommentText(pComment.getCommentText());
                 cComment.setTime(pComment.getTime());
-                cComment.setIsBlocked(pComment.getIsBlocked());
+                cComment.setBlocked(pComment.isBlocked());
                 this.entity = cComment;
                 return;
             }
