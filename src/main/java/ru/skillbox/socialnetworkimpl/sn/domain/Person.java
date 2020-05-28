@@ -60,7 +60,7 @@ public class Person {
     private String confirmationCode;
 
     @Column(name = "is_approved")
-    private byte isApproved;
+    private boolean isApproved;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "messages_permission")
@@ -70,5 +70,5 @@ public class Person {
     private LocalDateTime lastOnlineTime;
 
     @Column(name = "is_blocked", nullable = false)
-    private byte isBlocked;
+    private boolean isBlocked;
 }

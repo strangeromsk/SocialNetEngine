@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - logicalFilePath: db.changelog/db.changelog-insert-data-post.yaml
+  - changeSet:
+      id: 15/05/1
+      author: snet
+      comment: "added a few post"
+      changes:
+        - insert:
+            tableName: post
+            columns:
+              - column:
+                  name: time
+                  value: "now()"
+              - column:
+                  name: author_id
+                  value: 1
+              - column:
+                  name: title
+                  value: "first post"
+              - column:
+                  name: post_text
+                  value: "My name is Bob!"
+              - column:
+                  name: is_blocked
+                  value: "0"
+        - insert:
+            tableName: post
+            columns:
+              - column:
+                  name: time
+                  value: "now()"
+              - column:
+                  name: author_id
+                  value: 1
+              - column:
+                  name: title
+                  value: "second post"
+              - column:
+                  name: post_text
+                  value: "My friend is Sam!"
+              - column:
+                  name: is_blocked
+                  value: "0"

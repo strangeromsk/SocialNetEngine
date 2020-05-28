@@ -1,0 +1,63 @@
+databaseChangeLog:
+  - logicalFilePath: db.changelog/db.changelog-create-post.yaml
+  - changeSet:
+      id: 13/05
+      author: snet
+      changes:
+        - createTable:
+            tableName: post
+            columns:
+              - column:
+                  name: id
+                  type: int(11)
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: time
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: post_text 
+                  type: varchar(4096)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_blocked
+                  type: boolean
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 14/05/1
+      author: snet
+      changes:
+        - createIndex:
+            indexName: fk_post_author_id_person
+            columns:
+              - column:
+                  name: author_id
+            tableName: post
+  - changeSet:
+      id: 14/05/2
+      author: snet
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: author_id
+            baseTableName: post
+            constraintName: fk_post_author_id_person
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedTableName: person
+            referencedColumnNames: id
