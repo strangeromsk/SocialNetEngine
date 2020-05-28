@@ -362,7 +362,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: is_blocked
-                  type: bit(1)
+                  type: boolean
                   constraints:
                     nullable: false
         - createTable:
