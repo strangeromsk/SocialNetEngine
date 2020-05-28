@@ -40,7 +40,8 @@ databaseChangeLog:
                   value: "ALL"
               - column:
                   name: password
-                  value: "pass"
+                  value: "$2y$12$M9qpxrVJmRqk/jaxq/F3beIRnF/C8J.NlR6S1TUk9u/bDO7n.CJpy"
+
               - column:
                   name: phone
                   value: "132456"
@@ -91,7 +92,7 @@ databaseChangeLog:
                   value: "FRIENDS"
               - column:
                   name: password
-                  value: "mypass"
+                  value: "$2y$12$vHNblp6SvbR8vm.9cDv57OkHw1ph3NRE.5k4WZAii4oXhsxZ0vf.q"
               - column:
                   name: phone
                   value: "89031234"
@@ -142,7 +143,7 @@ databaseChangeLog:
                   value: "ALL"
               - column:
                   name: password
-                  value: "PassWord"
+                  value: "$2y$12$mRDa/RYJeurW.GgcbFfpw.4po7SznhyVJO0nNz5DM6uZwSxRvdimC"
               - column:
                   name: phone
                   value: "987654"

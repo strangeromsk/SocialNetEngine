@@ -38,7 +38,7 @@ public class Person {
     @Column(name = "e_mail", nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 11)
     private String phone;
 
     @Column(nullable = false)
