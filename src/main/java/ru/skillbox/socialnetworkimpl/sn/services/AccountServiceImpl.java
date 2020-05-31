@@ -32,10 +32,10 @@ public class AccountServiceImpl implements AccountService {
         if (getCurrentUser(email) != null)
             return new ResponseEntity<>(getErrorResponse(ErrorMessages.USER_EXISTS.getTitle()), HttpStatus.BAD_REQUEST);
 
-        personRepository.save(Person.builder().email(email).fistName(firstName).lastName(lastName)
-                            .confirmationCode(code).password(passwd1).regDate(LocalDate.now())
-                            .messagesPermission(MessagesPermission.ALL).build());
-            return new ResponseEntity<>(getOkResponse(), HttpStatus.OK);
+        personRepository.save(Person.builder().email(email).firstName(firstName).lastName(lastName)
+                .confirmationCode(code).password(passwd1).regDate(LocalDate.now())
+                .messagesPermission(MessagesPermission.ALL).build());
+        return new ResponseEntity<>(getOkResponse(), HttpStatus.OK);
     }
 
     @Override
@@ -48,7 +48,8 @@ public class AccountServiceImpl implements AccountService {
             return new ResponseEntity<>(getErrorResponse(ErrorMessages.USER_NOTEXIST.getTitle()), HttpStatus.BAD_REQUEST);
 
         emailMessageService.sendMessage(email, SUBJECT, currentPerson.getConfirmationCode());
-            return new ResponseEntity<>(getOkResponse(), HttpStatus.OK);
+
+        return new ResponseEntity<>(getOkResponse(), HttpStatus.OK);
     }
 
     /** Тут и далее просто проверяем что в токен что-то пришло, а все манипуляции выполняем над пользователем с
@@ -105,8 +106,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     protected ResponseEntity getInternalErrorResponse() {
-        return new ResponseEntity<>(getErrorResponse(ErrorMessages.INTERROR.getTitle()),
-                                                      HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(getErrorResponse(ErrorMessages.INTERNAL.getTitle()),
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     protected ResponseEntity getUserInvalidResponse() {

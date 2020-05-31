@@ -41,6 +41,7 @@ databaseChangeLog:
               - column:
                   name: password
                   value: "$2y$12$M9qpxrVJmRqk/jaxq/F3beIRnF/C8J.NlR6S1TUk9u/bDO7n.CJpy"
+
               - column:
                   name: phone
                   value: "132456"

@@ -29,7 +29,7 @@ public class PlatformControllerTest {
                 .andExpect(jsonPath("$.total", Matchers.is(2)))
                 .andExpect(jsonPath("$.offset", Matchers.is(1)))
                 .andExpect(jsonPath("$.perPage", Matchers.is(20)))
-                .andExpect(jsonPath("$.data[0].id", Matchers.is(8)));
+                .andExpect(jsonPath("$.data[0].id", Matchers.is(3)));
     }
 
     @Test
@@ -61,7 +61,7 @@ public class PlatformControllerTest {
     public void getCities1() throws Exception {
 
         mvc.perform(MockMvcRequestBuilders.get("/api/v1/platform/cities")
-                .accept(MediaType.APPLICATION_JSON).param("countryId", "1").param("city", "o"))
+                .accept(MediaType.APPLICATION_JSON).param("countryId", "1").param("city", "o").param("offset","0"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.error", Matchers.is("done")))
                 .andExpect(jsonPath("$.total", Matchers.is(2)))

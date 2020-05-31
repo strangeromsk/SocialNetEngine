@@ -1,32 +1,37 @@
 package ru.skillbox.socialnetworkimpl.sn.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @Entity
 @Table(name = "post")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Post {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(length = 11)
-    private int id;
+    @Column(name = "id", nullable = false, updatable = false)
+    private Integer id;
 
-    @Column(name = "time", nullable = false)
-    private LocalDateTime time;
+    @CreationTimestamp
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDate time;
 
-    @Column(name = "author_id", nullable = false, length = 11)
-    private int authorId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private Person author;
 
-    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "post_text", nullable = false)
+    @Column(length = 4096)
     private String postText;
 
-    @Column(name = "is_blocked", nullable = false, columnDefinition = "BIT")
-    private byte isBlocked;
+    @Column(name = "is_blocked", nullable = false)
+    private boolean isBlocked;
 }
+

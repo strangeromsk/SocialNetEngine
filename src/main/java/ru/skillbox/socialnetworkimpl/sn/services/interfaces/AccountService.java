@@ -12,8 +12,8 @@ import java.util.HashMap;
 public interface AccountService {
 
     ResponseEntity<ResponsePlatformApi> signUpAccount(String email, String passwd1,
-                                  String passwd2, String firstName,
-                                  String lastName, String code);
+                                                      String passwd2, String firstName,
+                                                      String lastName, String code);
 
     ResponseEntity<ResponsePlatformApi> recoverPassword(String email);
 
@@ -37,6 +37,6 @@ public interface AccountService {
     }
 
     default ResponsePlatformApi getErrorResponse(String description) {
-         return ResponsePlatformApi.builder().error("invalid_request").error_description(description).build();
+        return ResponsePlatformApi.builder().error("invalid_request").error_description(description).build();
     }
 }
