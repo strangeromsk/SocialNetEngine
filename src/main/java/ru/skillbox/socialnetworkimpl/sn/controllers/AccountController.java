@@ -38,10 +38,9 @@ public class AccountController {
         return accountService.changeEmail(accEmail.getEmail());
     }
 
-    //TODO Непонятно у какого пользователя менять.
     @PutMapping("notifications")
-    public ResponseEntity<ResponsePlatformApi> changeNotifications(RegisterRequestBody notificationsBody) {
-        return null;
+    public ResponseEntity<ResponsePlatformApi> changeNotifications(@RequestBody RegisterRequestBody notificationsBody) {
+        return accountService.editNotifications(notificationsBody.getNotificationType(),notificationsBody.isEnable());
     }
 
 }

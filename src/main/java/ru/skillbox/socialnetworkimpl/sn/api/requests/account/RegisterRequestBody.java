@@ -1,5 +1,6 @@
 package ru.skillbox.socialnetworkimpl.sn.api.requests.account;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
@@ -12,7 +13,8 @@ public class RegisterRequestBody {
     private String code;
     private String password;
     private String token;
-    private String notification_type;
+    @JsonProperty("notification_type")
+    private String notificationType;
     private boolean enable;
 
 
