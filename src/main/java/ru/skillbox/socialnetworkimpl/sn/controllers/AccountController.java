@@ -3,7 +3,7 @@ package ru.skillbox.socialnetworkimpl.sn.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skillbox.socialnetworkimpl.sn.api.requests.account.RegisterRequestBody;
+import ru.skillbox.socialnetworkimpl.sn.api.requests.RegisterRequestBody;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.AccountService;
 
@@ -15,16 +15,15 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping("register")
-    public ResponseEntity<ResponsePlatformApi> signUpAccount (@RequestBody RegisterRequestBody newPerson) {
-       return accountService.signUpAccount(newPerson.getEmail(), newPerson.getPasswd1(),
+    public ResponseEntity<ResponsePlatformApi> signUpAccount(@RequestBody RegisterRequestBody newPerson) {
+        return accountService.signUpAccount(newPerson.getEmail(), newPerson.getPasswd1(),
                 newPerson.getPasswd2(), newPerson.getFirstName(), newPerson.getLastName(), newPerson.getCode());
     }
 
     @PutMapping("password/recovery")
-    public ResponseEntity<ResponsePlatformApi> recovePassword (@RequestBody RegisterRequestBody accEmail) {
+    public ResponseEntity<ResponsePlatformApi> recoverPassword(@RequestBody RegisterRequestBody accEmail) {
         return accountService.recoverPassword(accEmail.getEmail());
     }
-
 
     //TODO Тут и далее все манипуляции производятся над пользователем №1 до реализации Security
     @PutMapping("password/set")

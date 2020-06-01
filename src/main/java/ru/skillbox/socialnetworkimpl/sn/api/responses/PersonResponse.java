@@ -1,12 +1,14 @@
 package ru.skillbox.socialnetworkimpl.sn.api.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class PersonResponse {
 
     @NonNull private Integer id;
@@ -27,7 +29,7 @@ public class PersonResponse {
     private String phone;
     private String photo;
     private String about;
-    private CityResponse city;
+    private CityResponse town;
     private CountryResponse country;
 
     @JsonProperty("messages_permission")

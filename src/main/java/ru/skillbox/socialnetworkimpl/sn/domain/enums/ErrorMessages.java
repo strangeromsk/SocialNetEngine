@@ -2,7 +2,7 @@ package ru.skillbox.socialnetworkimpl.sn.domain.enums;
 
 
 public enum ErrorMessages {
-    INTERROR("Internal error"),
+    INTERNAL("Internal error"),
     USER_INVALID("User is invalid"),
     USER_EXISTS("User already exist"),
     USER_NOTEXIST("User does not exist"),

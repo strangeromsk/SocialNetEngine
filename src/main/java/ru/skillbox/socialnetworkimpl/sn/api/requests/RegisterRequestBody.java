@@ -1,4 +1,4 @@
-package ru.skillbox.socialnetworkimpl.sn.api.requests.account;
+package ru.skillbox.socialnetworkimpl.sn.api.requests;
 
 import lombok.Data;
 

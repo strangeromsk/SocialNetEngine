@@ -3,6 +3,7 @@ package ru.skillbox.socialnetworkimpl.sn.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import ru.skillbox.socialnetworkimpl.sn.domain.City;
 import ru.skillbox.socialnetworkimpl.sn.domain.Country;
 
 import java.util.List;

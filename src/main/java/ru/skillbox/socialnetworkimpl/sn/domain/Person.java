@@ -4,14 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 import ru.skillbox.socialnetworkimpl.sn.domain.enums.MessagesPermission;
-
 import javax.persistence.*;
-import java.sql.Blob;
-import java.sql.Clob;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -24,10 +21,10 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(length = 11)
-    private int id;
+    private Integer id;
 
     @Column(name = "first_name", nullable = false)
-    private String fistName;
+    private String firstName;
 
     @Column(name = "last_name", nullable = false)
     private String lastName;
@@ -41,8 +38,8 @@ public class Person {
     @Column(name = "e_mail", nullable = false)
     private String email;
 
-    @Column(length = 11)
-    private int phone;
+    @Column(nullable = false, length = 11)
+    private String phone;
 
     @Column(nullable = false)
     private String password;
@@ -53,14 +50,15 @@ public class Person {
     @Column(length = 2048)
     private String about;
 
-    @Column(length = 45)
-    private String town;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "town", nullable = false)
+    private City town;
 
     @Column(name = "confirmation_code", nullable = false, length = 45)
     private String confirmationCode;
 
     @Column(name = "is_approved")
-    private byte isApproved;
+    private boolean isApproved;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "messages_permission")
@@ -70,5 +68,11 @@ public class Person {
     private LocalDateTime lastOnlineTime;
 
     @Column(name = "is_blocked", nullable = false)
-    private byte isBlocked;
+    private boolean isBlocked;
+
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Post> posts;
 }

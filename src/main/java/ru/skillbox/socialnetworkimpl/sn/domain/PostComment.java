@@ -34,7 +34,7 @@ public class PostComment {
     @Column(name = "comment_text", nullable = false)
     private String commentText;
 
-    @Column(name = "is_blocked", nullable = false, columnDefinition = "BIT")
-    private byte isBlocked;
+    @Column(name = "is_blocked", nullable = false)
+    private boolean isBlocked;
 
 }
