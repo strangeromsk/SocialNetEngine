@@ -3,7 +3,7 @@ package ru.skillbox.socialnetworkimpl.sn.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skillbox.socialnetworkimpl.sn.api.requests.account.RegisterRequestBody;
+import ru.skillbox.socialnetworkimpl.sn.api.requests.RegisterRequestBody;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.AccountService;
 
@@ -21,7 +21,6 @@ public class AccountController {
     }
 
     @PutMapping("password/recovery")
-
     public ResponseEntity<ResponsePlatformApi> recoverPassword(@RequestBody RegisterRequestBody accEmail) {
         return accountService.recoverPassword(accEmail.getEmail());
     }

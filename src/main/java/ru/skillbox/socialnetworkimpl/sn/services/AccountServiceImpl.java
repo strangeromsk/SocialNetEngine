@@ -1,4 +1,5 @@
 package ru.skillbox.socialnetworkimpl.sn.services;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,6 @@ import ru.skillbox.socialnetworkimpl.sn.domain.enums.MessagesPermission;
 import ru.skillbox.socialnetworkimpl.sn.repositories.PersonRepository;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.AccountService;
 
-import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 
@@ -39,7 +39,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public ResponseEntity<ResponsePlatformApi> recoverPassword (String email) {
+    public ResponseEntity<ResponsePlatformApi> recoverPassword(String email) {
         if (!isEmailCorrect(email))
             return getIncorrectEmailResponse();
 
@@ -52,10 +52,11 @@ public class AccountServiceImpl implements AccountService {
         return new ResponseEntity<>(getOkResponse(), HttpStatus.OK);
     }
 
-    /** Тут и далее просто проверяем что в токен что-то пришло, а все манипуляции выполняем над пользователем с
-     *  id = 1 **/
+    /**
+     * Тут и далее просто проверяем что в токен что-то пришло, а все манипуляции выполняем над пользователем с
+     * id = 1
+     **/
     //TODO Тут и далее: переделать на получение пользователя в зависимости от токена после реализации Security
-
     @Override
     @Transactional
     public ResponseEntity<ResponsePlatformApi> setPassword(String token, String password) {
