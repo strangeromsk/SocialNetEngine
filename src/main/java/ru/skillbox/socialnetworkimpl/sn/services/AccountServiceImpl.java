@@ -12,6 +12,7 @@ import ru.skillbox.socialnetworkimpl.sn.domain.NotificationSettings;
 import ru.skillbox.socialnetworkimpl.sn.domain.Person;
 import ru.skillbox.socialnetworkimpl.sn.domain.enums.ErrorMessages;
 import ru.skillbox.socialnetworkimpl.sn.domain.enums.MessagesPermission;
+import ru.skillbox.socialnetworkimpl.sn.domain.enums.NotificationTypeCode;
 import ru.skillbox.socialnetworkimpl.sn.repositories.NotificationSettingsRepository;
 import ru.skillbox.socialnetworkimpl.sn.repositories.NotificationTypeRepository;
 import ru.skillbox.socialnetworkimpl.sn.repositories.PersonRepository;
@@ -110,10 +111,21 @@ public class AccountServiceImpl implements AccountService {
         if (currentUser == null) {
             return getUserInvalidResponse();
         }
-        int notificationTypeId = notificationTypeRepository.findByName(notificationType).getId();
-        NotificationSettings notificationSettings = NotificationSettings.builder()
-                .personId(currentUser.getId()).notificationTypeId(notificationTypeId).enable(enable).build();
-        notificationSettingsRepository.save(notificationSettings);
+        int notificationTypeId = notificationTypeRepository.findByCode(NotificationTypeCode.valueOf(notificationType)).getId();
+
+        NotificationSettings currentSettings = notificationSettingsRepository.findByPersonIdAndNotificationTypeId
+                (currentUser.getId(), notificationTypeId);
+
+        if (currentSettings != null) {
+            currentSettings.setEnable(enable);
+            notificationSettingsRepository.save(currentSettings);
+        }
+        else {
+            NotificationSettings notificationSettings = NotificationSettings.builder()
+                    .personId(currentUser.getId()).notificationTypeId(notificationTypeId).enable(enable).build();
+            notificationSettingsRepository.save(notificationSettings);
+        }
+
         return new ResponseEntity<>(getOkResponse(), HttpStatus.OK);
     }
 
@@ -122,10 +134,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     public Person getCurrentUser() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().
+        String userDetails = (String) SecurityContextHolder.getContext().
                 getAuthentication().getPrincipal();
 
-        return personRepository.findByEmail(userDetails.getUsername());
+        return personRepository.findByEmail(userDetails);
     }
 
     protected ResponseEntity getInternalErrorResponse() {

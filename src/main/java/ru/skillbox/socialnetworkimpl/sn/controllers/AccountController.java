@@ -41,10 +41,4 @@ public class AccountController {
     public ResponseEntity<ResponsePlatformApi> changeNotifications(@RequestBody RegisterRequestBody notificationsBody) {
         return accountService.editNotifications(notificationsBody.getNotificationType(),notificationsBody.isEnable());
     }
-
-    @GetMapping ("")
-    public void getCurrentUser()
-    {
-        System.out.println(accountService.getCurrentUser().getEmail());
-    }
 }

@@ -5,5 +5,7 @@ import org.springframework.stereotype.Repository;
 import ru.skillbox.socialnetworkimpl.sn.domain.NotificationSettings;
 
 @Repository
-public interface NotificationSettingsRepository extends JpaRepository<NotificationSettings, Integer> {
+public interface NotificationSettingsRepository extends JpaRepository<NotificationSettings, Integer>
+{
+    NotificationSettings findByPersonIdAndNotificationTypeId(int personId, int notisicationTypeId);
 }
