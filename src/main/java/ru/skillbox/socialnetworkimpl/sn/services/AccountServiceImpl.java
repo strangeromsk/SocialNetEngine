@@ -4,7 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestHeader;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 import ru.skillbox.socialnetworkimpl.sn.domain.NotificationSettings;
 import ru.skillbox.socialnetworkimpl.sn.domain.Person;
@@ -18,10 +20,13 @@ import ru.skillbox.socialnetworkimpl.sn.services.interfaces.AccountService;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Component
 public class AccountServiceImpl implements AccountService {
     private final String SUBJECT = "This is you password recovery code";
+
+    private BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     private PersonRepository personRepository;
@@ -34,7 +39,8 @@ public class AccountServiceImpl implements AccountService {
     private NotificationTypeRepository notificationTypeRepository;
 
     @Override
-    public ResponseEntity<ResponsePlatformApi> signUpAccount(String email, String passwd1, String passwd2, String firstName, String lastName, String code) {
+    public ResponseEntity<ResponsePlatformApi> signUpAccount(String email, String passwd1, String passwd2,
+                                                             String firstName, String lastName, String code) {
         if (!passwd1.equals(passwd2) || !isEmailCorrect(email)) {
             return new ResponseEntity<>(getErrorResponse(ErrorMessages.PASS_EMAIL_INC.getTitle())
                     , HttpStatus.BAD_REQUEST);
@@ -43,7 +49,12 @@ public class AccountServiceImpl implements AccountService {
             return new ResponseEntity<>(getErrorResponse(ErrorMessages.USER_EXISTS.getTitle()), HttpStatus.BAD_REQUEST);
 
         personRepository.save(Person.builder().email(email).firstName(firstName).lastName(lastName)
-                .confirmationCode(code).password(passwd1).regDate(LocalDate.now())
+                .confirmationCode(code).password(bcryptEncoder.encode(passwd1))
+                .regDate(LocalDate.now())
+                .isBlocked(false)
+                .isDeleted(false)
+                .isApproved(true)
+                .lastOnlineTime(LocalDateTime.now())
                 .messagesPermission(MessagesPermission.ALL).build());
         return new ResponseEntity<>(getOkResponse(), HttpStatus.OK);
     }
@@ -69,7 +80,7 @@ public class AccountServiceImpl implements AccountService {
             return getUserInvalidResponse();
 
         Person currentUser = getCurrentUser();
-        currentUser.setPassword(password);
+        currentUser.setPassword(bcryptEncoder.encode(password));
         personRepository.save(currentUser);
 
         return new ResponseEntity<>(getOkResponse(), HttpStatus.OK);

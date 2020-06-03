@@ -1,9 +1,11 @@
 package ru.skillbox.socialnetworkimpl.sn.api.requests.account;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RegisterRequestBody {
     private String email;
     private String passwd1;
