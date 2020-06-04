@@ -1,4 +1,4 @@
-package ru.skillbox.socialnetworkimpl.sn.api.requests.account;
+package ru.skillbox.socialnetworkimpl.sn.api.requests;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

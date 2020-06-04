@@ -1,4 +1,5 @@
 package ru.skillbox.socialnetworkimpl.sn.services;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,6 @@ import ru.skillbox.socialnetworkimpl.sn.repositories.NotificationTypeRepository;
 import ru.skillbox.socialnetworkimpl.sn.repositories.PersonRepository;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.AccountService;
 
-import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -61,7 +61,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public ResponseEntity<ResponsePlatformApi> recoverPassword (String email) {
+    public ResponseEntity<ResponsePlatformApi> recoverPassword(String email) {
         if (!isEmailCorrect(email))
             return getIncorrectEmailResponse();
 

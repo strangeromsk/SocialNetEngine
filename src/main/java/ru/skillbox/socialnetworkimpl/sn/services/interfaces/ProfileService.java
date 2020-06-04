@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PersonRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
+
 import javax.servlet.http.HttpSession;
 
 public interface ProfileService {
