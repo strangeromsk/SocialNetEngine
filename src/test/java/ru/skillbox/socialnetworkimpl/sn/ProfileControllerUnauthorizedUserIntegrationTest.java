@@ -5,11 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -17,65 +14,65 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ProfileControllerIntegrationTest {
-
+public class ProfileControllerUnauthorizedUserIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    @WithUserDetails("manovich@mail.ru")
     public void getCurrentUserTest() throws Exception {
         mockMvc.perform(
                 get("/api/v1/users/me")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.error").value("string"))
-                .andExpect(jsonPath("$.data").exists())
-                .andExpect(jsonPath("$.data.id").isNotEmpty());
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.error").value("invalid_request"));
     }
 
     @Test
-    @WithUserDetails("manovich@mail.ru")
     public void editCurrentUserTest() throws Exception {
+        String requestBody = "{\n" +
+                "  \"first_name\": \"Qwe\",\n" +
+                "  \"last_name\": \"Asd\",\n" +
+                "  \"birth_date\": 1559751301818,\n" +
+                "  \"phone\": \"89100000000\",\n" +
+                "  \"photo\": \"photo\",\n" +
+                "  \"about\": \"Родился в небольшой, но честной семье\",\n" +
+                "  \"town_id\": 1,\n" +
+                "  \"country_id\": 1,\n" +
+                "  \"messages_permission\": \"ALL\"\n" +
+                "}";
         mockMvc.perform(
                 put("/api/v1/users/me")
+                        .content(requestBody)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.error").value("Ok"))
-                .andExpect(jsonPath("$.data").exists())
-                .andExpect(jsonPath("$.data.id").isNotEmpty());
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.error").value("invalid_request"));
     }
 
     @Test
-    @WithUserDetails("manovich@mail.ru")
     public void deleteCurrentUserTest() throws Exception {
         mockMvc.perform(
                 delete("/api/v1/users/me")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.error").value("Ok"))
-                .andExpect(jsonPath("$.data").exists())
-                .andExpect(jsonPath("$.data.message").value("ok"));
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.error").value("invalid_request"));
     }
 
     @Test
-    @WithUserDetails("manovich@mail.ru")
     public void getUserByIdTest() throws Exception {
         mockMvc.perform(
                 get("/api/v1/users/{id}", 1)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.error").value("Ok"))
-                .andExpect(jsonPath("$.data").exists())
-                .andExpect(jsonPath("$.data.id").value(1));
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.error").value("invalid_request"));
     }
 
     @Test
-    @WithUserDetails("manovich@mail.ru")
     public void getPersonsWallPostsTest() throws Exception {
         mockMvc.perform(
                 get("/api/v1/users/{id}/wall", 1)
@@ -83,37 +80,28 @@ public class ProfileControllerIntegrationTest {
                         .param("itemPerPage", "5")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.error").value("Ok"))
-                .andExpect(jsonPath("$.data[0]").exists());
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.error").value("invalid_request"));
     }
 
     @Test
-    @WithUserDetails("manovich@mail.ru")
     public void addPostToUsersWallTest() throws Exception {
         String requestBody = "{\n" +
-                "  \"title\": \"string\",\n" +
-                "  \"post_text\": \"string\"\n" +
+                "  \"title\": \"asd\",\n" +
+                "  \"post_text\": \"asd\"\n" +
                 "}";
         mockMvc.perform(
                 post("/api/v1/users/{id}/wall", 2)
-                        .param("publishDate", "10-10-2020")
+                        .param("publishDate", "1559751301818")
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf())
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(authenticated())
-                .andExpect(jsonPath("$.error").value("Ok"))
-                .andExpect(jsonPath("$.data[0]").exists())
-                .andExpect(jsonPath("$.data.title").value("string"))
-                .andExpect(jsonPath("$.data.post_text").value("string"))
-                .andExpect(jsonPath("$data[0].author.id").value(2));
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.error").value("invalid_request"));
     }
 
     @Test
-    @WithUserDetails("manovich@mail.ru")
     public void searchPersonTest() throws Exception {
         mockMvc.perform(
                 get("/api/v1/users/search/")
@@ -127,8 +115,27 @@ public class ProfileControllerIntegrationTest {
                         .param("itemPerPage", "20")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data[0].first_name").value("Paul"))
-                .andExpect(jsonPath("$.data[0].last_name").value("Estiner"));
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.error").value("invalid_request"));
+    }
+
+    @Test
+    public void blockUserByIdTest() throws Exception {
+        mockMvc.perform(
+                put("/api/v1/users/block/{id}", 2)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.error").value("invalid_request"));
+    }
+
+    @Test
+    public void unblockUserByIdTest() throws Exception {
+        mockMvc.perform(
+                delete("/api/v1/users/block/{id}", 2)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.error").value("invalid_request"));
     }
 }
