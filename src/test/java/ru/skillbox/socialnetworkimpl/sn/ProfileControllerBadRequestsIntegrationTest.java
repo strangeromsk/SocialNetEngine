@@ -35,12 +35,11 @@ public class ProfileControllerBadRequestsIntegrationTest {
     @Test
     public void addPostToUsersWallTest() throws Exception {
         String requestBody = "{\n" +
-                "  \"123\": \"asd\",\n" +
+                "  \"title\": \"asd\",\n" +
                 "  \"post_text\": \"asd\"\n" +
                 "}";
         mockMvc.perform(
-                post("/api/v1/users/{id}/wall", -5)
-                        .param("publishDate", "1559751301818")
+                post("/api/v1/users/{id}/wall", 2)
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
