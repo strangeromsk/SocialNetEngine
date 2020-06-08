@@ -1,0 +1,19 @@
+stages:
+    - build
+    - test
+    
+
+build:
+    stage: build
+    only:
+        - merge_requests
+    script: "mvn clean package -DskipTests"
+
+
+test:
+    stage: test
+    only:
+        - merge_requests
+    script:
+        - echo "Test"
+
