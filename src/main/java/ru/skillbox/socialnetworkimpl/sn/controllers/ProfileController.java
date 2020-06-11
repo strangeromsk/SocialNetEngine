@@ -47,7 +47,7 @@ public class ProfileController {
         return profileService.getUserById(request.getSession(), id);
     }
 
-    @GetMapping(value = "{id}/wall", params = {"offset", "itemPerPage"})
+    @GetMapping(value = "{id}/wall", params = {"offset"})
     public ResponseEntity<ResponsePlatformApi> getPersonsWallPosts(
             HttpServletRequest request,
             @PathVariable("id") int id,
@@ -66,7 +66,7 @@ public class ProfileController {
     }
 
     @GetMapping(value = "search/", params = {"first_name", "last_name", "age_from", "age_to",
-            "country_id", "city_id", "offset", "itemPerPage"})
+            "country_id", "city_id", "offset"})
     public ResponseEntity<ResponsePlatformApi> searchPerson(
             HttpServletRequest request,
             @RequestParam("first_name") String firstName,

@@ -6,11 +6,12 @@ import ru.skillbox.socialnetworkimpl.sn.api.responses.PostCommentResponse;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.PostResponse;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PostService {
     // Поиск публикации
-    List<PostResponse> searchPublication(String text, Long dateFrom, Long dateTo, int offset, int itemPerPage);
+    List<PostResponse> searchPublication(String text, long dateFrom, long dateTo, int offset, int itemPerPage);
     // Получение публикации по ID
     PostResponse getPublication(int id);
     // Получение комментариев на публикации
