@@ -7,7 +7,14 @@ import ru.skillbox.socialnetworkimpl.sn.domain.Post;
 
 import java.util.List;
 
-@Mapper(uses = {DataMapper.class, PersonsMapper.class})
+@Mapper(
+        uses = {
+                DataMapper.class,
+                PersonMapper.class,
+                PostCommentMapper.class
+        }
+)
+
 public interface PostMapper {
     PostResponse postToPostResponse(Post post);
     List<PostResponse> postToPostResponse(List<Post> posts);

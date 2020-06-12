@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skillbox.socialnetworkimpl.sn.api.requests.CommentRequest;
+import ru.skillbox.socialnetworkimpl.sn.api.requests.PostCommentRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.PostCommentResponse;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.PostResponse;
@@ -128,9 +128,9 @@ public class PostController {
     }
 
     @PostMapping("{id}/comments")
-    public ResponseEntity<ResponsePlatformApi> createComment(@PathVariable int id, @RequestBody CommentRequest commentRequest) {
+    public ResponseEntity<ResponsePlatformApi> createComment(@PathVariable int id, @RequestBody PostCommentRequest postCommentRequest) {
         log.info("Creating a comment for a post: ID={}", id);
-        PostCommentResponse comment = postService.createComment(id, commentRequest);
+        PostCommentResponse comment = postService.createComment(id, postCommentRequest);
         return new ResponseEntity<>(ResponsePlatformApi.builder().error("Creating a comment").timestamp(new Date().getTime()).data(comment).build(), HttpStatus.OK);
     }
 

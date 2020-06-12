@@ -3,22 +3,26 @@ package ru.skillbox.socialnetworkimpl.sn.services;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.skillbox.socialnetworkimpl.sn.api.requests.CommentRequest;
+import ru.skillbox.socialnetworkimpl.sn.api.requests.PostCommentRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.CountryResponse;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.PostCommentResponse;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.PostResponse;
 import ru.skillbox.socialnetworkimpl.sn.domain.Country;
 import ru.skillbox.socialnetworkimpl.sn.domain.Post;
+import ru.skillbox.socialnetworkimpl.sn.domain.PostComment;
+import ru.skillbox.socialnetworkimpl.sn.repositories.CommentRepository;
 import ru.skillbox.socialnetworkimpl.sn.repositories.CountryRepository;
 import ru.skillbox.socialnetworkimpl.sn.repositories.PostRepository;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.PostService;
+import ru.skillbox.socialnetworkimpl.sn.services.mappers.PostCommentMapper;
 import ru.skillbox.socialnetworkimpl.sn.services.mappers.PostMapper;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -31,8 +35,10 @@ public class PostServiceImpl implements PostService {
 
 
     private PostRepository postRepository;
+    private CommentRepository commentRepository;
     private PostMapper postMapper;
     private CountryRepository countryRepository;
+    private PostCommentMapper postCommentMapper;
 
 
     @Override
@@ -98,9 +104,31 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostCommentResponse createComment(int id, CommentRequest commentRequest) {
+    public PostCommentResponse createComment(int id, PostCommentRequest postCommentRequest) {
         Post post = postRepository.getOne(id);
+        //PostComment postComment = postCommentMapper.commentRequestToPostComment(postCommentRequest);
+        PostComment postComment = new PostComment();
 
+                                    postComment.setPostId(post);
+
+                                    log.info("Author: {} ", post.getAuthor().getId());
+                                    postComment.setAuthorId(post.getAuthor());
+
+
+        PostComment parent = commentRepository.findById(postCommentRequest.getParentId()).orElse(null);
+        log.info("Parent {}", parent.getPostId().getId());
+                                    postComment.setParentId(parent);
+
+            if (postCommentRequest != null) log.info("Comment text: {}", postCommentRequest.getCommentText());
+            else log.info("Trable!!!!!");
+                                    postComment.setCommentText(postCommentRequest.getCommentText());
+        LocalDateTime time = LocalDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault());
+                                    postComment.setTime(time);
+
+
+
+        commentRepository.save(postComment);
+        PostCommentResponse ps = postCommentMapper.postCommentToCommentResponse(postComment);
         return null;
     }
 

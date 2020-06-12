@@ -1,6 +1,8 @@
 package ru.skillbox.socialnetworkimpl.sn.domain;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.DiscriminatorFormula;
 
 import javax.persistence.*;
@@ -22,14 +24,17 @@ public class PostComment {
     @Column(name = "time", nullable = false)
     private LocalDateTime time;
 
-    @Column(name = "post_id", nullable = false, length = 11)
-    private int postId;
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post postId;
 
-    @Column(name = "parent_id", length = 11)
-    private Integer parentId;
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private PostComment parentId;
 
-    @Column(name = "author_id", nullable = false, length = 11)
-    private int authorId;
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
+    private Person authorId;
 
     @Column(name = "comment_text", nullable = false)
     private String commentText;

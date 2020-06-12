@@ -1,12 +1,10 @@
 package ru.skillbox.socialnetworkimpl.sn.services.interfaces;
 
-import ru.skillbox.socialnetworkimpl.sn.api.requests.CommentRequest;
+import ru.skillbox.socialnetworkimpl.sn.api.requests.PostCommentRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.PostCommentResponse;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.PostResponse;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PostService {
@@ -29,7 +27,7 @@ public interface PostService {
     // Восстановление комментария
     PostCommentResponse recoverComment(int id, int commentId);
     // Создание комментария к публикации
-    PostCommentResponse createComment(int id, CommentRequest commentRequest);
+    PostCommentResponse createComment(int id, PostCommentRequest postCommentRequest);
     // Подать жалобу на публикацию
     void reportPost(int id);
     // Подать жалобу на комментарий к публикации
