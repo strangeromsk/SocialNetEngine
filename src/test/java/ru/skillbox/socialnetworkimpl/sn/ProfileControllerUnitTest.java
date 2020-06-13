@@ -62,7 +62,7 @@ public class ProfileControllerUnitTest {
 
     @Test
     public void addPostToUsersWallTest() {
-        controller.addPostToUsersWall(request, 0, 0L, postRequest);
+        controller.addPostToUsersWall(request, 0, 0, postRequest);
         verify(service).addPostToUsersWall(request.getSession(), 0, 0L, postRequest);
     }
 
