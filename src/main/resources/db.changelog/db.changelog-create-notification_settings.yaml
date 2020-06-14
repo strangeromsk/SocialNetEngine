@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - logicalFilePath: db.changelog/db.changelog-create-notification_settings.yaml
+  - changeSet:
+      id: 01/06/1
+      author: snet
+      changes:
+        - createTable:
+            tableName: notification_settings
+            columns:
+              - column:
+                  name: id
+                  type: int(11)
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: person_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: notification_type_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: enable
+                  type: boolean
+                  constraints:
+                    nullable: false
+
