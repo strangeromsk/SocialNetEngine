@@ -1,19 +1,21 @@
 package ru.skillbox.socialnetworkimpl.sn.services.interfaces;
 
+import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PostCommentRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequest;
-import ru.skillbox.socialnetworkimpl.sn.api.responses.PostCommentResponse;
+import ru.skillbox.socialnetworkimpl.sn.api.responses.CommentResponse;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.PostResponse;
 
 import java.util.List;
 
+@Service
 public interface PostService {
     // Поиск публикации
     List<PostResponse> searchPublication(String text, long dateFrom, long dateTo, int offset, int itemPerPage);
     // Получение публикации по ID
     PostResponse getPublication(int id);
     // Получение комментариев на публикации
-    List<PostCommentResponse> getComments(int id, int offset, int itemPerPage);
+    List<CommentResponse> getComments(int id, int offset, int itemPerPage);
     // Удаление публикации
     void deletePost(int id);
     // Удаление комментария к публикации
@@ -23,11 +25,11 @@ public interface PostService {
     // Восстановление публикации по ID
     PostResponse recoverPost(int id);
     // Редактирование комментария к публикации
-    PostCommentResponse editComment(int id, int commentId);
+    CommentResponse editComment(int id, int commentId, PostCommentRequest commentRequest);
     // Восстановление комментария
-    PostCommentResponse recoverComment(int id, int commentId);
+    CommentResponse recoverComment(int id, int commentId);
     // Создание комментария к публикации
-    PostCommentResponse createComment(int id, PostCommentRequest postCommentRequest);
+    CommentResponse createComment(int id, PostCommentRequest postCommentRequest);
     // Подать жалобу на публикацию
     void reportPost(int id);
     // Подать жалобу на комментарий к публикации

@@ -11,7 +11,7 @@ import java.util.List;
         uses = {
                 DataMapper.class,
                 PersonMapper.class,
-                PostCommentMapper.class
+                CommentMapper.class
         }
 )
 
