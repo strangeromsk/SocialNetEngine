@@ -12,7 +12,6 @@ import java.util.List;
 
 
 @Repository
-@Transactional
 public interface PersonRepository extends JpaRepository<Person, Integer> {
     Person findByEmail(String email);
 

@@ -45,3 +45,6 @@ databaseChangeLog:
   - include:
       file: db.changelog-insert-data-post.yaml
       relativeToChangelogFile: true
+  - include:
+      file: db.changelog-create-notification_settings.yaml
+      relativeToChangelogFile: true
