@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EmailMessageService {
+//    временный костыль
     private JavaMailSender emailSender = new JavaMailSenderImpl();
 
     public void sendMessage(String sentTo, String subject, String text) throws MailException {
