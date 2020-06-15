@@ -2,7 +2,6 @@ package ru.skillbox.socialnetworkimpl.sn.services;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PostCommentRequest;
@@ -28,9 +27,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * заглушка Post Service
- */
 @Slf4j
 @Service
 @AllArgsConstructor
@@ -52,6 +48,12 @@ public class PostServiceImpl implements PostService {
         List<PostResponse> ps = postMapper.postToPostResponse(posts);
         for (int i = 0; i < posts.size(); i++) {
             setCountry(posts.get(i), ps.get(i));
+            List<PostComment> postComments = commentRepository.findAllByPostId(postRepository.getOne(posts.get(i).getId()));
+            List<CommentResponse> list = null;
+            if (!postComments.isEmpty()) {
+                list = postComments.stream().map(commentMapper::commentToCommentResponse).collect(Collectors.toList());
+            }
+            ps.get(i).setCommentResponses(list);
         }
         return ps;
     }
@@ -62,6 +64,9 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.getOne(id);
         PostResponse ps = postMapper.postToPostResponse(post);
         setCountry(post, ps);
+        List<PostComment> comment = commentRepository.findAllByPostId(post);
+        List<CommentResponse> list = comment.stream().map(commentMapper::commentToCommentResponse).collect(Collectors.toList());
+        ps.setCommentResponses(list);
         return ps;
     }
 

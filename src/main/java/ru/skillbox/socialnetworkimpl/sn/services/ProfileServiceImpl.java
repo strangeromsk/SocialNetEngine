@@ -11,21 +11,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PersonRequest;
+import ru.skillbox.socialnetworkimpl.sn.api.requests.PostCommentRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.*;
 import ru.skillbox.socialnetworkimpl.sn.domain.Country;
 import ru.skillbox.socialnetworkimpl.sn.domain.Person;
 import ru.skillbox.socialnetworkimpl.sn.domain.Post;
-import ru.skillbox.socialnetworkimpl.sn.repositories.CityRepository;
-import ru.skillbox.socialnetworkimpl.sn.repositories.CountryRepository;
-import ru.skillbox.socialnetworkimpl.sn.repositories.PersonRepository;
-import ru.skillbox.socialnetworkimpl.sn.repositories.PostRepository;
+import ru.skillbox.socialnetworkimpl.sn.domain.PostComment;
+import ru.skillbox.socialnetworkimpl.sn.repositories.*;
 import ru.skillbox.socialnetworkimpl.sn.security.UserDetailsServiceImpl;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.ProfileService;
-import ru.skillbox.socialnetworkimpl.sn.services.mappers.DataMapper;
-import ru.skillbox.socialnetworkimpl.sn.services.mappers.PersonMapper;
-import ru.skillbox.socialnetworkimpl.sn.services.mappers.PersonsMapper;
-import ru.skillbox.socialnetworkimpl.sn.services.mappers.PostMapper;
+import ru.skillbox.socialnetworkimpl.sn.services.mappers.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpSession;
@@ -37,11 +33,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 
 @Slf4j
 @Service
 public class ProfileServiceImpl implements ProfileService {
+    @Autowired
+    private CommentMapper commentMapper;
+    @Autowired
+    private PostCommentRepository commentRepository;
     @Autowired
     private PersonRepository personRepository;
     @Autowired
@@ -80,7 +81,7 @@ public class ProfileServiceImpl implements ProfileService {
 
         Converter<Long, LocalDate> toLocalDate = new AbstractConverter<Long, LocalDate>() {
             protected LocalDate convert(Long source) {
-                return LocalDate.ofEpochDay(source/86_400_000);
+                return LocalDate.ofEpochDay(source / 86_400_000);
             }
         };
 
@@ -198,8 +199,11 @@ public class ProfileServiceImpl implements ProfileService {
         Post post = postMapper.requestPostToPost(postRequest);
         post.setAuthor(person);
         post.setTime(dataMapper.asLocalDate(publishDate));
+        Country country = countryRepository.getOne(post.getAuthor().getTown().getCountryId());
+        CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
         postRepository.save(post);
         PostResponse postResponse = postMapper.postToPostResponse(post);
+        postResponse.getAuthor().setCountry(countryResponse);
         ResponsePlatformApi platformApi = ResponsePlatformApi.builder()
                 .error("Ok")
                 .timestamp(new Date().getTime())
