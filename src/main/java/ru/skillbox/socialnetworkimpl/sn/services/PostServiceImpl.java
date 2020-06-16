@@ -92,9 +92,7 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public void deleteComment(int id, int commentId) {
-        PostComment postComment = commentRepository.getOne(commentId);
-        postComment.setDeleted(true);
-        commentRepository.save(postComment);
+        modificationComment(commentId, true);
     }
 
     @Override
@@ -113,7 +111,14 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse recoverPost(int id) {
-        return null;
+        Post post = postRepository.getOne(id);
+        post.setDeleted(false);
+        postRepository.save(post);
+        List<PostComment> postComments = post.getComments();
+        PostResponse ps = postMapper.postToPostResponse(post);
+        ps.setCommentResponses(commentMapper.commentToCommentResponse(postComments));
+        postRepository.save(post);
+        return  ps;
     }
 
     @Override
@@ -130,7 +135,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public CommentResponse recoverComment(int id, int commentId) {
-        return null;
+        PostComment ps = modificationComment(commentId, false);
+        return commentMapper.commentToCommentResponse(ps);
     }
 
     @Override
@@ -148,7 +154,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void reportComment(int id, int commentId) {
-
     }
 
     private void setCountry(Post post, PostResponse postResponse) {
@@ -169,6 +174,13 @@ public class PostServiceImpl implements PostService {
         postComment.setCommentText(ps.getCommentText());
         LocalDateTime time = LocalDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault());
         postComment.setTime(time);
+        return postComment;
+    }
+
+    private PostComment modificationComment(int id, boolean status) {
+        PostComment postComment = commentRepository.getOne(id);
+        postComment.setDeleted(status);
+        commentRepository.save(postComment);
         return postComment;
     }
 }
