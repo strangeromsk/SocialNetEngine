@@ -36,6 +36,9 @@ public class Post {
     @Column(name = "is_blocked", nullable = false)
     private boolean isBlocked;
 
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted;
+
     @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<PostComment> comments;
 }

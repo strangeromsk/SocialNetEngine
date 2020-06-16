@@ -1,8 +1,6 @@
 package ru.skillbox.socialnetworkimpl.sn.domain;
 
-import lombok.Builder;
 import lombok.Data;
-import lombok.ToString;
 import org.hibernate.annotations.DiscriminatorFormula;
 
 import javax.persistence.*;
@@ -41,5 +39,8 @@ public class PostComment {
 
     @Column(name = "is_blocked", nullable = false)
     private boolean isBlocked;
+
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted;
 
 }

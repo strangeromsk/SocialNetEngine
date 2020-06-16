@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class PostCommentRequest {
     @JsonProperty("parent_id")
-    private int parentId;
+    private Integer parentId;
     @JsonProperty("comment_text")
     private String commentText;
 }

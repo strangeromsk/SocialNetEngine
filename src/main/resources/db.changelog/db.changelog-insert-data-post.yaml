@@ -22,7 +22,10 @@ databaseChangeLog:
                   value: "My name is Bob!"
               - column:
                   name: is_blocked
-                  value: "0"
+                  value: false
+              - column:
+                  name: is_deleted
+                  value: false
         - insert:
             tableName: post
             columns:
@@ -40,4 +43,7 @@ databaseChangeLog:
                   value: "My friend is Sam!"
               - column:
                   name: is_blocked
-                  value: "0"
+                  value: false
+              - column:
+                  name: is_deleted
+                  value: false

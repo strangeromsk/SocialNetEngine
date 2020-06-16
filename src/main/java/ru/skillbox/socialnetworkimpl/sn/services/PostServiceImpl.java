@@ -82,18 +82,19 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public void deletePost(int id) {
         Post post = postRepository.getOne(id);
-        if (post.isBlocked()) {
-            throw new EntityNotFoundException("Post is already blocked");
-        }
-        post.setBlocked(true);
+        post.setDeleted(true);
         postRepository.save(post);
     }
 
     @Override
+    @Transactional
     public void deleteComment(int id, int commentId) {
-
+        PostComment postComment = commentRepository.getOne(commentId);
+        postComment.setDeleted(true);
+        commentRepository.save(postComment);
     }
 
     @Override
@@ -160,7 +161,10 @@ public class PostServiceImpl implements PostService {
         PostComment postComment = new PostComment();
         postComment.setPostId(post);
         postComment.setAuthorId(post.getAuthor());
-        PostComment parent = commentRepository.findById(ps.getParentId()).orElseThrow(() -> new EntityNotFoundException("The parent message is missing"));
+        PostComment parent = null;
+        if (ps.getParentId() != null)  {
+            parent = commentRepository.findById(ps.getParentId()).orElseThrow(() -> new EntityNotFoundException("The parent message is missing"));
+        }
         postComment.setParentId(parent);
         postComment.setCommentText(ps.getCommentText());
         LocalDateTime time = LocalDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault());

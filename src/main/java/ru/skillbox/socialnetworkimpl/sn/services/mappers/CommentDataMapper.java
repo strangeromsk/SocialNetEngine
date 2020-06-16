@@ -14,6 +14,6 @@ public class CommentDataMapper {
         return post != null ? post.getId() : 0;
     }
     public Integer asInteger(PostComment postComment) {
-        return postComment != null ? postComment.getId() : 1;
+        return postComment != null ? postComment.getId() : null;
     }
 }
