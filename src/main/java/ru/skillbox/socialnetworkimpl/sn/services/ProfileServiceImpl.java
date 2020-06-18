@@ -42,6 +42,8 @@ public class ProfileServiceImpl implements ProfileService {
     @Autowired
     private CommentMapper commentMapper;
     @Autowired
+    private AccountServiceImpl account;
+    @Autowired
     private PostCommentRepository commentRepository;
     @Autowired
     private PersonRepository personRepository;
@@ -104,7 +106,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ResponseEntity<ResponsePlatformApi> getCurrentUser(HttpSession session) {
-        Person person = getCurrentUser();
+        Person person = account.getCurrentUser();
         PersonResponse personResponse = mapPerson(person);
         Country country = countryRepository.getOne(person.getTown().getCountryId());
         CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
@@ -116,7 +118,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ResponseEntity<ResponsePlatformApi> editCurrentUser(HttpSession session, PersonRequest personRequest) {
-        Person fromPerson = getCurrentUser();
+        Person fromPerson = account.getCurrentUser();
         personRequest.setTown(cityRepository.getOne(personRequest.getCity()));
         Person toPerson = personsMapper.requestPersonToPerson(personRequest);
         toPerson.setId(fromPerson.getId());
@@ -140,7 +142,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ResponseEntity<ResponsePlatformApi> deleteCurrentUser(HttpSession session) {
-        Person person = getCurrentUser();
+        Person person = account.getCurrentUser();
         person.setDeleted(true);
         personRepository.save(person);
         ReportApi reportApi = new ReportApi();
@@ -254,11 +256,6 @@ public class ProfileServiceImpl implements ProfileService {
         if (!isAuthorized)
             return accountService.getUserInvalidResponse();
         return new ResponseEntity<>(accountService.getOkResponse(), HttpStatus.OK);
-    }
-
-    // Заглушка
-    private Person getCurrentUser() {
-        return getPersonById(2);
     }
 
     private Person getPersonById(int id) {

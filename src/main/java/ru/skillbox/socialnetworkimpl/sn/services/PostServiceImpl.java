@@ -37,6 +37,7 @@ public class PostServiceImpl implements PostService {
     private final PostMapper postMapper;
     private final CountryRepository countryRepository;
     private final CommentMapper commentMapper;
+    private final AccountServiceImpl account;
 
     @Override
     public List<PostResponse> searchPublication(String text, long dateFrom, long dateTo, int offset, int itemPerPage) {
@@ -164,7 +165,7 @@ public class PostServiceImpl implements PostService {
     private PostComment createPostComment(Post post, PostCommentRequest ps) {
         PostComment postComment = new PostComment();
         postComment.setPostId(post);
-        postComment.setAuthorId(post.getAuthor());
+        postComment.setAuthorId(account.getCurrentUser());
         PostComment parent = null;
         if (ps.getParentId() != null) {
             parent = commentRepository.findById(ps.getParentId()).orElseThrow(() -> new EntityNotFoundException("The parent message is missing"));
