@@ -18,5 +18,4 @@ public class NotificationType {
 
     @Column(name = "name", nullable = false)
     private String name;
-
 }

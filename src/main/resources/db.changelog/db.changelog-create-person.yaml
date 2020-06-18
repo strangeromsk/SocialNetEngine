@@ -32,8 +32,6 @@ databaseChangeLog:
               - column:
                   name: birth_date
                   type: date
-                  constraints:
-                    nullable: false
               - column:
                   name: e_mail
                   type: varchar(255)
@@ -53,16 +51,14 @@ databaseChangeLog:
               - column:
                   name: about
                   type: varchar(2048)
-                  constraints:
-                    nullable: false
               - column:
                   name: town
                   type: int(11)
-                  constraints:
-                    nullable: false
               - column:
                   name: confirmation_code
                   type: varchar(45)
+                  constraints:
+                    nullable: false
               - column:
                   name: is_approved
                   type: boolean

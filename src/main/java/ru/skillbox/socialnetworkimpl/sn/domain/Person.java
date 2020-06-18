@@ -38,7 +38,7 @@ public class Person {
     @Column(name = "e_mail", nullable = false)
     private String email;
 
-    @Column(nullable = false, length = 11)
+    @Column(length = 11)
     private String phone;
 
     @Column(nullable = false)
@@ -51,13 +51,13 @@ public class Person {
     private String about;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "town", nullable = false)
+    @JoinColumn(name = "town")
     private City town;
 
     @Column(name = "confirmation_code", nullable = false, length = 45)
     private String confirmationCode;
 
-    @Column(name = "is_approved")
+    @Column(name = "is_approved", nullable = false)
     private boolean isApproved;
 
     @Enumerated(EnumType.STRING)

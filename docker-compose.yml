@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: 'snet_user'
+      POSTGRES_PASSWORD: 'test'
+      POSTGRES_DB: 'snet'
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    ports:
+      - "8084:8084"

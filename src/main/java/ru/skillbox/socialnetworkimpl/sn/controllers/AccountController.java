@@ -8,7 +8,7 @@ import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.AccountService;
 
 @RestController
-@RequestMapping("account/")
+@RequestMapping("/api/v1/account/")
 public class AccountController {
 
     @Autowired
@@ -25,7 +25,6 @@ public class AccountController {
         return accountService.recoverPassword(accEmail.getEmail());
     }
 
-    //TODO Тут и далее все манипуляции производятся над пользователем №1 до реализации Security
     @PutMapping("password/set")
     public ResponseEntity<ResponsePlatformApi> sePassword(@RequestBody RegisterRequestBody tokenAndPassword) {
         return accountService.setPassword(tokenAndPassword.getToken(), tokenAndPassword.getPassword());
@@ -37,10 +36,8 @@ public class AccountController {
         return accountService.changeEmail(accEmail.getEmail());
     }
 
-    //TODO Непонятно у какого пользователя менять.
     @PutMapping("notifications")
-    public ResponseEntity<ResponsePlatformApi> changeNotifications(RegisterRequestBody notificationsBody) {
-        return null;
+    public ResponseEntity<ResponsePlatformApi> changeNotifications(@RequestBody RegisterRequestBody notificationsBody) {
+        return accountService.editNotifications(notificationsBody.getNotificationType(),notificationsBody.isEnable());
     }
-
 }

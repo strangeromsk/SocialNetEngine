@@ -48,3 +48,6 @@ databaseChangeLog:
   - include:
       file: db.changelog-link.yaml
       relativeToChangelogFile: true
+  - include:
+      file: db.changelog-create-notification_settings.yaml
+      relativeToChangelogFile: true

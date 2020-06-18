@@ -109,7 +109,7 @@ public class ProfileServiceImpl implements ProfileService {
         Country country = countryRepository.getOne(person.getTown().getCountryId());
         CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
         personResponse.setCountry(countryResponse);
-        return new ResponseEntity<>(ResponsePlatformApi.builder().error("string")
+        return new ResponseEntity<>(ResponsePlatformApi.builder().error("Ok")
                 .timestamp(new Date().getTime()).data(personResponse)
                 .build(), HttpStatus.OK);
     }

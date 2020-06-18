@@ -55,5 +55,4 @@ public class PlatformController {
         int total = listCity.size();
         return new ResponsePlatformApi("done", total, offset, itemPerPage, listCity);
     }
-
 }
