@@ -74,7 +74,7 @@ public class PostServiceImpl implements PostService {
     public List<CommentResponse> getComments(int id, int offset, int itemPerPage) {
         List<PostComment> postComments = commentRepository.findAllByPostId(postRepository.getOne(id));
         if (postComments.isEmpty()) {
-            throw new EntityNotFoundException("comments to this publication were not found");
+            throw new EntityNotFoundException("Comments to this publication were not found");
         }
         return postComments.stream().skip(offset)
                 .limit(itemPerPage)
@@ -85,7 +85,7 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public void deletePost(int id) {
         Post post = postRepository.getOne(id);
-        post.setDeleted(true);
+        post.setBlocked(true);
         postRepository.save(post);
     }
 
@@ -112,13 +112,13 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponse recoverPost(int id) {
         Post post = postRepository.getOne(id);
-        post.setDeleted(false);
+        post.setBlocked(false);
         postRepository.save(post);
         List<PostComment> postComments = post.getComments();
         PostResponse ps = postMapper.postToPostResponse(post);
         ps.setCommentResponses(commentMapper.commentToCommentResponse(postComments));
         postRepository.save(post);
-        return  ps;
+        return ps;
     }
 
     @Override
@@ -149,7 +149,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void reportPost(int id) {
-
     }
 
     @Override
@@ -167,7 +166,7 @@ public class PostServiceImpl implements PostService {
         postComment.setPostId(post);
         postComment.setAuthorId(post.getAuthor());
         PostComment parent = null;
-        if (ps.getParentId() != null)  {
+        if (ps.getParentId() != null) {
             parent = commentRepository.findById(ps.getParentId()).orElseThrow(() -> new EntityNotFoundException("The parent message is missing"));
         }
         postComment.setParentId(parent);
@@ -179,7 +178,7 @@ public class PostServiceImpl implements PostService {
 
     private PostComment modificationComment(int id, boolean status) {
         PostComment postComment = commentRepository.getOne(id);
-        postComment.setDeleted(status);
+        postComment.setBlocked(status);
         commentRepository.save(postComment);
         return postComment;
     }
