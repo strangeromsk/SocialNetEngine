@@ -1,34 +1,34 @@
 package ru.skillbox.socialnetworkimpl.sn;
 
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import ru.skillbox.socialnetworkimpl.sn.services.EmailMessageService;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
-import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-@RunWith(SpringRunner.class)
 public class EmailMessageServiceIntegrationTest {
 
-    @Autowired
+    @InjectMocks
     private EmailMessageService emailMessageService;
 
-    @Rule
-    private SmtpServerRule smtpServerRule = new SmtpServerRule(2525);
+    @Mock
+    private JavaMailSender emailSender;
 
     @Test
-    public void sendMessageTest() throws MessagingException {
-        emailMessageService.sendMessage("info@mail.ru", "subject", "text");
-        MimeMessage[] messages = smtpServerRule.getMessages();
-        assertEquals(1, messages.length);
-        MimeMessage current = messages[0];
-        assertEquals("subject", current.getSubject());
+    public void sendMessageTest() {
+        String sentTo = "info@gmail.com";
+        String subject = "subject";
+        String text = "text";
+        emailMessageService.sendMessage(sentTo, subject, text);
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(sentTo);
+        message.setSubject(subject);
+        message.setText(text);
+        verify(emailSender).send(message);
     }
 }
