@@ -40,4 +40,6 @@ public class PersonResponse {
 
     @JsonProperty("is_blocked")
     @NonNull private Boolean isBlocked;
+
+    private String token;
 }
