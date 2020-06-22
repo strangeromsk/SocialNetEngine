@@ -1,5 +1,6 @@
 package ru.skillbox.socialnetworkimpl.sn.api.responses;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,9 +10,10 @@ import lombok.NonNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PersonResponse {
 
-    @NonNull private Integer id;
+    @NonNull private int id;
 
     @JsonProperty("first_name")
     private String firstName;
@@ -20,7 +22,7 @@ public class PersonResponse {
     private String lastName;
 
     @JsonProperty("reg_date")
-    @NonNull private Long regDate;
+    @NonNull private long regDate;
 
     @JsonProperty("birth_date")
     private long birthDate;
@@ -39,5 +41,5 @@ public class PersonResponse {
     private long lastOnlineTime;
 
     @JsonProperty("is_blocked")
-    @NonNull private Boolean isBlocked;
+    @NonNull private boolean isBlocked;
 }

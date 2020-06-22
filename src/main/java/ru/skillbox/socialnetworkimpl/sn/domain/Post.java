@@ -4,8 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
+import java.awt.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity
@@ -33,5 +36,8 @@ public class Post {
 
     @Column(name = "is_blocked", nullable = false)
     private boolean isBlocked;
+
+    @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<PostComment> comments;
 }
 

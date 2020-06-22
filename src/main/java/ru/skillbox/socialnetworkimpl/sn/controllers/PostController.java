@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skillbox.socialnetworkimpl.sn.api.requests.CommentRequest;
+import ru.skillbox.socialnetworkimpl.sn.api.requests.PostCommentRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequest;
-import ru.skillbox.socialnetworkimpl.sn.api.responses.PostCommentResponse;
+import ru.skillbox.socialnetworkimpl.sn.api.responses.CommentResponse;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.PostResponse;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 import ru.skillbox.socialnetworkimpl.sn.services.PostServiceImpl;
@@ -46,14 +46,15 @@ public class PostController {
 
     @GetMapping()
     public ResponseEntity<ResponsePlatformApi<List<PostResponse>>> searchPost(@RequestParam String text,
-                                                                              @RequestParam(value = "date_from", required = false) Long dateFrom,
-                                                                              @RequestParam(value = "date_to", required = false) Long dateTo,
-                                                                              @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset,
+                                                                              @RequestParam(value = "date_from") Long dateFrom,
+                                                                              @RequestParam(value = "date_to") Long dateTo,
+                                                                              @RequestParam(value = "offset", defaultValue = "0") Integer offset,
                                                                               @RequestParam(value = "itemPerPage", required = false, defaultValue = "20") Integer itemPerPage) {
         log.info("Search Post publication: text='{}'", text);
+        //  1554076800000l, 1593561600000l год  разница до 1.07.20
         List<PostResponse> responsePostApiList = postService.searchPublication(text, dateFrom, dateTo, offset, itemPerPage);
         int total = responsePostApiList != null ? responsePostApiList.size() : 0;
-        return new ResponseEntity<>(new ResponsePlatformApi("Search completed.", total, offset, itemPerPage, responsePostApiList), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponsePlatformApi("Search completed.", total, 0, 20, responsePostApiList), HttpStatus.OK);
     }
 
     @GetMapping("{id}")
@@ -68,11 +69,11 @@ public class PostController {
     }
 
     @GetMapping("{id}/comments")
-    public ResponseEntity<ResponsePlatformApi<List<PostCommentResponse>>> getComments(@PathVariable int id,
-                                                                                      @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset,
-                                                                                      @RequestParam(value = "itemPerPage", required = false, defaultValue = "20") Integer itemPerPage) {
+    public ResponseEntity<ResponsePlatformApi<List<CommentResponse>>> getComments(@PathVariable int id,
+                                                                                  @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset,
+                                                                                  @RequestParam(value = "itemPerPage", required = false, defaultValue = "20") Integer itemPerPage) {
         log.info("Get comments for publication: ID={}", id);
-        List<PostCommentResponse> commentResponsesList = postService.getComments(id, offset, itemPerPage);
+        List<CommentResponse> commentResponsesList = postService.getComments(id, offset, itemPerPage);
         int total = commentResponsesList != null ? commentResponsesList.size() : 0;
         return new ResponseEntity<>(new ResponsePlatformApi("Search completed.", total, offset, itemPerPage, commentResponsesList), HttpStatus.OK);
     }
@@ -100,6 +101,7 @@ public class PostController {
                                                         @RequestParam(name = "publish_date", required = false) Long publishDate,
                                                         @RequestBody PostRequest postRequest) {
         log.info("Editing a post: ID={}", id);
+        publishDate = new Date().getTime();
         PostResponse post = postService.editPost(id, publishDate, postRequest);
         return new ResponseEntity<>(ResponsePlatformApi.builder().error("The publication was edited").timestamp(new Date().getTime()).data(post).build(), HttpStatus.OK);
     }
@@ -114,23 +116,23 @@ public class PostController {
     @PutMapping("{id}/comments/{commentId}")
     public ResponseEntity<ResponsePlatformApi> editComment(@PathVariable int id,
                                                            @PathVariable int commentId,
-                                                           @RequestBody PostRequest postRequest) {
+                                                           @RequestBody PostCommentRequest commentRequest) {
         log.info("Editing a comment: ID={}", id);
-        PostCommentResponse commentResponse = postService.editComment(id, commentId);
+        CommentResponse commentResponse = postService.editComment(id, commentId, commentRequest);
         return new ResponseEntity(ResponsePlatformApi.builder().error("The comment was edited").timestamp(new Date().getTime()).data(commentResponse).build(), HttpStatus.OK);
     }
 
     @PutMapping("{id}/comments/{commentId}/recover")
     public ResponseEntity<ResponsePlatformApi> recoverComment(@PathVariable int id, @PathVariable int commentId) {
         log.info("Restoring a comment: ID={}", commentId);
-        PostCommentResponse post = postService.recoverComment(id, commentId);
+        CommentResponse post = postService.recoverComment(id, commentId);
         return new ResponseEntity(ResponsePlatformApi.builder().error("Comment restored").timestamp(new Date().getTime()).data(post).build(), HttpStatus.OK);
     }
 
     @PostMapping("{id}/comments")
-    public ResponseEntity<ResponsePlatformApi> createComment(@PathVariable int id, @RequestBody CommentRequest commentRequest) {
+    public ResponseEntity<ResponsePlatformApi> createComment(@PathVariable int id, @RequestBody PostCommentRequest postCommentRequest) {
         log.info("Creating a comment for a post: ID={}", id);
-        PostCommentResponse comment = postService.createComment(id, commentRequest);
+        CommentResponse comment = postService.createComment(id, postCommentRequest);
         return new ResponseEntity<>(ResponsePlatformApi.builder().error("Creating a comment").timestamp(new Date().getTime()).data(comment).build(), HttpStatus.OK);
     }
 

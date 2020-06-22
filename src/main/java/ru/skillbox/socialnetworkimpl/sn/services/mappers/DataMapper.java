@@ -31,12 +31,4 @@ public class DataMapper {
         return LocalDateTime.ofEpochSecond(epochMillis/1000, 0, ZoneOffset.UTC);
     }
 
-//    public static boolean asBlocked(Byte isBlocked) {
-//        return isBlocked == 0 ? false : true;
-//    }
-
-    //TODO уберем!
-//    public CityResponse asCityResponse(String town) {
-//        return town != null ? new CityResponse(1,town) : null;
-//    }
 }

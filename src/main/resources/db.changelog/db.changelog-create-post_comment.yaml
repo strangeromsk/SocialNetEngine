@@ -28,7 +28,7 @@ databaseChangeLog:
                   name: parent_id
                   type: int(11)
                   constraints:
-                    nullable: false
+                    nullable: true
               - column:
                   name: author_id
                   type: int(11)

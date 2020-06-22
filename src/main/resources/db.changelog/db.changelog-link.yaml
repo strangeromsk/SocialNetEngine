@@ -1,0 +1,68 @@
+databaseChangeLog:
+  - logicalFilePath: db.changelog/db.changelog-link.yaml
+  - changeSet:
+      id: 12/06/1
+      author: snet
+      changes:
+        - createIndex:
+            indexName: fk_post_comment
+            columns:
+              - column:
+                  name: post_id
+            tableName: post_comment
+  - changeSet:
+      id: 12/06/2
+      author: snet
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: post_id
+            baseTableName: post_comment
+            constraintName: fk_post_comment
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedTableName: post
+            referencedColumnNames: id
+  - changeSet:
+      id: 12/06/3
+      author: snet
+      changes:
+        - createIndex:
+            indexName: fk_person_post_comment
+            columns:
+              - column:
+                  name: author_id
+            tableName: post_comment
+  - changeSet:
+      id: 12/06/4
+      author: snet
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: author_id
+            baseTableName: post_comment
+            constraintName: fk_person_post_comment
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedTableName: person
+            referencedColumnNames: id
+  - changeSet:
+      id: 12/06/5
+      author: snet
+      changes:
+        - createIndex:
+            indexName: fk_parent_post_comment
+            columns:
+              - column:
+                  name: parent_id
+            tableName: post_comment
+  - changeSet:
+      id: 12/06/6
+      author: snet
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: parent_id
+            baseTableName: post_comment
+            constraintName: fk_parent_post_comment
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedTableName: post_comment
+            referencedColumnNames: id

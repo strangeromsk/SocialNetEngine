@@ -47,7 +47,7 @@ public class ProfileController {
         return profileService.getUserById(request.getSession(), id);
     }
 
-    @GetMapping(value = "{id}/wall", params = {"offset", "itemPerPage"})
+    @GetMapping(value = "{id}/wall", params = {"offset"})
     public ResponseEntity<ResponsePlatformApi> getPersonsWallPosts(
             HttpServletRequest request,
             @PathVariable("id") int id,
@@ -60,13 +60,13 @@ public class ProfileController {
     public ResponseEntity<ResponsePlatformApi> addPostToUsersWall(
             HttpServletRequest request,
             @PathVariable("id") int id,
-            @RequestParam(value = "publish_date") int publishDate,
+            @RequestParam(value = "publish_date") long publishDate,
             @RequestBody PostRequest postRequest) {
         return profileService.addPostToUsersWall(request.getSession(), id, publishDate, postRequest);
     }
 
     @GetMapping(value = "search/", params = {"first_name", "last_name", "age_from", "age_to",
-            "country_id", "city_id", "offset", "itemPerPage"})
+            "country_id", "city_id", "offset"})
     public ResponseEntity<ResponsePlatformApi> searchPerson(
             HttpServletRequest request,
             @RequestParam("first_name") String firstName,
