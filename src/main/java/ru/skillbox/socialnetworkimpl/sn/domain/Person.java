@@ -50,7 +50,7 @@ public class Person {
     @Column(length = 2048)
     private String about;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(/*fetch = FetchType.LAZY*/)
     @JoinColumn(name = "town")
     private City town;
 
