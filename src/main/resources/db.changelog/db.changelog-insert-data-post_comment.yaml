@@ -1,0 +1,135 @@
+databaseChangeLog:
+  - logicalFilePath: db.changelog/db.changelog-insert-data-post_comment.yaml
+  - changeSet:
+      id: 30/06/5
+      author: snet
+      comment: "add test post comments"
+      changes:
+        - insert:
+            tableName: post_comment
+            columns:
+              - column:
+                  name: time
+                  value: "now()"
+              - column:
+                  name: post_id
+                  value: 1
+              - column:
+                  name: parent_id
+                  value: null
+              - column:
+                  name: author_id
+                  value: 2
+              - column:
+                  name: comment_text
+                  value: "comment text"
+              - column:
+                  name: is_blocked
+                  value: false
+        - insert:
+            tableName: post_comment
+            columns:
+              - column:
+                  name: time
+                  value: "now()"
+              - column:
+                  name: post_id
+                  value: 1
+              - column:
+                  name: parent_id
+                  value: 1
+              - column:
+                  name: author_id
+                  value: 1
+              - column:
+                  name: comment_text
+                  value: "comment2 text"
+              - column:
+                  name: is_blocked
+                  value: false
+
+        - insert:
+            tableName: post_comment
+            columns:
+              - column:
+                  name: time
+                  value: "now()"
+              - column:
+                  name: post_id
+                  value: 3
+              - column:
+                  name: parent_id
+                  value: null
+              - column:
+                  name: author_id
+                  value: 1
+              - column:
+                  name: comment_text
+                  value: "comment text"
+              - column:
+                  name: is_blocked
+                  value: false
+        - insert:
+            tableName: post_comment
+            columns:
+              - column:
+                  name: time
+                  value: "now()"
+              - column:
+                  name: post_id
+                  value: 3
+              - column:
+                  name: parent_id
+                  value: 3
+              - column:
+                  name: author_id
+                  value: 3
+              - column:
+                  name: comment_text
+                  value: "comment text"
+              - column:
+                  name: is_blocked
+                  value: false
+
+        - insert:
+            tableName: post_comment
+            columns:
+              - column:
+                  name: time
+                  value: "now()"
+              - column:
+                  name: post_id
+                  value: 4
+              - column:
+                  name: parent_id
+                  value: null
+              - column:
+                  name: author_id
+                  value: 1
+              - column:
+                  name: comment_text
+                  value: "comment text"
+              - column:
+                  name: is_blocked
+                  value: false
+        - insert:
+            tableName: post_comment
+            columns:
+              - column:
+                  name: time
+                  value: "now()"
+              - column:
+                  name: post_id
+                  value: 4
+              - column:
+                  name: parent_id
+                  value: 5
+              - column:
+                  name: author_id
+                  value: 4
+              - column:
+                  name: comment_text
+                  value: "comment text"
+              - column:
+                  name: is_blocked
+                  value: false
