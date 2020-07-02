@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - logicalFilePath: db.changelog/db.changelog-create-friendship.yaml
+  - changeSet:
+      id: 30/06/1
+      author: snet
+      changes:
+        - sql:
+            sql: CREATE TYPE friendship_code AS ENUM ('FRIEND', 'REQUEST', 'BLOCKED', 'DECLINED', 'SUBSCRIBED')
+        - createTable:
+            tableName: friendship
+            columns:
+              - column:
+                  name: id
+                  type: int(11)
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: src_person_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: dst_person_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: code
+                  type: friendship_code
+                  constraints:
+                    nullable: false

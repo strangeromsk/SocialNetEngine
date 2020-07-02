@@ -41,3 +41,98 @@ databaseChangeLog:
               - column:
                   name: is_blocked
                   value: false
+  - changeSet:
+      id: 30/06/4
+      author: snet
+      comment: "add test posts"
+      changes:
+        - insert:
+            tableName: post
+            columns:
+              - column:
+                  name: time
+                  value: "now()"
+              - column:
+                  name: author_id
+                  value: 4
+              - column:
+                  name: title
+                  value: "user1post1"
+              - column:
+                  name: post_text
+                  value: "Post text"
+              - column:
+                  name: is_blocked
+                  value: false
+        - insert:
+            tableName: post
+            columns:
+              - column:
+                  name: time
+                  value: "now()"
+              - column:
+                  name: author_id
+                  value: 5
+              - column:
+                  name: title
+                  value: "user2post1"
+              - column:
+                  name: post_text
+                  value: "Post text"
+              - column:
+                  name: is_blocked
+                  value: false
+        - insert:
+            tableName: post
+            columns:
+              - column:
+                  name: time
+                  value: "now()"
+              - column:
+                  name: author_id
+                  value: 6
+              - column:
+                  name: title
+                  value: "user3post1"
+              - column:
+                  name: post_text
+                  value: "Post text"
+              - column:
+                  name: is_blocked
+                  value: false
+        - insert:
+            tableName: post
+            columns:
+              - column:
+                  name: time
+                  value: "now()"
+              - column:
+                  name: author_id
+                  value: 7
+              - column:
+                  name: title
+                  value: "user4post1"
+              - column:
+                  name: post_text
+                  value: "Post text"
+              - column:
+                  name: is_blocked
+                  value: false
+        - insert:
+            tableName: post
+            columns:
+              - column:
+                  name: time
+                  value: "now()"
+              - column:
+                  name: author_id
+                  value: 8
+              - column:
+                  name: title
+                  value: "user5post1"
+              - column:
+                  name: post_text
+                  value: "Post text"
+              - column:
+                  name: is_blocked
+                  value: false

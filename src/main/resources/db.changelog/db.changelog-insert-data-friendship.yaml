@@ -1,0 +1,116 @@
+databaseChangeLog:
+  - logicalFilePath: db.changelog/db.changelog-insert-data-friendship.yaml
+  - changeSet:
+      id: 30/06/3
+      author: snet
+      comment: "add friendships"
+      changes:
+        - insert:
+            tableName: friendship
+            columns:
+              - column:
+                  name: src_person_id
+                  value: "4"
+              - column:
+                  name: dst_person_id
+                  value: "5"
+              - column:
+                  name: code
+                  value: "FRIEND"
+        - insert:
+            tableName: friendship
+            columns:
+              - column:
+                  name: src_person_id
+                  value: "4"
+              - column:
+                  name: dst_person_id
+                  value: "6"
+              - column:
+                  name: code
+                  value: "FRIEND"
+        - insert:
+            tableName: friendship
+            columns:
+              - column:
+                  name: src_person_id
+                  value: "7"
+              - column:
+                  name: dst_person_id
+                  value: "4"
+              - column:
+                  name: code
+                  value: "SUBSCRIBED"
+        - insert:
+            tableName: friendship
+            columns:
+              - column:
+                  name: src_person_id
+                  value: "8"
+              - column:
+                  name: dst_person_id
+                  value: "4"
+              - column:
+                  name: code
+                  value: "FRIEND"
+
+        - insert:
+            tableName: friendship
+            columns:
+              - column:
+                  name: src_person_id
+                  value: "1"
+              - column:
+                  name: dst_person_id
+                  value: "2"
+              - column:
+                  name: code
+                  value: "FRIEND"
+        - insert:
+            tableName: friendship
+            columns:
+              - column:
+                  name: src_person_id
+                  value: "1"
+              - column:
+                  name: dst_person_id
+                  value: "3"
+              - column:
+                  name: code
+                  value: "FRIEND"
+        - insert:
+            tableName: friendship
+            columns:
+              - column:
+                  name: src_person_id
+                  value: "1"
+              - column:
+                  name: dst_person_id
+                  value: "4"
+              - column:
+                  name: code
+                  value: "FRIEND"
+        - insert:
+            tableName: friendship
+            columns:
+              - column:
+                  name: src_person_id
+                  value: "1"
+              - column:
+                  name: dst_person_id
+                  value: "5"
+              - column:
+                  name: code
+                  value: "FRIEND"
+        - insert:
+            tableName: friendship
+            columns:
+              - column:
+                  name: src_person_id
+                  value: "1"
+              - column:
+                  name: dst_person_id
+                  value: "6"
+              - column:
+                  name: code
+                  value: "REQUEST"
