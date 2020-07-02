@@ -51,3 +51,6 @@ databaseChangeLog:
   - include:
       file: db.changelog-create-notification_settings.yaml
       relativeToChangelogFile: true
+  - include:
+      file: db.changelog-create-tag.yaml
+      relativeToChangelogFile: true
