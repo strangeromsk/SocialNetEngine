@@ -13,7 +13,7 @@ import ru.skillbox.socialnetworkimpl.sn.services.interfaces.LikeService;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping(value = "/api/v1/")
+@RequestMapping
 public class LikeController {
 
     private final LikeService likeService;
@@ -21,7 +21,7 @@ public class LikeController {
     @Autowired
     public LikeController (LikeService likeService) { this.likeService = likeService; }
 
-    @GetMapping(value = "liked", params = {"user_id", "item_id", "type"})
+    @GetMapping(value = "/liked", params = {"user_id", "item_id", "type"})
     public ResponseEntity<ResponsePlatformApi<IsLikedResponse>> isLiked(HttpServletRequest request,
                                                                         @RequestParam("user_id") int userId,
                                                                         @RequestParam("item_id") int itemId,
@@ -29,20 +29,20 @@ public class LikeController {
         return likeService.isLiked(request.getSession(), userId, itemId, type);
     }
 
-    @GetMapping(value = "likes", params = {"item_id", "type"})
+    @GetMapping(value = "/likes", params = {"item_id", "type"})
     public ResponseEntity<ResponsePlatformApi<LikeUserListResponse>> getLikes(HttpServletRequest request,
                                                                               @RequestParam("item_id") int itemId,
                                                                               @RequestParam("type") String type) {
         return likeService.getLikes(request.getSession(), itemId, type);
     }
 
-    @PutMapping("likes")
+    @PutMapping("/likes")
     public ResponseEntity<ResponsePlatformApi<LikeUserListResponse>> putLike(HttpServletRequest request,
                                                        @RequestBody LikeRequestBody likeRequestBody) {
         return likeService.putLike(request.getSession(), likeRequestBody);
     }
 
-    @DeleteMapping(value = "likes", params = {"item_id", "type"})
+    @DeleteMapping(value = "/likes", params = {"item_id", "type"})
     public ResponseEntity<ResponsePlatformApi<LikesResponse>> deleteLike(HttpServletRequest request,
                                                                          @RequestParam("item_id") int itemId,
                                                                          @RequestParam("type") String type) {

@@ -19,7 +19,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/api/v1/post/")
+@RequestMapping(value = "/post")
 public class PostController {
 
     @Data
@@ -57,7 +57,7 @@ public class PostController {
         return new ResponseEntity<>(new ResponsePlatformApi("Search completed.", total, 0, 20, responsePostApiList), HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ResponsePlatformApi<PostResponse>> getPost(@PathVariable int id) {
         log.info("Search Post publication: ID={}", id);
         PostResponse post = postService.getPublication(id);
@@ -68,7 +68,7 @@ public class PostController {
                 .data(post).build(), HttpStatus.OK);
     }
 
-    @GetMapping("{id}/comments")
+    @GetMapping("/{id}/comments")
     public ResponseEntity<ResponsePlatformApi<List<CommentResponse>>> getComments(@PathVariable int id,
                                                                                   @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset,
                                                                                   @RequestParam(value = "itemPerPage", required = false, defaultValue = "20") Integer itemPerPage) {
@@ -78,7 +78,7 @@ public class PostController {
         return new ResponseEntity<>(new ResponsePlatformApi("Search completed.", total, offset, itemPerPage, commentResponsesList), HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ResponsePlatformApi> deletePost(@PathVariable int id) {
         log.info("Delete post: ID={}", id);
         postService.deletePost(id);
@@ -87,7 +87,7 @@ public class PostController {
                 .data(new PostInfo(id)).build(), HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}/comments/{commentId}")
+    @DeleteMapping("/{id}/comments/{commentId}")
     public ResponseEntity<ResponsePlatformApi> deleteComment(@PathVariable int id, @PathVariable int commentId) {
         log.info("Delete post comment: ID={} CommentId={}", id, commentId);
         postService.deleteComment(id, commentId);
@@ -96,7 +96,7 @@ public class PostController {
                 .data(new PostInfo(commentId)).build(), HttpStatus.OK);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ResponsePlatformApi> editPost(@PathVariable int id,
                                                         @RequestParam(name = "publish_date", required = false) Long publishDate,
                                                         @RequestBody PostRequest postRequest) {
@@ -106,14 +106,14 @@ public class PostController {
         return new ResponseEntity<>(ResponsePlatformApi.builder().error("The publication was edited").timestamp(new Date().getTime()).data(post).build(), HttpStatus.OK);
     }
 
-    @PutMapping("{id}/recover")
+    @PutMapping("/{id}/recover")
     public ResponseEntity<ResponsePlatformApi> recoverPost(@PathVariable int id) {
         log.info("Restoring a publication: ID={}", id);
         PostResponse post = postService.recoverPost(id);
         return new ResponseEntity(ResponsePlatformApi.builder().error("Publication restored").timestamp(new Date().getTime()).data(post).build(), HttpStatus.OK);
     }
 
-    @PutMapping("{id}/comments/{commentId}")
+    @PutMapping("/{id}/comments/{commentId}")
     public ResponseEntity<ResponsePlatformApi> editComment(@PathVariable int id,
                                                            @PathVariable int commentId,
                                                            @RequestBody PostCommentRequest commentRequest) {
@@ -122,21 +122,21 @@ public class PostController {
         return new ResponseEntity(ResponsePlatformApi.builder().error("The comment was edited").timestamp(new Date().getTime()).data(commentResponse).build(), HttpStatus.OK);
     }
 
-    @PutMapping("{id}/comments/{commentId}/recover")
+    @PutMapping("/{id}/comments/{commentId}/recover")
     public ResponseEntity<ResponsePlatformApi> recoverComment(@PathVariable int id, @PathVariable int commentId) {
         log.info("Restoring a comment: ID={}", commentId);
         CommentResponse post = postService.recoverComment(id, commentId);
         return new ResponseEntity(ResponsePlatformApi.builder().error("Comment restored").timestamp(new Date().getTime()).data(post).build(), HttpStatus.OK);
     }
 
-    @PostMapping("{id}/comments")
+    @PostMapping("/{id}/comments")
     public ResponseEntity<ResponsePlatformApi> createComment(@PathVariable int id, @RequestBody PostCommentRequest postCommentRequest) {
         log.info("Creating a comment for a post: ID={}", id);
         CommentResponse comment = postService.createComment(id, postCommentRequest);
         return new ResponseEntity<>(ResponsePlatformApi.builder().error("Creating a comment").timestamp(new Date().getTime()).data(comment).build(), HttpStatus.OK);
     }
 
-    @PostMapping("{id}/report")
+    @PostMapping("/{id}/report")
     public ResponseEntity<ResponsePlatformApi> reportPost(@PathVariable int id) {
         log.info("The complaint against the publication: ID={}", id);
         postService.reportPost(id);
@@ -146,7 +146,7 @@ public class PostController {
                 .data(new PostInfo("ok")).build(), HttpStatus.OK);
     }
 
-    @PostMapping("{id}/comments/{commentId}/report")
+    @PostMapping("/{id}/comments/{commentId}/report")
     public ResponseEntity<ResponsePlatformApi> reportComment(@PathVariable int id, @PathVariable int commentId) {
         log.info("The complaint against the comment: ID={}", commentId);
         postService.reportComment(id, commentId);
