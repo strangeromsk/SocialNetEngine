@@ -8,11 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.TagRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ReportApi;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
-import ru.skillbox.socialnetworkimpl.sn.api.responses.TagResponse;
 import ru.skillbox.socialnetworkimpl.sn.services.TagServiceImpl;
 
 import java.util.Date;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -30,9 +28,7 @@ public class TagController {
                                                        @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset,
                                                        @RequestParam(value = "itemPerPage", required = false, defaultValue = "20") Integer itemPerPage) {
         log.info("Search for a tag by line: {}", tag);
-        List<TagResponse> tagResponses = tagService.getTags(tag, offset, itemPerPage);
-        int total = tagResponses != null ? tagResponses.size() : 0;
-        return new ResponseEntity<>(new ResponsePlatformApi("Search completed.", total, offset, itemPerPage, tagResponses), HttpStatus.OK);
+        return new ResponseEntity<>(tagService.getTags(tag, offset, itemPerPage), HttpStatus.OK);
     }
 
     @PostMapping

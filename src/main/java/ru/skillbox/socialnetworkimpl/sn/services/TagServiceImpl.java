@@ -1,7 +1,11 @@
 package ru.skillbox.socialnetworkimpl.sn.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.TagRequest;
+import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.TagResponse;
 import ru.skillbox.socialnetworkimpl.sn.domain.Tag;
 import ru.skillbox.socialnetworkimpl.sn.repositories.TagRepository;
@@ -9,6 +13,7 @@ import ru.skillbox.socialnetworkimpl.sn.services.interfaces.TagService;
 import ru.skillbox.socialnetworkimpl.sn.services.mappers.TagMapper;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -21,9 +26,11 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<TagResponse> getTags(String tag, int offset, int itemPerPage) {
-        List<Tag> tags = tagRepository.findAllByTagTextContaining(tag, offset, itemPerPage);
-        return tagMapper.tagListToTagResponseList(tags);
+    public ResponsePlatformApi getTags(String tag, int offset, int itemPerPage) {
+        Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
+        Page<Tag> tags = tagRepository.findAllByTagContainingIgnoreCase(tag, pageable);
+        List<TagResponse> listTag = tags.stream().map(tagMapper::tagToTagResponse).collect(Collectors.toList());
+        return new ResponsePlatformApi("Search for a tag", (int) tags.getTotalElements(),offset,itemPerPage,listTag);
     }
 
     @Override
