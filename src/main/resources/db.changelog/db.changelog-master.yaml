@@ -60,3 +60,6 @@ databaseChangeLog:
   - include:
       file: db.changelog-insert-data-post_comment.yaml
       relativeToChangelogFile: true
+  - include:
+      file: db.changelog-create-tag.yaml
+      relativeToChangelogFile: true
