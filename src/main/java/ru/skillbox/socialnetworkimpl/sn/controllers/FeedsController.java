@@ -21,7 +21,7 @@ public class FeedsController {
         this.feedsService = feedsService;
     }
 
-    @GetMapping("/api/v1/feeds")
+    @GetMapping("/feeds")
     public ResponseEntity<ResponsePlatformApi<List<PostResponse>>> getFeeds(@RequestParam(defaultValue = "") String name,
                                                                             @RequestParam(defaultValue = "0") Integer offset,
                                                                             @RequestParam(defaultValue = "20") Integer itemPerPage) {
