@@ -1,9 +1,7 @@
 package ru.skillbox.socialnetworkimpl.sn.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
 import ru.skillbox.socialnetworkimpl.sn.domain.enums.MessagesPermission;
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -52,30 +50,31 @@ public class Person {
 
     @ManyToOne(/*fetch = FetchType.LAZY*/)
     @JoinColumn(name = "town")
+    @ToString.Exclude
     private City town;
 
-    @Column(name = "confirmation_code", nullable = false, length = 45)
+    @Column(name = "confirmation_code", length = 45)
     private String confirmationCode;
 
-    @Column(name = "is_approved", nullable = false)
+    @Column(name = "is_approved")
     private boolean isApproved;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, name = "messages_permission")
+    @Column(name = "messages_permission")
     private MessagesPermission messagesPermission;
 
     @Column(name = "last_online_time")
     private LocalDateTime lastOnlineTime;
 
-    @Column(name = "is_blocked", nullable = false)
+    @Column(name = "is_blocked")
     private boolean isBlocked;
 
-    @Column(name = "is_deleted", nullable = false)
+    @Column(name = "is_deleted")
     private boolean isDeleted;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts;
-
+    @ToString.Exclude
     @OneToMany(mappedBy = "authorId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PostComment> postComments;
 }
