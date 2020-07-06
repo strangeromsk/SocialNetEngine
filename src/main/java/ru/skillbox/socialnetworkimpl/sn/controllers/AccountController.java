@@ -8,7 +8,7 @@ import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.AccountService;
 
 @RestController
-@RequestMapping("/api/v1/account/")
+@RequestMapping("/account/")
 public class AccountController {
 
     @Autowired

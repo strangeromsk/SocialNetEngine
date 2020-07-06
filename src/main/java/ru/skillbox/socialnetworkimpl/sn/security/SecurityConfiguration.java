@@ -26,6 +26,7 @@ import ru.skillbox.socialnetworkimpl.sn.services.mappers.PersonsMapper;
 import javax.servlet.Filter;
 
 import java.util.Arrays;
+
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -73,7 +74,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         FilterChainProxy proxy = getApplicationContext().getBean(FilterChainProxy.class);
         for (Filter f : proxy.getFilters("/")) {
             if (f instanceof FilterSecurityInterceptor) {
-                ((FilterSecurityInterceptor)f).setPublishAuthorizationSuccess(true);
+                ((FilterSecurityInterceptor) f).setPublishAuthorizationSuccess(true);
             }
         }
     }
@@ -81,7 +82,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8086"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "HEAD"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

@@ -51,3 +51,15 @@ databaseChangeLog:
   - include:
       file: db.changelog-create-notification_settings.yaml
       relativeToChangelogFile: true
+  - include:
+      file: db.changelog-create-friendship.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-insert-data-friendship.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-insert-data-post_comment.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-create-tag.yaml
+      relativeToChangelogFile: true

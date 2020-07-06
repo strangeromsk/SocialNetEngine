@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/api/v1/users/")
+@RequestMapping(value = "/users/")
 public class ProfileController {
 
     private final ProfileService profileService;
