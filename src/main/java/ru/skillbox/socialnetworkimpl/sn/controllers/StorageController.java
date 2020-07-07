@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/storage/")
+@RequestMapping("/api/storage/")
 public class StorageController {
 
     private String id;
@@ -43,7 +43,7 @@ public class StorageController {
         Map params = ObjectUtils.asMap(
                 "public_id", "userImages/" + file.getOriginalFilename(),
                 "overwrite", true,
-                "notification_url", "https://localhost:8080/api/v1/storage",
+                "notification_url", "https://localhost:8080/api/storage",
                 "resource_type", "image"
         );
 
