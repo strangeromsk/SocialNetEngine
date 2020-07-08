@@ -4,8 +4,6 @@ databaseChangeLog:
       id: 30/06/1
       author: snet
       changes:
-        - sql:
-            sql: CREATE TYPE friendship_code AS ENUM ('FRIEND', 'REQUEST', 'BLOCKED', 'DECLINED', 'SUBSCRIBED')
         - createTable:
             tableName: friendship
             columns:
@@ -28,6 +26,6 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: code
-                  type: friendship_code
+                  type: varchar(45)
                   constraints:
                     nullable: false
