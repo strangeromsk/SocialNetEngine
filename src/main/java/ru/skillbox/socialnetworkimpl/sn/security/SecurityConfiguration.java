@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -60,6 +61,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         ACCOUNT_PASSWORD_SET_URL
                 }).permitAll()
                 .antMatchers(HttpMethod.GET, new String[]{
+                        API_LOGIN_URL,
                         PLATFORM_LANGS_URL,
                         PLATFORM_COUNTRIES_URL,
                         PLATFORM_CITIES_URL
@@ -68,7 +70,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), personRepository, personsMapper, mapper))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager()))
-                .exceptionHandling().authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+//                .exceptionHandling().authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+//                .and()
+                .formLogin()
+                .loginPage(API_LOGIN_URL).permitAll()
+                .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher(LOGOUT_URL)).permitAll()
+                .logoutSuccessUrl(API_LOGIN_URL)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
