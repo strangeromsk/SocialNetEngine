@@ -17,7 +17,7 @@ import java.util.List;
 public class PostResponse {
     private int id;
     private long time;
-    @JsonProperty("author_id")
+    @JsonProperty("author")
     private PersonResponse author;
     private String title;
     @JsonProperty("post_text")
