@@ -1,6 +1,5 @@
 package ru.skillbox.socialnetworkimpl.sn.domain;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import ru.skillbox.socialnetworkimpl.sn.domain.enums.MessagesPermission;
 import javax.persistence.*;
