@@ -1,0 +1,69 @@
+databaseChangeLog:
+  - logicalFilePath: db.changelog/db.changelog-insert-data-person2dialog.yaml
+  - changeSet:
+      id: 22/06/0
+      author: snet
+      changes:
+        - insert:
+            tableName: person2dialog
+            columns:
+              - column:
+                  name: person_id
+                  value: 1
+              - column:
+                  name: dialog_id
+                  value: 1
+        - insert:
+            tableName: person2dialog
+            columns:
+              - column:
+                  name: person_id
+                  value: 2
+              - column:
+                  name: dialog_id
+                  value: 1
+        - insert:
+            tableName: person2dialog
+            columns:
+              - column:
+                  name: person_id
+                  value: 3
+              - column:
+                  name: dialog_id
+                  value: 1
+        - insert:
+            tableName: person2dialog
+            columns:
+              - column:
+                  name: person_id
+                  value: 2
+              - column:
+                  name: dialog_id
+                  value: 2
+        - insert:
+            tableName: person2dialog
+            columns:
+              - column:
+                  name: person_id
+                  value: 3
+              - column:
+                  name: dialog_id
+                  value: 2
+        - insert:
+            tableName: person2dialog
+            columns:
+              - column:
+                  name: person_id
+                  value: 1
+              - column:
+                  name: dialog_id
+                  value: 3
+        - insert:
+            tableName: person2dialog
+            columns:
+              - column:
+                  name: person_id
+                  value: 3
+              - column:
+                  name: dialog_id
+                  value: 3

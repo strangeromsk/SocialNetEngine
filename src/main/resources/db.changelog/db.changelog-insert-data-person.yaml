@@ -41,7 +41,6 @@ databaseChangeLog:
               - column:
                   name: password
                   value: "$2y$12$M9qpxrVJmRqk/jaxq/F3beIRnF/C8J.NlR6S1TUk9u/bDO7n.CJpy"
-
               - column:
                   name: phone
                   value: "132456"
@@ -57,6 +56,9 @@ databaseChangeLog:
               - column:
                   name: is_deleted
                   value: "0"
+              - column:
+                  name: is_online
+                  value: "1"
         - insert:
             tableName: person
             columns:
@@ -108,6 +110,9 @@ databaseChangeLog:
               - column:
                   name: is_deleted
                   value: "0"
+              - column:
+                  name: is_online
+                  value: "0"
         - insert:
             tableName: person
             columns:
@@ -158,6 +163,9 @@ databaseChangeLog:
                   value: 10
               - column:
                   name: is_deleted
+                  value: "0"
+              - column:
+                  name: is_online
                   value: "0"
   - changeSet:
       id: 30/06/2
@@ -215,6 +223,9 @@ databaseChangeLog:
               - column:
                   name: is_deleted
                   value: "0"
+              - column:
+                  name: is_online
+                  value: "1"
 
         - insert:
             tableName: person
@@ -266,6 +277,9 @@ databaseChangeLog:
                   value: 1
               - column:
                   name: is_deleted
+                  value: "0"
+              - column:
+                  name: is_online
                   value: "0"
 
         - insert:
@@ -319,6 +333,9 @@ databaseChangeLog:
               - column:
                   name: is_deleted
                   value: "0"
+              - column:
+                  name: is_online
+                  value: "0"
 
         - insert:
             tableName: person
@@ -370,6 +387,9 @@ databaseChangeLog:
                   value: 1
               - column:
                   name: is_deleted
+                  value: "0"
+              - column:
+                  name: is_online
                   value: "0"
 
         - insert:
@@ -423,3 +443,6 @@ databaseChangeLog:
               - column:
                   name: is_deleted
                   value: "0"
+              - column:
+                  name: is_online
+                  value: "1"

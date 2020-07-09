@@ -84,3 +84,8 @@ databaseChangeLog:
                   type: boolean
                   constraints:
                     nullable: false
+              - column:
+                  name: is_online
+                  type: boolean
+                  constraints:
+                    nullable: false

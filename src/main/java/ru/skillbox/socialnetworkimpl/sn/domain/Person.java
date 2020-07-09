@@ -67,6 +67,9 @@ public class Person {
     @Column(name = "last_online_time")
     private LocalDateTime lastOnlineTime;
 
+    @Column(name = "is_online", nullable = false)
+    private boolean isOnline;
+
     @Column(name = "is_blocked", nullable = false)
     private boolean isBlocked;
 

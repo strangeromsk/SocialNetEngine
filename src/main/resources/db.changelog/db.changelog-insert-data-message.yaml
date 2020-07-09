@@ -1,0 +1,367 @@
+databaseChangeLog:
+  - logicalFilePath: db.changelog/db.changelog-insert-data-message.yaml
+  - changeSet:
+      id: 2020/07/07
+      author: snet
+      comment: "added a few messages"
+      changes:
+        - insert:
+            tableName: message
+            columns:
+              - column:
+                  name: time
+                  value: "2020-07-07 10:10:57"
+              - column:
+                  name: author_id
+                  value: 2
+              - column:
+                  name: recipient_id
+                  value: 1
+              - column:
+                  name: message_text
+                  value: "Привет, привет! Давно не виделись"
+              - column:
+                  name: read_status
+                  value: "READ"
+              - column:
+                  name: dialog_id
+                  value: 1
+              - column:
+                  name: is_deleted
+                  value: "0"
+        - insert:
+            tableName: message
+            columns:
+              - column:
+                  name: time
+                  value: "2020-07-07 10:09:57"
+              - column:
+                  name: author_id
+                  value: 2
+              - column:
+                  name: recipient_id
+                  value: 1
+              - column:
+                  name: message_text
+                  value: "Ну ты, блин, даёшь. Сначала молчишь десять лет по всем каналам, а тут вдруг проявляешься такой: любите меня все."
+              - column:
+                  name: read_status
+                  value: "READ"
+              - column:
+                  name: dialog_id
+                  value: 1
+              - column:
+                  name: is_deleted
+                  value: "1"
+        - insert:
+            tableName: message
+            columns:
+              - column:
+                  name: time
+                  value: "2020-07-07 13:10:59"
+              - column:
+                  name: author_id
+                  value: 1
+              - column:
+                  name: recipient_id
+                  value: 2
+              - column:
+                  name: message_text
+                  value: "Ага, лет десять уже, не меньше. Как жизнь? Как сам?"
+              - column:
+                  name: read_status
+                  value: "READ"
+              - column:
+                  name: dialog_id
+                  value: 1
+              - column:
+                  name: is_deleted
+                  value: "0"
+        - insert:
+            tableName: message
+            columns:
+              - column:
+                  name: time
+                  value: "2020-07-08 10:10:57"
+              - column:
+                  name: author_id
+                  value: 2
+              - column:
+                  name: recipient_id
+                  value: 1
+              - column:
+                  name: message_text
+                  value: "Да у меня всё ок. Женился, развёлся, снова женился. Вот квартиру купил... А как ты?"
+              - column:
+                  name: read_status
+                  value: "READ"
+              - column:
+                  name: dialog_id
+                  value: 1
+              - column:
+                  name: is_deleted
+                  value: "0"
+        - insert:
+            tableName: message
+            columns:
+              - column:
+                  name: time
+                  value: "2020-07-08 11:10:57"
+              - column:
+                  name: author_id
+                  value: 1
+              - column:
+                  name: recipient_id
+                  value: 2
+              - column:
+                  name: message_text
+                  value: "Слушай, а давай Сартра позовём, не против?"
+              - column:
+                  name: read_status
+                  value: "SENT"
+              - column:
+                  name: dialog_id
+                  value: 1
+              - column:
+                  name: is_deleted
+                  value: "0"
+        - insert:
+            tableName: message
+            columns:
+              - column:
+                  name: time
+                  value: "2020-07-08 11:11:50"
+              - column:
+                  name: author_id
+                  value: 1
+              - column:
+                  name: recipient_id
+                  value: 2
+              - column:
+                  name: message_text
+                  value: "Я тут подумал, что нам всем есть, что обсудить, вспомнить"
+              - column:
+                  name: read_status
+                  value: "SENT"
+              - column:
+                  name: dialog_id
+                  value: 1
+              - column:
+                  name: is_deleted
+                  value: "0"
+        - insert:
+            tableName: message
+            columns:
+              - column:
+                  name: time
+                  value: "2020-07-09 17:11:50"
+              - column:
+                  name: author_id
+                  value: 3
+              - column:
+                  name: recipient_id
+                  value: 1
+              - column:
+                  name: message_text
+                  value: "Ну привет, ребята. Спасибо, что позвали в вашу компанию, я уж не чаял."
+              - column:
+                  name: read_status
+                  value: "SENT"
+              - column:
+                  name: dialog_id
+                  value: 1
+              - column:
+                  name: is_deleted
+                  value: "0"
+        - insert:
+            tableName: message
+            columns:
+              - column:
+                  name: time
+                  value: "2020-07-19 11:11:50"
+              - column:
+                  name: author_id
+                  value: 2
+              - column:
+                  name: recipient_id
+                  value: 3
+              - column:
+                  name: message_text
+                  value: "Слушай, Жан, а ты не в курсе, что у Пола происходит? Что-то он нервый в последнее время"
+              - column:
+                  name: read_status
+                  value: "SENT"
+              - column:
+                  name: dialog_id
+                  value: 2
+              - column:
+                  name: is_deleted
+                  value: "0"
+        - insert:
+            tableName: message
+            columns:
+              - column:
+                  name: time
+                  value: "2020-07-17 11:11:50"
+              - column:
+                  name: author_id
+                  value: 1
+              - column:
+                  name: recipient_id
+                  value: 3
+              - column:
+                  name: message_text
+                  value: "Привет, Жан. Сорри, что обращаюсь, но ты не выручишь меня деньгами на недельку? Нужна двадцатка. Верну, мамой клянусь"
+              - column:
+                  name: read_status
+                  value: "SENT"
+              - column:
+                  name: dialog_id
+                  value: 3
+              - column:
+                  name: is_deleted
+                  value: "0"
+        - insert:
+            tableName: message
+            columns:
+              - column:
+                  name: time
+                  value: "2020-07-18 09:11:50"
+              - column:
+                  name: author_id
+                  value: 1
+              - column:
+                  name: recipient_id
+                  value: 3
+              - column:
+                  name: message_text
+                  value: "Жан, не игнорируй меня, пожалуйста. Не хочешь общаться, так и напиши, я хоть знать буду."
+              - column:
+                  name: read_status
+                  value: "SENT"
+              - column:
+                  name: dialog_id
+                  value: 3
+              - column:
+                  name: is_deleted
+                  value: "0"
+        - insert:
+            tableName: message
+            columns:
+              - column:
+                  name: time
+                  value: "2020-07-18 23:11:50"
+              - column:
+                  name: author_id
+                  value: 1
+              - column:
+                  name: recipient_id
+                  value: 3
+              - column:
+                  name: message_text
+                  value: "И снова голос вникуда. Зря, я, наверное, у тебя денег попросил... вот так и теряют друзей"
+              - column:
+                  name: read_status
+                  value: "SENT"
+              - column:
+                  name: dialog_id
+                  value: 3
+              - column:
+                  name: is_deleted
+                  value: "0"
+        - insert:
+            tableName: message
+            columns:
+              - column:
+                  name: time
+                  value: "2020-07-18 23:55:50"
+              - column:
+                  name: author_id
+                  value: 1
+              - column:
+                  name: recipient_id
+                  value: 3
+              - column:
+                  name: message_text
+                  value: "А вообще мне реально очень надо (( Ты просто не представляшь."
+              - column:
+                  name: read_status
+                  value: "SENT"
+              - column:
+                  name: dialog_id
+                  value: 3
+              - column:
+                  name: is_deleted
+                  value: "0"
+        - insert:
+            tableName: message
+            columns:
+              - column:
+                  name: time
+                  value: "2020-07-19 01:15:50"
+              - column:
+                  name: author_id
+                  value: 1
+              - column:
+                  name: recipient_id
+                  value: 3
+              - column:
+                  name: message_text
+                  value: "Но не хочу об этом писать тут. Лучше приезжай в гости, поговорим. Приедешь да? Ау!"
+              - column:
+                  name: read_status
+                  value: "SENT"
+              - column:
+                  name: dialog_id
+                  value: 3
+              - column:
+                  name: is_deleted
+                  value: "0"
+        - insert:
+            tableName: message
+            columns:
+              - column:
+                  name: time
+                  value: "2020-07-19 01:15:50"
+              - column:
+                  name: author_id
+                  value: 1
+              - column:
+                  name: recipient_id
+                  value: 3
+              - column:
+                  name: message_text
+                  value: "Я тут вот что подумал... а давай вместе книгу напишем?"
+              - column:
+                  name: read_status
+                  value: "READ"
+              - column:
+                  name: dialog_id
+                  value: 4
+              - column:
+                  name: is_deleted
+                  value: "1"
+        - insert:
+            tableName: message
+            columns:
+              - column:
+                  name: time
+                  value: "2020-07-19 01:16:57"
+              - column:
+                  name: author_id
+                  value: 3
+              - column:
+                  name: recipient_id
+                  value: 1
+              - column:
+                  name: message_text
+                  value: "А почему бы и нет! Давай."
+              - column:
+                  name: read_status
+                  value: "SENT"
+              - column:
+                  name: dialog_id
+                  value: 4
+              - column:
+                  name: is_deleted
+                  value: "1"

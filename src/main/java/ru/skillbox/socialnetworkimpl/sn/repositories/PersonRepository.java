@@ -15,6 +15,9 @@ import java.util.List;
 public interface PersonRepository extends JpaRepository<Person, Integer> {
     Person findByEmail(String email);
 
+    @Query("SELECT p FROM Person p WHERE p.id = ?1")
+    Person findByUserId(int id);
+
     @Query(value = "SELECT p.* FROM person p " +
             "JOIN cities c ON c.id = p.town JOIN countries s ON s.id = c.country_id " +
             "WHERE c.id = :cityId AND p.first_name = :firstName AND p.last_name = :lastName " +

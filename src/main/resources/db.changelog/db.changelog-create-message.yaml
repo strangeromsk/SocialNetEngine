@@ -1,0 +1,51 @@
+databaseChangeLog:
+  - logicalFilePath: db.changelog/db.changelog-create-message.yaml
+  - changeSet:
+      id: 22/06/1
+      author: snet
+      changes:
+        - createTable:
+            tableName: message
+            columns:
+              - column:
+                  name: id
+                  type: int(11)
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: time
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: recipient_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: message_text
+                  type: varchar(2048)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: read_status
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: dialog_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_deleted
+                  type: boolean
+                  constraints:
+                    nullable: false
