@@ -43,9 +43,7 @@ public class PostServiceImpl implements PostService {
     public List<PostResponse> searchPublication(String text, long dateFrom, long dateTo, int offset, int itemPerPage) {
         List<Post> posts = postRepository.findAllByPostTextContainingAndTimeBetween(text, dateFrom, dateTo)
                 .stream().skip(offset).limit(itemPerPage).collect(Collectors.toList());
-        if (posts.isEmpty()) {
-            throw new EntityNotFoundException("Search by parameters empty");
-        }
+
         List<PostResponse> ps = postMapper.postToPostResponse(posts);
         for (int i = 0; i < posts.size(); i++) {
             setCountry(posts.get(i), ps.get(i));
