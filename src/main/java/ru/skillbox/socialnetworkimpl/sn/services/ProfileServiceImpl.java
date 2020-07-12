@@ -18,6 +18,7 @@ import ru.skillbox.socialnetworkimpl.sn.domain.Country;
 import ru.skillbox.socialnetworkimpl.sn.domain.Person;
 import ru.skillbox.socialnetworkimpl.sn.domain.Post;
 import ru.skillbox.socialnetworkimpl.sn.domain.PostComment;
+import ru.skillbox.socialnetworkimpl.sn.domain.enums.PostType;
 import ru.skillbox.socialnetworkimpl.sn.repositories.*;
 import ru.skillbox.socialnetworkimpl.sn.security.UserDetailsServiceImpl;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.ProfileService;
@@ -173,17 +174,29 @@ public class ProfileServiceImpl implements ProfileService {
     public ResponseEntity<ResponsePlatformApi> getPersonsWallPostsByUserId(HttpSession session, int id,
                                                                            int offset, int itemPerPage) {
         List<Post> posts = postRepository.findAllByAuthorId(id);
-        if (posts.isEmpty()) {
-            throw new EntityNotFoundException("No entries for this id = " + id);
-        }
+//        if (posts.isEmpty()) {
+//            throw new EntityNotFoundException("No entries for this id = " + id);
+//        }
         List<Post> postList = posts.stream().skip(offset).limit(itemPerPage).collect(Collectors.toList());
-        if (postList.isEmpty()) {
-            throw new EntityNotFoundException("No entries for offset and itemPerPage");
+//        if (postList.isEmpty()) {
+//            throw new EntityNotFoundException("No entries for offset and itemPerPage");
+//        }
+        List<PostResponse> api;
+
+        if (postList.isEmpty())
+            api = new ArrayList<>();
+
+        else {
+            Country country = countryRepository.getOne(postList.get(0).getAuthor().getTown().getCountryId());
+            CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
+            api = postMapper.postToPostResponse(postList);
+            api.forEach(x -> {
+                x.getAuthor().setCountry(countryResponse);
+                if (x.getCommentResponses() == null)
+                    x.setCommentResponses(new ArrayList<>());
+            });
         }
-        Country country = countryRepository.getOne(postList.get(0).getAuthor().getTown().getCountryId());
-        CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
-        List<PostResponse> api = postMapper.postToPostResponse(postList);
-        api.stream().forEach(x -> x.getAuthor().setCountry(countryResponse));
+
         ResponsePlatformApi platformApi = ResponsePlatformApi.builder()
                 .error("Ok")
                 .timestamp(new Date().getTime())
