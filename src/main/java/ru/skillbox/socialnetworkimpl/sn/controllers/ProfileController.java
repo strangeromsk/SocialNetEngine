@@ -61,7 +61,7 @@ public class ProfileController {
     public ResponseEntity<ResponsePlatformApi> addPostToUsersWall(
             HttpServletRequest request,
             @PathVariable("id") int id,
-            @RequestParam(value = "publish_date", defaultValue = "0") Long publishDate,
+            @RequestParam(value = "publish_date", defaultValue = "0") long publishDate,
             @RequestBody PostRequest postRequest) {
         return profileService.addPostToUsersWall(
                 request.getSession(),
