@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.skillbox.socialnetworkimpl.sn.domain.enums.PostType;
 
 import java.util.List;
 
@@ -26,4 +27,5 @@ public class PostResponse {
     private boolean isBlocked;
     @JsonProperty("comments")
     private List<CommentResponse> commentResponses;
+    private PostType type;
 }
