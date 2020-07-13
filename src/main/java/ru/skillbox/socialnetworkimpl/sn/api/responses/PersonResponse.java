@@ -31,7 +31,10 @@ public class PersonResponse {
     private String phone;
     private String photo;
     private String about;
+
+    @JsonProperty("city")
     private CityResponse town;
+
     private CountryResponse country;
 
     @JsonProperty("messages_permission")
