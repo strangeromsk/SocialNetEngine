@@ -18,6 +18,7 @@ import ru.skillbox.socialnetworkimpl.sn.domain.Country;
 import ru.skillbox.socialnetworkimpl.sn.domain.Person;
 import ru.skillbox.socialnetworkimpl.sn.domain.Post;
 import ru.skillbox.socialnetworkimpl.sn.domain.PostComment;
+import ru.skillbox.socialnetworkimpl.sn.domain.enums.PostType;
 import ru.skillbox.socialnetworkimpl.sn.repositories.*;
 import ru.skillbox.socialnetworkimpl.sn.security.UserDetailsServiceImpl;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.ProfileService;
@@ -173,17 +174,30 @@ public class ProfileServiceImpl implements ProfileService {
     public ResponseEntity<ResponsePlatformApi> getPersonsWallPostsByUserId(HttpSession session, int id,
                                                                            int offset, int itemPerPage) {
         List<Post> posts = postRepository.findAllByAuthorId(id);
-        if (posts.isEmpty()) {
-            throw new EntityNotFoundException("No entries for this id = " + id);
-        }
+
+        posts.forEach(post -> {
+            if (post.getTime().isBefore(LocalDate.now()))
+                post.setType(PostType.POSTED);
+        });
+
         List<Post> postList = posts.stream().skip(offset).limit(itemPerPage).collect(Collectors.toList());
-        if (postList.isEmpty()) {
-            throw new EntityNotFoundException("No entries for offset and itemPerPage");
+
+        List<PostResponse> api;
+
+        if (postList.isEmpty())
+            api = new ArrayList<>();
+
+        else {
+            Country country = countryRepository.getOne(postList.get(0).getAuthor().getTown().getCountryId());
+            CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
+            api = postMapper.postToPostResponse(postList);
+            api.forEach(x -> {
+                x.getAuthor().setCountry(countryResponse);
+                if (x.getCommentResponses() == null)
+                    x.setCommentResponses(new ArrayList<>());
+            });
         }
-        Country country = countryRepository.getOne(postList.get(0).getAuthor().getTown().getCountryId());
-        CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
-        List<PostResponse> api = postMapper.postToPostResponse(postList);
-        api.stream().forEach(x -> x.getAuthor().setCountry(countryResponse));
+
         ResponsePlatformApi platformApi = ResponsePlatformApi.builder()
                 .error("Ok")
                 .timestamp(new Date().getTime())
@@ -201,11 +215,21 @@ public class ProfileServiceImpl implements ProfileService {
         Post post = postMapper.requestPostToPost(postRequest);
         post.setAuthor(person);
         post.setTime(dataMapper.asLocalDate(publishDate));
+
+        if (publishDate > new Date().getTime())
+            post.setType(PostType.QUEUED);
+        else
+            post.setType(PostType.POSTED);
+
         Country country = countryRepository.getOne(post.getAuthor().getTown().getCountryId());
         CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
         postRepository.save(post);
         PostResponse postResponse = postMapper.postToPostResponse(post);
         postResponse.getAuthor().setCountry(countryResponse);
+
+        if (postResponse.getCommentResponses() == null)
+            postResponse.setCommentResponses(new ArrayList<>());
+
         ResponsePlatformApi platformApi = ResponsePlatformApi.builder()
                 .error("Ok")
                 .timestamp(new Date().getTime())

@@ -10,6 +10,7 @@ import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.ProfileService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 @Slf4j
 @RestController
@@ -47,22 +48,26 @@ public class ProfileController {
         return profileService.getUserById(request.getSession(), id);
     }
 
-    @GetMapping(value = "{id}/wall", params = {"offset"})
+    @GetMapping(value = "{id}/wall")
     public ResponseEntity<ResponsePlatformApi> getPersonsWallPosts(
             HttpServletRequest request,
             @PathVariable("id") int id,
-            @RequestParam(value = "offset") int offset,
+            @RequestParam(value = "offset", defaultValue = "0") int offset,
             @RequestParam(value = "itemPerPage", defaultValue = "20") int itemPerPage) {
         return profileService.getPersonsWallPostsByUserId(request.getSession(), id, offset, itemPerPage);
     }
 
-    @PostMapping(value = "{id}/wall", params = {"publish_date"})
+    @PostMapping(value = "{id}/wall")
     public ResponseEntity<ResponsePlatformApi> addPostToUsersWall(
             HttpServletRequest request,
             @PathVariable("id") int id,
-            @RequestParam(value = "publish_date") long publishDate,
+            @RequestParam(value = "publish_date", defaultValue = "0") long publishDate,
             @RequestBody PostRequest postRequest) {
-        return profileService.addPostToUsersWall(request.getSession(), id, publishDate, postRequest);
+        return profileService.addPostToUsersWall(
+                request.getSession(),
+                id,
+                publishDate == 0 ? new Date().getTime() : publishDate,
+                postRequest);
     }
 
     @GetMapping(value = "search/", params = {"first_name", "last_name", "age_from", "age_to",
