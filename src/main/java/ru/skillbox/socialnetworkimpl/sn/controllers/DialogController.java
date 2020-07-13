@@ -8,7 +8,7 @@ import ru.skillbox.socialnetworkimpl.sn.api.responses.ResponsePlatformApi;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.DialogService;
 
 @RestController
-@RequestMapping("/api/v1/dialogs/")
+@RequestMapping("/dialogs/")
 public class DialogController
 {
     @Autowired
