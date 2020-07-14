@@ -2,6 +2,7 @@ package ru.skillbox.socialnetworkimpl.sn.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -22,9 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import ru.skillbox.socialnetworkimpl.sn.services.mappers.PersonsMapper;
-
 import javax.servlet.Filter;
-
 import java.util.Arrays;
 
 @EnableWebSecurity
@@ -45,6 +44,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private ObjectMapper mapper;
 
+    @Autowired
+    private LogoutSuccessHandler logoutHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors()
@@ -56,7 +58,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtAuthorizationFilter(authenticationManager()))
                 .exceptionHandling().authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .logout().logoutUrl(SecurityConstants.API_LOGOUT_URL)
+                .logoutSuccessHandler(logoutHandler);
     }
 
     @Override
