@@ -1,7 +1,5 @@
 package ru.skillbox.socialnetworkimpl.sn.services;
 
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
@@ -13,23 +11,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PersonRequest;
-import ru.skillbox.socialnetworkimpl.sn.api.requests.PostCommentRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.requests.PostRequest;
 import ru.skillbox.socialnetworkimpl.sn.api.responses.*;
 import ru.skillbox.socialnetworkimpl.sn.domain.Country;
 import ru.skillbox.socialnetworkimpl.sn.domain.Person;
 import ru.skillbox.socialnetworkimpl.sn.domain.Post;
-import ru.skillbox.socialnetworkimpl.sn.domain.PostComment;
-<<<<<<< HEAD
-import ru.skillbox.socialnetworkimpl.sn.domain.enums.MessagesPermission;
-=======
 import ru.skillbox.socialnetworkimpl.sn.domain.enums.PostType;
->>>>>>> dev
 import ru.skillbox.socialnetworkimpl.sn.repositories.*;
 import ru.skillbox.socialnetworkimpl.sn.security.UserDetailsServiceImpl;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.ProfileService;
 import ru.skillbox.socialnetworkimpl.sn.services.mappers.*;
-
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
@@ -181,15 +172,6 @@ public class ProfileServiceImpl implements ProfileService {
     public ResponseEntity<ResponsePlatformApi> getPersonsWallPostsByUserId(HttpSession session, int id,
                                                                            Integer offset, int itemPerPage) {
         List<Post> posts = postRepository.findAllByAuthorId(id);
-<<<<<<< HEAD
-        if (posts.isEmpty()) {
-            throw new EntityNotFoundException("No entries for this id = " + id);
-        }
-        List<Post> postList = new ArrayList<>(posts);
-        //List<Post> postList = posts.stream().skip(offset).limit(itemPerPage).collect(Collectors.toList());
-        if (postList.isEmpty()) {
-            throw new EntityNotFoundException("No entries for offset and itemPerPage");
-=======
 
         posts.forEach(post -> {
             if (post.getTime().isBefore(LocalDate.now()))
@@ -212,7 +194,6 @@ public class ProfileServiceImpl implements ProfileService {
                 if (x.getCommentResponses() == null)
                     x.setCommentResponses(new ArrayList<>());
             });
->>>>>>> dev
         }
 
         ResponsePlatformApi platformApi = ResponsePlatformApi.builder()
