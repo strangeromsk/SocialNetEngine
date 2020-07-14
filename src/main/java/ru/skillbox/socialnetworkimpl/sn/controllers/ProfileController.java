@@ -52,8 +52,8 @@ public class ProfileController {
     public ResponseEntity<ResponsePlatformApi> getPersonsWallPosts(
             HttpServletRequest request,
             @PathVariable("id") int id,
-            @RequestParam(value = "offset", defaultValue = "0") int offset,
-            @RequestParam(value = "itemPerPage", defaultValue = "20") int itemPerPage) {
+            @RequestParam(value = "offset", defaultValue = "0", required = false) Integer offset,
+            @RequestParam(value = "itemPerPage", defaultValue = "20", required = false) int itemPerPage) {
         return profileService.getPersonsWallPostsByUserId(request.getSession(), id, offset, itemPerPage);
     }
 

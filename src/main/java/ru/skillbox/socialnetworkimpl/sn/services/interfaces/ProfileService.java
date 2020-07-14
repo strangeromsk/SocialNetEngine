@@ -16,7 +16,7 @@ public interface ProfileService {
 
     ResponseEntity<ResponsePlatformApi> getUserById(HttpSession session, int id);
 
-    ResponseEntity<ResponsePlatformApi> getPersonsWallPostsByUserId(HttpSession session, int id, int offset, int itemPerPage);
+    ResponseEntity<ResponsePlatformApi> getPersonsWallPostsByUserId(HttpSession session, int id, Integer offset, int itemPerPage);
 
     ResponseEntity<ResponsePlatformApi> addPostToUsersWall(HttpSession session, int id, long publishDate, PostRequest postRequest);
 
