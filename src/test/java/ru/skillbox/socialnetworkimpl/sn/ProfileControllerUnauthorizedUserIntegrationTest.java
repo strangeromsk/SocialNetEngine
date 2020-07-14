@@ -21,7 +21,7 @@ public class ProfileControllerUnauthorizedUserIntegrationTest {
     @Test
     public void getCurrentUserTest() throws Exception {
         mockMvc.perform(
-                get("/api/v1/users/me")
+                get("/users/me")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isUnauthorized())
@@ -42,7 +42,7 @@ public class ProfileControllerUnauthorizedUserIntegrationTest {
                 "  \"messages_permission\": \"ALL\"\n" +
                 "}";
         mockMvc.perform(
-                put("/api/v1/users/me")
+                put("/users/me")
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -54,7 +54,7 @@ public class ProfileControllerUnauthorizedUserIntegrationTest {
     @Test
     public void deleteCurrentUserTest() throws Exception {
         mockMvc.perform(
-                delete("/api/v1/users/me")
+                delete("/users/me")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isUnauthorized())
@@ -64,10 +64,10 @@ public class ProfileControllerUnauthorizedUserIntegrationTest {
     @Test
     public void getUserByIdTest() throws Exception {
         mockMvc.perform(
-                get("/api/v1/users/{id}", 1)
+                get("/users/{id}", 1)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isUnauthorized())
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.error").value("invalid_request"));
     }
@@ -75,7 +75,7 @@ public class ProfileControllerUnauthorizedUserIntegrationTest {
     @Test
     public void getPersonsWallPostsTest() throws Exception {
         mockMvc.perform(
-                get("/api/v1/users/{id}/wall", 1)
+                get("/users/{id}/wall", 1)
                         .param("offset", "0")
                         .param("itemPerPage", "5")
                         .accept(MediaType.APPLICATION_JSON))
@@ -91,8 +91,8 @@ public class ProfileControllerUnauthorizedUserIntegrationTest {
                 "  \"post_text\": \"asd\"\n" +
                 "}";
         mockMvc.perform(
-                post("/api/v1/users/{id}/wall", 2)
-                        .param("publishDate", "1559751301818")
+                post("/users/{id}/wall", 2)
+                        .param("publish_date", "1559751301818")
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -104,7 +104,7 @@ public class ProfileControllerUnauthorizedUserIntegrationTest {
     @Test
     public void searchPersonTest() throws Exception {
         mockMvc.perform(
-                get("/api/v1/users/search/")
+                get("/users/search/")
                         .param("first_name", "Paul")
                         .param("last_name", "Estiner")
                         .param("age_from", "0")
@@ -122,7 +122,7 @@ public class ProfileControllerUnauthorizedUserIntegrationTest {
     @Test
     public void blockUserByIdTest() throws Exception {
         mockMvc.perform(
-                put("/api/v1/users/block/{id}", 2)
+                put("/users/block/{id}", 2)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isUnauthorized())
@@ -132,7 +132,7 @@ public class ProfileControllerUnauthorizedUserIntegrationTest {
     @Test
     public void unblockUserByIdTest() throws Exception {
         mockMvc.perform(
-                delete("/api/v1/users/block/{id}", 2)
+                delete("/users/block/{id}", 2)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isUnauthorized())
