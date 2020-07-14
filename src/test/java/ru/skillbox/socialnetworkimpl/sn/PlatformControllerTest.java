@@ -24,7 +24,7 @@ public class PlatformControllerTest {
     @Test
     public void getLanguages1() throws Exception {
 
-        mvc.perform(MockMvcRequestBuilders.get("/api/v1/platform/languages")
+        mvc.perform(MockMvcRequestBuilders.get("/platform/languages")
                 .accept(MediaType.APPLICATION_JSON).param("language", "an").param("offset", "1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.error", Matchers.is("done")))
@@ -37,7 +37,7 @@ public class PlatformControllerTest {
     @Test
     public void getLanguages2() throws Exception {
 
-        mvc.perform(MockMvcRequestBuilders.get("/api/v1/platform/languages")
+        mvc.perform(MockMvcRequestBuilders.get("/platform/languages")
                 .accept(MediaType.APPLICATION_JSON).param("language", "an").param("offset", "5"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.total", Matchers.is(0)))
@@ -49,7 +49,7 @@ public class PlatformControllerTest {
     @Test
     public void getLanguages3() throws Exception {
 
-        mvc.perform(MockMvcRequestBuilders.get("/api/v1/platform/languages")
+        mvc.perform(MockMvcRequestBuilders.get("/platform/languages")
                 .accept(MediaType.APPLICATION_JSON).param("language", "").param("itemPerPage", "2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.error", Matchers.is("done")))
@@ -62,7 +62,7 @@ public class PlatformControllerTest {
     @Test
     public void getCities1() throws Exception {
 
-        mvc.perform(MockMvcRequestBuilders.get("/api/v1/platform/cities")
+        mvc.perform(MockMvcRequestBuilders.get("/platform/cities")
                 .accept(MediaType.APPLICATION_JSON).param("countryId", "1").param("city", "o").param("offset","0"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.error", Matchers.is("done")))
@@ -75,7 +75,7 @@ public class PlatformControllerTest {
     @Test
     public void getCities2() throws Exception {
 
-        mvc.perform(MockMvcRequestBuilders.get("/api/v1/platform/cities")
+        mvc.perform(MockMvcRequestBuilders.get("/platform/cities")
                 .accept(MediaType.APPLICATION_JSON).param("countryId", "1").param("city", "Mos").param("offset", "5"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.total", Matchers.is(0)))
@@ -87,7 +87,7 @@ public class PlatformControllerTest {
     @Test
     public void getCities3() throws Exception {
 
-        mvc.perform(MockMvcRequestBuilders.get("/api/v1/platform/cities")
+        mvc.perform(MockMvcRequestBuilders.get("/platform/cities")
                 .accept(MediaType.APPLICATION_JSON).param("countryId", "3").param("city", "i").param("itemPerPage", "2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.error", Matchers.is("done")))
@@ -100,7 +100,7 @@ public class PlatformControllerTest {
 
     @Test
     public void getCountries1() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/api/v1/platform/countries")
+        mvc.perform(MockMvcRequestBuilders.get("/platform/countries")
                 .accept(MediaType.APPLICATION_JSON).param("country", "an"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.error", Matchers.is("done")))
@@ -113,7 +113,7 @@ public class PlatformControllerTest {
     @Test
     public void getCountries2() throws Exception {
 
-        mvc.perform(MockMvcRequestBuilders.get("/api/v1/platform/countries")
+        mvc.perform(MockMvcRequestBuilders.get("/platform/countries")
                 .accept(MediaType.APPLICATION_JSON).param("country", "a").param("offset", "5"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.total", Matchers.is(0)))
@@ -124,7 +124,7 @@ public class PlatformControllerTest {
 
     @Test
     public void getCountries3() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/api/v1/platform/countries")
+        mvc.perform(MockMvcRequestBuilders.get("/platform/countries")
                 .accept(MediaType.APPLICATION_JSON).param("country", "an"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.error", Matchers.is("done")))
