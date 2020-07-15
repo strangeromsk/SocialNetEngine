@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import ru.skillbox.socialnetworkimpl.sn.domain.enums.PostType;
 
 import javax.persistence.*;
 import java.awt.*;
@@ -47,5 +48,8 @@ public class Post {
             inverseJoinColumns = {@JoinColumn(name = "tag_id")}
     )
     private List<Tag> tags;
+
+    @Enumerated(EnumType.STRING)
+    private PostType type;
 }
 

@@ -28,7 +28,7 @@ public class AccountTest {
                 "\"123\", \"firstName\" : \"Vasia\", \"lastName\" : \"Pupkin\",\"code\" : \"123\"}";
         HashMap<String, String> data = new HashMap<>();
         data.put("message", "ok");
-        mvc.perform(MockMvcRequestBuilders.post("/api/v1/account/register")
+        mvc.perform(MockMvcRequestBuilders.post("/account/register")
                     .content(correctNewUser).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
@@ -42,7 +42,7 @@ public class AccountTest {
         String incEmailNewUser = "{\"email\": \"4ewyandex.ru\", \"passwd1\" : \"123\", \"passwd2\" : " +
                 "\"123\", \"firstName\" : \"Vasia\", \"lastName\" : \"Pupkin\",\"code\" : \"123\"}";
 
-        mvc.perform(MockMvcRequestBuilders.post("/api/v1/account/register")
+        mvc.perform(MockMvcRequestBuilders.post("/account/register")
                 .content(incEmailNewUser).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
@@ -51,7 +51,7 @@ public class AccountTest {
         String incPassNewUser = "{\"email\": \"4ew@yandex.ru\", \"passwd1\" : \"123\", \"passwd2\" : " +
                 "\"1235\", \"firstName\" : \"Vasia\", \"lastName\" : \"Pupkin\",\"code\" : \"123\"}";
 
-        mvc.perform(MockMvcRequestBuilders.post("/api/v1/account/register")
+        mvc.perform(MockMvcRequestBuilders.post("/account/register")
                 .content(incPassNewUser).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
@@ -61,7 +61,7 @@ public class AccountTest {
         String email = "{\"email\": \"user@user.exist\"}";
         HashMap<String, String> data = new HashMap<>();
         data.put("message", "ok");
-        mvc.perform(MockMvcRequestBuilders.put("/api/v1/account/password/recovery")
+        mvc.perform(MockMvcRequestBuilders.put("/account/password/recovery")
                 .content(email).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
@@ -74,7 +74,7 @@ public class AccountTest {
     @Test
     public void recoverPassswordNotExistUserTest() throws Exception {
         String email = "{\"email\": \"not@exist.user\"}";
-        mvc.perform(MockMvcRequestBuilders.put("/api/v1/account/password/recovery")
+        mvc.perform(MockMvcRequestBuilders.put("/account/password/recovery")
                 .content(email).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
@@ -84,7 +84,7 @@ public class AccountTest {
         String email = "{\"token\": \"dfsfsd\", \"password\": \"newPassword\"}";
         HashMap<String, String> data = new HashMap<>();
         data.put("message", "ok");
-        mvc.perform(MockMvcRequestBuilders.put("/api/v1/account/password/set")
+        mvc.perform(MockMvcRequestBuilders.put("/account/password/set")
                 .content(email).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
@@ -98,7 +98,7 @@ public class AccountTest {
         String email = "{\"email\": \"new@email.mail\"}";
         HashMap<String, String> data = new HashMap<>();
         data.put("message", "ok");
-        mvc.perform(MockMvcRequestBuilders.put("/api/v1/account/email")
+        mvc.perform(MockMvcRequestBuilders.put("/account/email")
                 .content(email).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
@@ -111,7 +111,7 @@ public class AccountTest {
     public void changeEmailBadEmailTest() throws Exception {
         String incEmailNewUser = "{\"email\": \"4ewyandex.ru\"}";
 
-        mvc.perform(MockMvcRequestBuilders.put("/api/v1/account/email")
+        mvc.perform(MockMvcRequestBuilders.put("/account/email")
                 .content(incEmailNewUser).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }

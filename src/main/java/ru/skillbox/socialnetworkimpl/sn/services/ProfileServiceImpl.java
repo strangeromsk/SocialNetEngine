@@ -1,5 +1,7 @@
 package ru.skillbox.socialnetworkimpl.sn.services;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
@@ -18,6 +20,11 @@ import ru.skillbox.socialnetworkimpl.sn.domain.Country;
 import ru.skillbox.socialnetworkimpl.sn.domain.Person;
 import ru.skillbox.socialnetworkimpl.sn.domain.Post;
 import ru.skillbox.socialnetworkimpl.sn.domain.PostComment;
+<<<<<<< HEAD
+import ru.skillbox.socialnetworkimpl.sn.domain.enums.MessagesPermission;
+=======
+import ru.skillbox.socialnetworkimpl.sn.domain.enums.PostType;
+>>>>>>> dev
 import ru.skillbox.socialnetworkimpl.sn.repositories.*;
 import ru.skillbox.socialnetworkimpl.sn.security.UserDetailsServiceImpl;
 import ru.skillbox.socialnetworkimpl.sn.services.interfaces.ProfileService;
@@ -119,7 +126,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ResponseEntity<ResponsePlatformApi> editCurrentUser(HttpSession session, PersonRequest personRequest) {
         Person fromPerson = account.getCurrentUser();
-        personRequest.setTown(cityRepository.getOne(personRequest.getCity()));
+        personRequest.setTown(cityRepository.findCityByName(personRequest.getCity()));
         Person toPerson = personsMapper.requestPersonToPerson(personRequest);
         toPerson.setId(fromPerson.getId());
         toPerson.setRegDate(fromPerson.getRegDate());
@@ -127,11 +134,12 @@ public class ProfileServiceImpl implements ProfileService {
         toPerson.setLastOnlineTime(dataMapper.asLocalDateTime(new Date().getTime()));
         toPerson.setPassword(fromPerson.getPassword());
 
-        Country country = countryRepository.getOne(personRequest.getCountryId());
+        Country country = countryRepository.findCountryIdByName(personRequest.getCountry());
         CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
         PersonResponse ps = personsMapper.personToPersonResponse(toPerson);
         ps.setCountry(countryResponse);
 
+        log.info("toPerson: id{}, town{}, LastName={}", toPerson.getId(),toPerson.getTown(), toPerson.getLastName());
         personRepository.save(toPerson);
         ResponsePlatformApi api = ResponsePlatformApi.builder()
                 .error("Ok")
@@ -171,19 +179,42 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ResponseEntity<ResponsePlatformApi> getPersonsWallPostsByUserId(HttpSession session, int id,
-                                                                           int offset, int itemPerPage) {
+                                                                           Integer offset, int itemPerPage) {
         List<Post> posts = postRepository.findAllByAuthorId(id);
+<<<<<<< HEAD
         if (posts.isEmpty()) {
             throw new EntityNotFoundException("No entries for this id = " + id);
         }
-        List<Post> postList = posts.stream().skip(offset).limit(itemPerPage).collect(Collectors.toList());
+        List<Post> postList = new ArrayList<>(posts);
+        //List<Post> postList = posts.stream().skip(offset).limit(itemPerPage).collect(Collectors.toList());
         if (postList.isEmpty()) {
             throw new EntityNotFoundException("No entries for offset and itemPerPage");
+=======
+
+        posts.forEach(post -> {
+            if (post.getTime().isBefore(LocalDate.now()))
+                post.setType(PostType.POSTED);
+        });
+
+        List<Post> postList = posts.stream().skip(offset).limit(itemPerPage).collect(Collectors.toList());
+
+        List<PostResponse> api;
+
+        if (postList.isEmpty())
+            api = new ArrayList<>();
+
+        else {
+            Country country = countryRepository.getOne(postList.get(0).getAuthor().getTown().getCountryId());
+            CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
+            api = postMapper.postToPostResponse(postList);
+            api.forEach(x -> {
+                x.getAuthor().setCountry(countryResponse);
+                if (x.getCommentResponses() == null)
+                    x.setCommentResponses(new ArrayList<>());
+            });
+>>>>>>> dev
         }
-        Country country = countryRepository.getOne(postList.get(0).getAuthor().getTown().getCountryId());
-        CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
-        List<PostResponse> api = postMapper.postToPostResponse(postList);
-        api.stream().forEach(x -> x.getAuthor().setCountry(countryResponse));
+
         ResponsePlatformApi platformApi = ResponsePlatformApi.builder()
                 .error("Ok")
                 .timestamp(new Date().getTime())
@@ -201,11 +232,21 @@ public class ProfileServiceImpl implements ProfileService {
         Post post = postMapper.requestPostToPost(postRequest);
         post.setAuthor(person);
         post.setTime(dataMapper.asLocalDate(publishDate));
+
+        if (publishDate > new Date().getTime())
+            post.setType(PostType.QUEUED);
+        else
+            post.setType(PostType.POSTED);
+
         Country country = countryRepository.getOne(post.getAuthor().getTown().getCountryId());
         CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
         postRepository.save(post);
         PostResponse postResponse = postMapper.postToPostResponse(post);
         postResponse.getAuthor().setCountry(countryResponse);
+
+        if (postResponse.getCommentResponses() == null)
+            postResponse.setCommentResponses(new ArrayList<>());
+
         ResponsePlatformApi platformApi = ResponsePlatformApi.builder()
                 .error("Ok")
                 .timestamp(new Date().getTime())
@@ -217,10 +258,6 @@ public class ProfileServiceImpl implements ProfileService {
     public ResponseEntity<ResponsePlatformApi> searchPerson(HttpSession session, String firstName,
                                                             String lastName, int ageFrom, int ageTo, int countryId,
                                                             int cityId, int offset, int itemPerPage) {
-        //Заглушка на проверку пользователя
-        boolean isAuthorized = true;
-        if (!isAuthorized)
-            return accountService.getUserInvalidResponse();
         List<Person> list = personRepository.findPersons(firstName, lastName, ageFrom, ageTo, cityId);
 
         List<PersonResponse> personResponseList = list.stream()
@@ -229,7 +266,7 @@ public class ProfileServiceImpl implements ProfileService {
 
         Country country = countryRepository.getOne(countryId);
         CountryResponse countryResponse = new CountryResponse(country.getId(), country.getTitle());
-        personResponseList.stream().forEach(x -> x.setCountry(countryResponse));
+        personResponseList.forEach(x -> x.setCountry(countryResponse));
         return new ResponseEntity<>(ResponsePlatformApi.builder().error("Ok")
                 .timestamp(new Date().getTime()).total(personResponseList.size()).offset(offset)
                 .perPage(itemPerPage).data(personResponseList)
@@ -240,10 +277,6 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional
     public ResponseEntity<ResponsePlatformApi> blockUserById(HttpSession session, int id) {
         personRepository.blockUserById(id);
-        // Заглушка на проверку пользователя
-        boolean isAuthorized = true;
-        if (!isAuthorized)
-            return accountService.getUserInvalidResponse();
         return new ResponseEntity<>(accountService.getOkResponse(), HttpStatus.OK);
     }
 
@@ -251,10 +284,6 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional
     public ResponseEntity<ResponsePlatformApi> unblockUserById(HttpSession session, int id) {
         personRepository.unBlockUserById(id);
-        // Заглушка на проверку пользователя
-        boolean isAuthorized = true;
-        if (!isAuthorized)
-            return accountService.getUserInvalidResponse();
         return new ResponseEntity<>(accountService.getOkResponse(), HttpStatus.OK);
     }
 

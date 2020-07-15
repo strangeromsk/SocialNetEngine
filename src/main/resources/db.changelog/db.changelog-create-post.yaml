@@ -61,3 +61,13 @@ databaseChangeLog:
             onUpdate: NO ACTION
             referencedTableName: person
             referencedColumnNames: id
+  - changeSet:
+     id: 12/07/01
+     author: snet
+     changes:
+       - addColumn:
+           tableName: post
+           columns:
+             - column:
+                 name: type
+                 type: varchar(6)

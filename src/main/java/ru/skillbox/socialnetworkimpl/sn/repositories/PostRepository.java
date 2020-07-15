@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
-
+    @Query(value = "select * from public.post where post.author_id =:id", nativeQuery = true)
     List<Post> findAllByAuthorId(int id);
 
     @Query(value = "SELECT p.* FROM post p " +

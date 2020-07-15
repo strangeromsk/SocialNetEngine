@@ -23,7 +23,7 @@ public class ProfileControllerBadRequestsIntegrationTest {
     @Test
     public void getPersonsWallPostsTest() throws Exception {
         mockMvc.perform(
-                get("/api/v1/users/{id}/wall", -1)
+                get("/users/{id}/wall", -1)
                         .param("offset", "a")
                         .param("itemPerPage", "b")
                         .accept(MediaType.APPLICATION_JSON))
@@ -39,7 +39,7 @@ public class ProfileControllerBadRequestsIntegrationTest {
                 "  \"post_text\": \"asd\"\n" +
                 "}";
         mockMvc.perform(
-                post("/api/v1/users/{id}/wall", 2)
+                post("/users/{id}/wall", 2)
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -51,7 +51,7 @@ public class ProfileControllerBadRequestsIntegrationTest {
     @Test
     public void searchPersonTest() throws Exception {
         mockMvc.perform(
-                get("/api/v1/users/search/")
+                get("/users/search/")
                         .param("first_name", "q")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -62,7 +62,7 @@ public class ProfileControllerBadRequestsIntegrationTest {
     @Test
     public void blockUserByIdTest() throws Exception {
         mockMvc.perform(
-                put("/api/v1/users/block/{id}", -1)
+                put("/users/block/{id}", -1)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
@@ -72,7 +72,7 @@ public class ProfileControllerBadRequestsIntegrationTest {
     @Test
     public void unblockUserByIdTest() throws Exception {
         mockMvc.perform(
-                delete("/api/v1/users/block/{id}", -1)
+                delete("/users/block/{id}", -1)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest())

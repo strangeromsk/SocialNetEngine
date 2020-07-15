@@ -23,6 +23,9 @@ databaseChangeLog:
               - column:
                   name: is_blocked
                   value: false
+              - column:
+                  name: type
+                  value: "POSTED"
         - insert:
             tableName: post
             columns:
@@ -41,6 +44,9 @@ databaseChangeLog:
               - column:
                   name: is_blocked
                   value: false
+              - column:
+                  name: type
+                  value: "POSTED"
   - changeSet:
       id: 30/06/4
       author: snet
@@ -64,6 +70,9 @@ databaseChangeLog:
               - column:
                   name: is_blocked
                   value: false
+              - column:
+                  name: type
+                  value: "POSTED"
         - insert:
             tableName: post
             columns:
@@ -82,6 +91,9 @@ databaseChangeLog:
               - column:
                   name: is_blocked
                   value: false
+              - column:
+                  name: type
+                  value: "POSTED"
         - insert:
             tableName: post
             columns:
@@ -100,6 +112,9 @@ databaseChangeLog:
               - column:
                   name: is_blocked
                   value: false
+              - column:
+                  name: type
+                  value: "POSTED"
         - insert:
             tableName: post
             columns:
@@ -118,6 +133,9 @@ databaseChangeLog:
               - column:
                   name: is_blocked
                   value: false
+              - column:
+                  name: type
+                  value: "POSTED"
         - insert:
             tableName: post
             columns:
@@ -136,3 +154,6 @@ databaseChangeLog:
               - column:
                   name: is_blocked
                   value: false
+              - column:
+                  name: type
+                  value: "POSTED"
