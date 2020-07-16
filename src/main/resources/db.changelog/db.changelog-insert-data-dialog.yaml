@@ -1,0 +1,66 @@
+databaseChangeLog:
+  - logicalFilePath: db.changelog/db.changelog-insert-data-dialog.yaml
+  - changeSet:
+      id: 22/06/4
+      author: snet
+      changes:
+        - insert:
+            tableName: dialog
+            columns:
+              - column:
+                  name: owner_id
+                  value: 1
+              - column:
+                  name: unread_count
+                  value: 3
+              - column:
+                  name: is_deleted
+                  value: false
+              - column:
+                  name: invite_code
+                  value: "12345"
+        - insert:
+            tableName: dialog
+            columns:
+              - column:
+                  name: owner_id
+                  value: 2
+              - column:
+                  name: unread_count
+                  value: 1
+              - column:
+                  name: is_deleted
+                  value: false
+              - column:
+                  name: invite_code
+                  value: "qwerty"
+        - insert:
+            tableName: dialog
+            columns:
+              - column:
+                  name: owner_id
+                  value: 1
+              - column:
+                  name: unread_count
+                  value: 5
+              - column:
+                  name: is_deleted
+                  value: false
+              - column:
+                  name: invite_code
+                  value: "123456789"
+        - insert:
+            tableName: dialog
+            columns:
+              - column:
+                  name: owner_id
+                  value: 1
+              - column:
+                  name: unread_count
+                  value: 0
+              - column:
+                  name: is_deleted
+                  value: true
+              - column:
+                  name: invite_code
+                  value: "this code"

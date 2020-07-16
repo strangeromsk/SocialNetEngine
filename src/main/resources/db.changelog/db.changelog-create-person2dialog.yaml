@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - logicalFilePath: db.changelog/db.changelog-create-person2dialog.yaml
+  - changeSet:
+      id: 22/06/3
+      author: snet
+      changes:
+        - createTable:
+            tableName: person2dialog
+            columns:
+              - column:
+                  name: person_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: dialog_id
+                  type: int
+                  constraints:
+                    nullable: false

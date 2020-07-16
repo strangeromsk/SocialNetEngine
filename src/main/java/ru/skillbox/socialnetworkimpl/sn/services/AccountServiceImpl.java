@@ -55,6 +55,7 @@ public class AccountServiceImpl implements AccountService {
                 .isBlocked(false)
                 .isDeleted(false)
                 .isApproved(true)
+                .isOnline(true)
                 .lastOnlineTime(LocalDateTime.now())
                 .messagesPermission(MessagesPermission.ALL).build());
         return new ResponseEntity<>(getOkResponse(), HttpStatus.OK);

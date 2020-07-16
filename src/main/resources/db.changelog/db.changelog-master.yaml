@@ -63,3 +63,21 @@ databaseChangeLog:
   - include:
       file: db.changelog-create-tag.yaml
       relativeToChangelogFile: true
+  - include:
+      file: db.changelog-create-message.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-create-dialog.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-create-person2dialog.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-insert-data-message.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-insert-data-dialog.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-insert-data-person2dialog.yaml
+      relativeToChangelogFile: true
