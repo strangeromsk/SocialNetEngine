@@ -2,8 +2,15 @@ package ru.skillbox.socialnetworkimpl.sn.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import ru.skillbox.socialnetworkimpl.sn.repositories.PersonRepository;
+import ru.skillbox.socialnetworkimpl.sn.security.jwt.JwtAuthenticationFilter;
+import ru.skillbox.socialnetworkimpl.sn.security.jwt.JwtAuthorizationFilter;
+import ru.skillbox.socialnetworkimpl.sn.security.jwt.JwtAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpMethod;
@@ -15,14 +22,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import ru.skillbox.socialnetworkimpl.sn.repositories.PersonRepository;
-import ru.skillbox.socialnetworkimpl.sn.security.jwt.JwtAuthenticationEntryPoint;
-import ru.skillbox.socialnetworkimpl.sn.security.jwt.JwtAuthenticationFilter;
-import ru.skillbox.socialnetworkimpl.sn.security.jwt.JwtAuthorizationFilter;
 import ru.skillbox.socialnetworkimpl.sn.services.mappers.PersonsMapper;
 
 import javax.servlet.Filter;
@@ -48,6 +47,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private ObjectMapper mapper;
 
+    @Autowired
+    private LogoutSuccessHandler logoutHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors()
@@ -55,13 +57,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, new String[]{
                         API_LOGIN_URL,
                         STORAGE_URL,
-                        LOGOUT_URL,
                         ACCOUNT_REGISTER_URL,
                         ACCOUNT_PASSWORD_RECOVERY_URL,
                         ACCOUNT_PASSWORD_SET_URL
                 }).permitAll()
                 .antMatchers(HttpMethod.GET, new String[]{
-                        API_LOGIN_URL,
                         PLATFORM_LANGS_URL,
                         PLATFORM_COUNTRIES_URL,
                         PLATFORM_CITIES_URL
@@ -72,14 +72,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtAuthorizationFilter(authenticationManager()))
                 .exceptionHandling().authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                 .and()
-                .formLogin()
-                .loginPage(API_LOGIN_URL).permitAll()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher(LOGOUT_URL)).permitAll()
-                .logoutSuccessUrl(API_LOGIN_URL)
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .logout().logoutUrl(SecurityConstants.API_LOGOUT_URL)
+                .logoutSuccessHandler(logoutHandler);
     }
 
     @Override
